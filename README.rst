@@ -11,6 +11,7 @@ N I X M
 
 **SYNOPSIS**
 
+::
 
    >>> python3 -m nixm.cli cmd
    cfg,cmd,dne,dpl,err,exp,fnd,imp,log,mod,mre,nme,pwd,
