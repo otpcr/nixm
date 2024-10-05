@@ -31,13 +31,13 @@ classifiers=[
 "nixm" = "nixm.cli:main"
 "nixmc" = "nixm.console:wrapped"
 "nixmd" = "nixm.daemon:main"
-"nixms" = "nixm.serice:main"
+"nixms" = "nixm.service:main"
 
 
 [project.urls]
-"home" = "https://pypi.org/project/nixt"
-"bugs" = "https://github.com/otpcr/nixt/issues"
-"source" = "https://github.com/otpcr/nixt"
+"home" = "https://pypi.org/project/nixm"
+"bugs" = "https://github.com/otpcr/nixm/issues"
+"source" = "https://github.com/otpcr/nixm"
 
 
 [tool.setuptools]
