@@ -13,16 +13,19 @@ N I X M
 
 ::
 
-   >>> python3 -m nixm.cli cmd
-   cfg,cmd,dne,dpl,err,exp,fnd,imp,log,mod,mre,nme,pwd,
-   rem,req,res,rss,srv,syn,tdo,thr,upt
+    nixm  <cmd> [key=val] [key==val]
+    nixmc [-i] [-v]
+    nixmd
+    nixms
 
 
 **DESCRIPTION**
 
 ::
 
-    N I X M
+    NIXM can connect to IRC, fetch and display RSS feeds, take todo
+    notes and log text. You can also copy/paste the service file and
+    run it under systemd for 24/7 presence in a IRC channel.
 
 
 **INSTALL**
@@ -38,8 +41,6 @@ installation is done with pipx
 
 **USAGE**
 
-
-::
 
 without any argument the bot does nothing
 
@@ -199,4 +200,4 @@ start service
 
 ::
 
-    NIXT is Public Domain.
+    NIXM is Public Domain.

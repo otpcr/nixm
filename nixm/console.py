@@ -82,10 +82,6 @@ def wrap(func):
 "main"
 
 
-def wrapped():
-    "wrap main."
-    wrap(main)
-    errors()
 
 
 def main():
@@ -105,4 +101,5 @@ def main():
 
 
 if __name__ == "__main__":
-    wrapped()
+    wrap(main)
+    errors()
