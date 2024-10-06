@@ -16,12 +16,10 @@ import time
 import _thread
 
 
-from nixt.object  import Object, Obj, edit, keys, format
-from nixt.persist import last, sync
-from nixt.runtime import Event, Reactor, later, launch
-
-
 from ..command  import NAME, Broker, Commands, command
+from ..object  import Object, Obj, edit, keys, format
+from ..persist import last, sync
+from ..runtime import Event, Reactor, later, launch
 
 
 IGNORE = ["PING", "PONG", "PRIVMSG"]
@@ -56,7 +54,7 @@ class Config(Obj):
     "Config"
 
     channel = f'#{NAME}'
-    commands = True
+    commands = False
     control = '!'
     edited = time.time()
     nick = NAME

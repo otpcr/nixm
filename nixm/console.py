@@ -16,11 +16,9 @@ import time
 sys.path.insert(0, os.getcwd())
 
 
-from nixt.runtime import Errors, Event, later
-
-
-from .command import NAME, CLI, Config, forever, later, init, parse
+from .command import NAME, CLI, Config, forever, init, parse
 from .modules import face
+from .runtime import Errors, Event, later
 
 
 cfg = Config()

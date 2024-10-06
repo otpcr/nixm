@@ -20,12 +20,10 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote_plus, urlencode
 
 
-from nixt.object  import Object, Obj, format, update
-from nixt.persist import find, fntime, laps, last, sync
-from nixt.runtime import Repeater, launch
-
-
 from ..command  import Broker, Commands
+from ..object  import Object, Obj, format, update
+from ..persist import find, fntime, laps, last, sync
+from ..runtime import Repeater, launch
 
 
 DEBUG = False

@@ -7,10 +7,8 @@
 import time
 
 
-from nixt.persist import laps
-
-
 from ..command  import STARTTIME, Commands
+from ..persist import laps
 
 
 def upt(event):
