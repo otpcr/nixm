@@ -8,16 +8,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nixm"
-version = "2"
+version = "3"
 authors = [
     {name = "Bart Thate", email = "record11719@gmail.com" },
 ]
-description = "You have been nixt."
+description = "Nix Em."
 readme = "README.rst"
 license = { text="Public Domain"}
-dependencies = [
-    'nixt',
-]
 classifiers=[
     'Development Status :: 4 - Beta',
     'License :: Public Domain',

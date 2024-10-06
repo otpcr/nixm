@@ -6,7 +6,7 @@ N I X M
 
 ::
 
-   NIXM - You have been nixt.
+   NIXM - Nix Em.
 
 
 **SYNOPSIS**
@@ -71,7 +71,7 @@ use -v to enable verbose
 ::
 
     $ nixmc -v
-    NIXT since Tue Sep 17 04:10:08 2024
+    NIXM since Tue Sep 17 04:10:08 2024
     > 
 
 

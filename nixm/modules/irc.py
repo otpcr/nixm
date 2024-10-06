@@ -54,7 +54,7 @@ class Config(Obj):
     "Config"
 
     channel = f'#{NAME}'
-    commands = False
+    commands = True
     control = '!'
     edited = time.time()
     nick = NAME
