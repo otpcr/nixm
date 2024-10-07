@@ -1,2 +1,2 @@
 export PYTHONPATH="."
-python3 -m nixt.daemon
+python3 -m nixm.daemon

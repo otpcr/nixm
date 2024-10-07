@@ -23,6 +23,48 @@ class Config(Obj):
     "Config"
 
 
+class CLI(Client):
+
+    "CLI"
+
+    def __init__(self):
+        Client.__init__(self)
+        Broker.add(self)
+        self.register("event", command)
+
+
+"commands"
+
+
+class Commands:
+
+    "Commands"
+
+    cmds = {}
+
+    @staticmethod
+    def add(func):
+        "add command."
+        Commands.cmds[func.__name__] = func
+
+
+def command(bot, evt):
+    "check for and run a command."
+    parse(evt, evt.txt)
+    evt.orig = repr(bot)
+    func = Commands.cmds.get(evt.cmd, None)
+    if func:
+        try:
+            func(evt)
+            bot.display(evt)
+        except Exception as ex:
+            later(ex)
+    evt.ready()
+
+
+"broker"
+
+
 class Broker:
 
     "Broker"
@@ -58,41 +100,7 @@ class Broker:
         return Broker.objs.get(orig)
 
 
-
-class CLI(Client):
-
-    "CLI"
-
-    def __init__(self):
-        Client.__init__(self)
-        Broker.add(self)
-        self.register("event", command)
-
-
-class Commands:
-
-    "Commands"
-
-    cmds = {}
-
-    @staticmethod
-    def add(func):
-        "add command."
-        Commands.cmds[func.__name__] = func
-
-
-def command(bot, evt):
-    "check for and run a command."
-    parse(evt, evt.txt)
-    evt.orig = repr(bot)
-    func = Commands.cmds.get(evt.cmd, None)
-    if func:
-        try:
-            func(evt)
-            bot.display(evt)
-        except Exception as ex:
-            later(ex)
-    evt.ready()
+"utilities"
 
 
 def parse(obj, txt=None):
@@ -152,7 +160,6 @@ def parse(obj, txt=None):
     return obj
 
 
-
 def forever():
     "it doesn't stop, until ctrl-c"
     while True:
@@ -185,6 +192,9 @@ def wrap(func):
         pass
     except Exception as ex:
         later(ex)
+
+
+"interface"
 
 
 def __dir__():

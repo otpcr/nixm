@@ -16,4 +16,4 @@ def popen(txt):
         sys.stdout.flush()
 
 
-os.popen(r"tar zcvf nixt.tar.gz --exclude='nixt/\.git/*' nixt")
+os.popen(r"tar zcvf nixm.tar.gz --exclude='nixm/\.git/*' nixm")
