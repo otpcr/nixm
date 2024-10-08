@@ -16,27 +16,20 @@ import time
 import _thread
 
 
-from ..command  import NAME, Broker, Commands, command
+from ..broker  import Broker
+from ..command import Commands, command
 from ..object  import Object, Obj, edit, keys, format
 from ..persist import last, sync
-from ..runtime import Event, Reactor, later, launch
+from ..runtime import NAME, Event, Reactor, later, launch
+
+
+"defines"
 
 
 IGNORE = ["PING", "PONG", "PRIVMSG"]
 
 
 output = None
-
-
-def debug(txt):
-    "log text."
-    for ign in IGNORE:
-        if ign in txt:
-            return
-    if output:
-        output(txt)
-
-
 saylock = _thread.allocate_lock()
 
 
@@ -47,6 +40,16 @@ def init():
     irc.events.ready.wait()
     debug(f'{format(Config, skip="edited,password")}')
     return irc
+
+
+def register():
+    "register commands."
+    Commands.add(cfg)
+    Commands.add(mre)
+    Commands.add(pwd)
+
+
+"config"
 
 
 class Config(Obj):
@@ -78,6 +81,9 @@ class Config(Obj):
         self.username = self.username or Config.username
 
 
+"textwrapper"
+
+
 class TextWrap(textwrap.TextWrapper):
 
     "TextWrap"
@@ -93,6 +99,9 @@ class TextWrap(textwrap.TextWrapper):
 
 
 wrapper = TextWrap()
+
+
+"output"
 
 
 class Output:
@@ -163,6 +172,9 @@ class Output:
         if chan in Output.cache:
             return len(getattr(Output.cache, chan, []))
         return 0
+
+
+"irc"
 
 
 class IRC(Reactor, Output):
@@ -619,6 +631,18 @@ def cb_quit(bot, evt):
         bot.stop()
 
 
+"utilities"
+
+
+def debug(txt):
+    "log text."
+    for ign in IGNORE:
+        if ign in txt:
+            return
+    if output:
+        output(txt)
+
+
 "commands"
 
 
@@ -638,9 +662,6 @@ def cfg(event):
         edit(config, event.sets)
         sync(config)
         event.reply('ok')
-
-
-Commands.add(cfg)
 
 
 def mre(event):
@@ -663,9 +684,6 @@ def mre(event):
     event.reply(f'{size} more in cache')
 
 
-Commands.add(mre)
-
-
 def pwd(event):
     "create a base64 password."
     if len(event.args) != 2:
@@ -678,6 +696,3 @@ def pwd(event):
     base = base64.b64encode(enc)
     dcd = base.decode('ascii')
     event.reply(dcd)
-
-
-Commands.add(pwd)

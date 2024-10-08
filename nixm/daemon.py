@@ -11,13 +11,13 @@ import pwd
 import sys
 
 
-sys.path.insert(0, os.getcwd())
-
-
-from .command import forever, init, wrap
+from .command import boot
 from .modules import face
 from .persist import pidfile, pidname
-from .runtime import Errors
+from .runtime import Errors, forever, init, wrap
+
+
+"utilities"
 
 
 def daemon(verbose=False):
@@ -55,9 +55,13 @@ def privileges(username):
     os.setuid(pwnam.pw_uid)
 
 
+"main"
+
+
 def main():
     "main"
     daemon()
+    boot(face)
     privileges(getpass.getuser())
     pidfile(pidname())
     init(face)

@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.[B
-# pylint: disable=W0622
+# pylint: disable=W0105,W0622
 
 
 "find"
@@ -8,9 +8,20 @@
 import time
 
 
-from ..command  import Commands
+from ..command import Commands
 from ..object  import format
 from ..persist import find, fntime, laps, long, skel, types
+
+
+"defines"
+
+
+def register():
+    "register commands."
+    Commands.add(fnd)
+
+
+"commands"
 
 
 def fnd(event):
@@ -29,6 +40,3 @@ def fnd(event):
         nmr += 1
     if not nmr:
         event.reply("no result")
-
-
-Commands.add(fnd)

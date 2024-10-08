@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=R
+# pylint: disable=R,W0105
 
 
 "todo list"
@@ -8,14 +8,21 @@
 import time
 
 
-from ..command  import Commands
+from ..command import Commands
 from ..object  import Object
 from ..persist import find, fntime, laps, sync
 
 
-class NoDate(Exception):
+"defines"
 
-    "no matching date"
+
+def register():
+    "register commands."
+    Commands.add(dne)
+    Commands.add(tdo)
+
+
+"classes"
 
 
 class Todo(Object):
@@ -25,6 +32,9 @@ class Todo(Object):
     def __init__(self):
         Object.__init__(self)
         self.txt = ''
+
+
+"commands"
 
 
 def dne(event):
@@ -44,9 +54,6 @@ def dne(event):
         event.reply("nothing todo")
 
 
-Commands.add(dne)
-
-
 def tdo(event):
     "add todo."
     if not event.rest:
@@ -62,6 +69,3 @@ def tdo(event):
     obj.txt = event.rest
     sync(obj)
     event.reply('ok')
-
-
-Commands.add(tdo)

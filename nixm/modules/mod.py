@@ -1,4 +1,5 @@
 # This file is placed in the Public Domain.
+# pylint: disable=W0105
 
 
 "show available modules."
@@ -8,6 +9,17 @@ import os
 
 
 from ..command import Commands
+
+
+"register"
+
+
+def register():
+    "register commands."
+    Commands.add(mod)
+
+
+"commands"
 
 
 def mod(event):
@@ -23,6 +35,3 @@ def mod(event):
             continue
         mods.append(mdd[:-3])
     event.reply(",".join(sorted(mods)))
-
-
-Commands.add(mod)

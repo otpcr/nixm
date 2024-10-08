@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=R,W0622
+# pylint: disable=R,W0105,W0622
 
 
 "rich site syndicate"
@@ -20,15 +20,17 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote_plus, urlencode
 
 
-from ..command  import Broker, Commands
+from ..broker  import Broker
+from ..command import Commands, spl
 from ..object  import Object, Obj, format, update
 from ..persist import find, fntime, laps, last, sync
 from ..runtime import Repeater, launch
 
 
+"defines"
+
+
 DEBUG = False
-
-
 TEMPLATE = """<opml version="1.0">
     <head>
         <title>OPML</title>
@@ -51,13 +53,19 @@ def init():
     return fetcher
 
 
-def spl(txt):
-    "split comma separated string into a list."
-    try:
-        result = txt.split(',')
-    except (TypeError, ValueError):
-        result = txt
-    return [x for x in result if x]
+def register():
+    "register commands."
+    Commands.add(dpl)
+    Commands.add(exp)
+    Commands.add(imp)
+    Commands.add(nme)
+    Commands.add(rem)
+    Commands.add(res)
+    Commands.add(rss)
+    Commands.add(syn)
+
+
+"data"
 
 
 class Feed(Obj):
@@ -79,6 +87,9 @@ class Rss(Obj):
 class Urls(Obj):
 
     "Seen"
+
+
+"fetcher"
 
 
 class Fetcher(Object):
@@ -163,6 +174,9 @@ class Fetcher(Object):
             repeater.start()
 
 
+"parser"
+
+
 class Parser:
 
     "Parser"
@@ -219,190 +233,7 @@ class Parser:
         return result
 
 
-def getfeed(url, items):
-    "fetch a feed."
-    result = [Object(), Object()]
-    if DEBUG:
-        return result
-    try:
-        rest = geturl(url)
-    except (ValueError, HTTPError, URLError):
-        return result
-    if rest:
-        if url.endswith('atom'):
-            result = Parser.parse(str(rest.data, 'utf-8'), 'entry', items) or []
-        else:
-            result = Parser.parse(str(rest.data, 'utf-8'), 'item', items) or []
-    return result
-
-
-def gettinyurl(url):
-    "fetch a tinyurl."
-    postarray = [
-        ('submit', 'submit'),
-        ('url', url),
-    ]
-    postdata = urlencode(postarray, quote_via=quote_plus)
-    req = urllib.request.Request('http://tinyurl.com/create.php',
-                  data=bytes(postdata, 'UTF-8'))
-    req.add_header('User-agent', useragent("rss fetcher"))
-    with urllib.request.urlopen(req) as htm: # nosec
-        for txt in htm.readlines():
-            line = txt.decode('UTF-8').strip()
-            i = re.search('data-clipboard-text="(.*?)"', line, re.M)
-            if i:
-                return i.groups()
-    return []
-
-
-def cdata(line):
-    "retrieve text from CDATA."
-    if 'CDATA' in line:
-        lne = line.replace('![CDATA[', '')
-        lne = lne.replace(']]', '')
-        lne = lne[1:-1]
-        return lne
-    return line
-
-
-def geturl(url):
-    "fetch a url."
-    if not url.startswith("http://") and not url.startswith("https://"):
-        return ""
-    url = urllib.parse.urlunparse(urllib.parse.urlparse(url))
-    req = urllib.request.Request(url)
-    req.add_header('User-agent', useragent("rss fetcher"))
-    with urllib.request.urlopen(req) as response: # nosec
-        response.data = response.read()
-        return response
-
-
-def striphtml(text):
-    "strip html."
-    clean = re.compile('<.*?>')
-    return re.sub(clean, '', text)
-
-
-def unescape(text):
-    "unescape text."
-    txt = re.sub(r'\s+', ' ', text)
-    return html.unescape(txt)
-
-
-def useragent(txt):
-    "return useragent."
-    return 'Mozilla/5.0 (X11; Linux x86_64) ' + txt
-
-
-def dpl(event):
-    "set display items."
-    if len(event.args) < 2:
-        event.reply('dpl <stringinurl> <item1,item2>')
-        return
-    setter = {'display_list': event.args[1]}
-    for fnm, feed in find("rss", {'rss': event.args[0]}):
-        if feed:
-            update(feed, setter)
-            sync(feed, fnm)
-    event.reply('ok')
-
-
-Commands.add(dpl)
-
-
-def nme(event):
-    "set name of feed."
-    if len(event.args) != 2:
-        event.reply('nme <stringinurl> <name>')
-        return
-    selector = {'rss': event.args[0]}
-    for fnm, feed in find("rss", selector):
-        if feed:
-            feed.name = event.args[1]
-            sync(feed, fnm)
-    event.reply('ok')
-
-
-Commands.add(nme)
-
-
-def rem(event):
-    "remove a feed."
-    if len(event.args) != 1:
-        event.reply('rem <stringinurl>')
-        return
-    for fnm, feed in find("rss"):
-        if event.args[0] not in feed.rss:
-            continue
-        if feed:
-            feed.__deleted__ = True
-            sync(feed, fnm)
-    event.reply('ok')
-
-
-Commands.add(rem)
-
-
-def res(event):
-    "restore a feed."
-    if len(event.args) != 1:
-        event.reply('res <stringinurl>')
-        return
-    for fnm, feed in find("rss", deleted=True):
-        if event.args[0] not in feed.rss:
-            continue
-        if feed:
-            feed.__deleted__ = False
-            sync(feed, fnm)
-    event.reply('ok')
-
-
-Commands.add(res)
-
-
-def rss(event):
-    "add a feed."
-    if not event.rest:
-        nrs = 0
-        for fnm, feed in find('rss'):
-            nrs += 1
-            elp = laps(time.time()-fntime(fnm))
-            txt = format(feed)
-            event.reply(f'{nrs} {txt} {elp}')
-        if not nrs:
-            event.reply('no rss feed found.')
-        return
-    url = event.args[0]
-    if 'http' not in url:
-        event.reply('i need an url')
-        return
-    for fnm, result in find("rss", {'rss': url}):
-        if result:
-            return
-    feed = Rss()
-    feed.rss = event.args[0]
-    sync(feed)
-    event.reply('ok')
-
-
-Commands.add(rss)
-
-
-def syn(event):
-    "synchronize feeds."
-    if DEBUG:
-        return
-    fetcher = Fetcher()
-    fetcher.start(False)
-    thrs = fetcher.run(True)
-    nrs = 0
-    for thr in thrs:
-        thr.join()
-        nrs += 1
-    event.reply(f"{nrs} feeds synced")
-
-
-Commands.add(syn)
+"opml"
 
 
 class OPMLParser:
@@ -475,14 +306,108 @@ class OPMLParser:
         return result
 
 
-def shortid():
-    "create short id."
-    return str(uuid.uuid4())[:8]
+"utilities"
 
 
 def attrs(obj, txt):
     "parse attributes into the object."
     update(obj, OPMLParser.parse(txt))
+
+
+def cdata(line):
+    "retrieve text from CDATA."
+    if 'CDATA' in line:
+        lne = line.replace('![CDATA[', '')
+        lne = lne.replace(']]', '')
+        lne = lne[1:-1]
+        return lne
+    return line
+
+
+def getfeed(url, items):
+    "fetch a feed."
+    result = [Object(), Object()]
+    if DEBUG:
+        return result
+    try:
+        rest = geturl(url)
+    except (ValueError, HTTPError, URLError):
+        return result
+    if rest:
+        if url.endswith('atom'):
+            result = Parser.parse(str(rest.data, 'utf-8'), 'entry', items) or []
+        else:
+            result = Parser.parse(str(rest.data, 'utf-8'), 'item', items) or []
+    return result
+
+
+def gettinyurl(url):
+    "fetch a tinyurl."
+    postarray = [
+        ('submit', 'submit'),
+        ('url', url),
+    ]
+    postdata = urlencode(postarray, quote_via=quote_plus)
+    req = urllib.request.Request('http://tinyurl.com/create.php',
+                  data=bytes(postdata, 'UTF-8'))
+    req.add_header('User-agent', useragent("rss fetcher"))
+    with urllib.request.urlopen(req) as htm: # nosec
+        for txt in htm.readlines():
+            line = txt.decode('UTF-8').strip()
+            i = re.search('data-clipboard-text="(.*?)"', line, re.M)
+            if i:
+                return i.groups()
+    return []
+
+
+def geturl(url):
+    "fetch a url."
+    if not url.startswith("http://") and not url.startswith("https://"):
+        return ""
+    url = urllib.parse.urlunparse(urllib.parse.urlparse(url))
+    req = urllib.request.Request(url)
+    req.add_header('User-agent', useragent("rss fetcher"))
+    with urllib.request.urlopen(req) as response: # nosec
+        response.data = response.read()
+        return response
+
+
+def shortid():
+    "create short id."
+    return str(uuid.uuid4())[:8]
+
+
+def striphtml(text):
+    "strip html."
+    clean = re.compile('<.*?>')
+    return re.sub(clean, '', text)
+
+
+def unescape(text):
+    "unescape text."
+    txt = re.sub(r'\s+', ' ', text)
+    return html.unescape(txt)
+
+
+def useragent(txt):
+    "return useragent."
+    return 'Mozilla/5.0 (X11; Linux x86_64) ' + txt
+
+
+"commands"
+
+
+def dpl(event):
+    "set display items."
+    if len(event.args) < 2:
+        event.reply('dpl <stringinurl> <item1,item2>')
+        return
+    setter = {'display_list': event.args[1]}
+    for fnm, feed in find("rss", {'rss': event.args[0]}):
+        if feed:
+            update(feed, setter)
+            sync(feed, fnm)
+    event.reply('ok')
 
 
 def exp(event):
@@ -499,9 +424,6 @@ def exp(event):
     event.reply(" "*8 + "</outline>")
     event.reply("    <body>")
     event.reply("</opml>")
-
-
-Commands.add(exp)
 
 
 def imp(event):
@@ -543,4 +465,81 @@ def imp(event):
         event.reply(f"added {nrs} urls.")
 
 
-Commands.add(imp)
+def nme(event):
+    "set name of feed."
+    if len(event.args) != 2:
+        event.reply('nme <stringinurl> <name>')
+        return
+    selector = {'rss': event.args[0]}
+    for fnm, feed in find("rss", selector):
+        if feed:
+            feed.name = event.args[1]
+            sync(feed, fnm)
+    event.reply('ok')
+
+
+def rem(event):
+    "remove a feed."
+    if len(event.args) != 1:
+        event.reply('rem <stringinurl>')
+        return
+    for fnm, feed in find("rss"):
+        if event.args[0] not in feed.rss:
+            continue
+        if feed:
+            feed.__deleted__ = True
+            sync(feed, fnm)
+    event.reply('ok')
+
+
+def res(event):
+    "restore a feed."
+    if len(event.args) != 1:
+        event.reply('res <stringinurl>')
+        return
+    for fnm, feed in find("rss", deleted=True):
+        if event.args[0] not in feed.rss:
+            continue
+        if feed:
+            feed.__deleted__ = False
+            sync(feed, fnm)
+    event.reply('ok')
+
+
+def rss(event):
+    "add a feed."
+    if not event.rest:
+        nrs = 0
+        for fnm, feed in find('rss'):
+            nrs += 1
+            elp = laps(time.time()-fntime(fnm))
+            txt = format(feed)
+            event.reply(f'{nrs} {txt} {elp}')
+        if not nrs:
+            event.reply('no rss feed found.')
+        return
+    url = event.args[0]
+    if 'http' not in url:
+        event.reply('i need an url')
+        return
+    for fnm, result in find("rss", {'rss': url}):
+        if result:
+            return
+    feed = Rss()
+    feed.rss = event.args[0]
+    sync(feed)
+    event.reply('ok')
+
+
+def syn(event):
+    "synchronize feeds."
+    if DEBUG:
+        return
+    fetcher = Fetcher()
+    fetcher.start(False)
+    thrs = fetcher.run(True)
+    nrs = 0
+    for thr in thrs:
+        thr.join()
+        nrs += 1
+    event.reply(f"{nrs} feeds synced")

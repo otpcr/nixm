@@ -8,16 +8,15 @@
 import getpass
 import os
 import pwd
-import sys
 
 
-sys.path.insert(0, os.getcwd())
-
-
-from .command import forever, init, wrap
+from .command import boot
 from .modules import face as faced
 from .persist import pidfile, pidname
-from .runtime import Errors
+from .runtime import Errors, forever, init, wrap
+
+
+"utilities"
 
 
 def errors():
@@ -34,10 +33,14 @@ def privileges(username):
     os.setuid(pwnam2.pw_uid)
 
 
+"main"
+
+
 def main():
     "main"
     privileges(getpass.getuser())
     pidfile(pidname())
+    boot(faced)
     init(faced)
     forever()
 

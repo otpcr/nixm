@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # This file is placed in the Public Domain.
 # pylint: disable=C0413,W0105,W0718
 
@@ -6,31 +5,39 @@
 "console"
 
 
-import os
 import readline
 import sys
 import termios
 import time
 
 
-sys.path.insert(0, os.getcwd())
-
-
-from .command import NAME, CLI, Config, forever, init, parse
+from .broker  import Broker
+from .command import boot, command, parse
 from .modules import face
-from .runtime import Errors, Event, later
+from .runtime import NAME, Client, Config, Errors, Event, forever, later, init
+
+
+"defines"
 
 
 cfg = Config()
 
 
-class Console(CLI):
+"console"
+
+
+class Console(Client):
 
     "Console"
 
+    def __init__(self):
+        Client.__init__(self)
+        Broker.add(self)
+        self.register("event", command)
+
     def callback(self, evt):
         "wait for result."
-        CLI.callback(self, evt)
+        Client.callback(self, evt)
         evt.wait()
 
     def poll(self):
@@ -42,6 +49,9 @@ class Console(CLI):
     def raw(self, txt):
         "print text."
         print(txt)
+
+
+"utilities"
 
 
 def banner():
@@ -80,12 +90,11 @@ def wrap(func):
 "main"
 
 
-
-
 def main():
     "main"
     readline.redisplay()
     parse(cfg, " ".join(sys.argv[1:]))
+    boot(face)
     if "v" in cfg.opts:
         banner()
         face.irc.output = print

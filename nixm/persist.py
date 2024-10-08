@@ -16,9 +16,15 @@ import _thread
 from .object import Obj, dump, load, search, update
 
 
+"defines"
+
+
 lock     = _thread.allocate_lock()
 disklock = _thread.allocate_lock()
 p        = os.path.join
+
+
+"classes"
 
 
 class Workdir:
@@ -28,6 +34,9 @@ class Workdir:
     fqns = []
     name = Obj.__module__.split(".", maxsplit=2)[-2]
     wdr = os.path.expanduser(f"~/.{name}")
+
+
+"paths"
 
 
 def long(name):

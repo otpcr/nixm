@@ -17,11 +17,12 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from nixm.command import NAME, STARTTIME, Commands, Config, command, parse
+from nixm.command import Commands, boot, command, parse
 from nixm.modules import face
 from nixm.object  import Object
 from nixm.persist import Workdir, laps, skel
-from nixm.runtime import Client, Errors, Event, later, launch
+from nixm.runtime import NAME, STARTTIME, Client, Config, Errors, Event
+from nixm.runtime import later, launch
 
 
 "defines"
@@ -138,13 +139,12 @@ def wrap(function):
 "main"
 
 
-
-
 def main():
     "main"
     Workdir.wdr = ".test"
     face.rss.DEBUG = True
     parse(cfg, " ".join(sys.argv[1:]))
+    boot(face)
     nrcommands = len(Commands.cmds) or 1
     if "v" in cfg.opts:
         banner()

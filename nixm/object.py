@@ -8,6 +8,9 @@
 import json
 
 
+"object"
+
+
 class Object:
 
     "Object"
@@ -37,6 +40,9 @@ class Obj(Object):
         return self.__dict__.get(key, "")
 
 
+"methods"
+
+
 def construct(obj, *args, **kwargs):
     "construct an object from provided arguments."
     if args:
@@ -49,9 +55,6 @@ def construct(obj, *args, **kwargs):
             update(obj, vars(val))
     if kwargs:
         update(obj, kwargs)
-
-
-"methods"
 
 
 def items(obj):

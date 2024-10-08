@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=R
+# pylint: disable=R,W0105
 
 
 "log text"
@@ -8,9 +8,20 @@
 import time
 
 
-from ..command  import Commands
+from ..command import Commands
 from ..object  import Object
 from ..persist import find, laps, sync, fntime
+
+
+"defines"
+
+
+def register():
+    "register commands."
+    Commands.add(log)
+
+
+"classes"
 
 
 class Log(Object):
@@ -20,6 +31,9 @@ class Log(Object):
     def __init__(self):
         super().__init__()
         self.txt = ''
+
+
+"commands"
 
 
 def log(event):
@@ -37,6 +51,3 @@ def log(event):
     obj.txt = event.rest
     sync(obj)
     event.reply('ok')
-
-
-Commands.add(log)

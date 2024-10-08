@@ -5,54 +5,40 @@
 "cli"
 
 
-import getpass
-import os
 import sys
 
 
-sys.path.insert(0, os.getcwd())
-
-
-from .command import NAME, CLI, Commands, command
+from .broker  import Broker
+from .command import boot, command
 from .modules import face
-from .runtime import Event
+from .runtime import Client, Errors, Event
 
 
-class CLIS(CLI):
+class CLI(Client):
 
     "CLI"
+
+    def __init__(self):
+        Client.__init__(self)
+        Broker.add(self)
+        self.register("event", command)
 
     def raw(self, txt):
         "print text."
         print(txt)
 
 
-TXT = """[Unit]
-Description=%s
-After=network-online.target
-
-[Service]
-Type=simple
-User=%s
-Group=%s
-ExecStart=/home/%s/.local/bin/%ss
-
-[Install]
-WantedBy=multi-user.target"""
-
-
-def srv(event):
-    "create service file (pipx)."
-    name  = getpass.getuser()
-    event.reply(TXT % (NAME.upper(), name, name, name, NAME))
-
-
-Commands.add(srv)
+def errors():
+    "print errors."
+    for error in Errors.errors:
+        for line in error:
+            print(line)
 
 
 def main():
     "main"
-    cli = CLIS()
+    boot(face)
+    cli = CLI()
     evt = Event()
     evt.txt = " ".join(sys.argv[1:])
     command(cli, evt)
@@ -61,3 +47,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    errors()
