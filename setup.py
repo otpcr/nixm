@@ -12,5 +12,5 @@ if __name__ == "__main__":
         'bin/nixm',
         'bin/nixmc',
         'bin/nixmd',
-        'bin/nixms
+        'bin/nixms'
     ])
