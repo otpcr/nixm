@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.  pylint:
-# pylint: disable=R0903,W0105,W0719
+# pylint: disable=C,R0903,W0105,W0719
 
 
 "persist to disk"
@@ -27,25 +27,20 @@ p         = os.path.join
 
 class Cache:
 
-    "Cache"
-
     objs = {}
 
     @staticmethod
     def add(path, obj):
-        "add object."
         with cachelock:
             Cache.objs[path] = obj
 
     @staticmethod
     def get(path):
-        "return object by matching path."
         with cachelock:
             return Cache.objs.get(path)
 
     @staticmethod
     def typed(match):
-        "return objects with match in path."
         with cachelock:
             for key in Cache.objs:
                 if match not in key:
@@ -58,8 +53,6 @@ class Cache:
 
 class Workdir:
 
-    "Workdir"
-
     fqns = []
     name = Obj.__module__.split(".", maxsplit=2)[-2]
     wdr = os.path.expanduser(f"~/.{name}")
@@ -69,7 +62,6 @@ class Workdir:
 
 
 def long(name):
-    "match from single name to long name."
     split = name.split(".")[-1].lower()
     res = name
     for names in types():
@@ -80,17 +72,14 @@ def long(name):
 
 
 def modname():
-    "return pidfile path."
     return p(Workdir.wdr, "mods")
 
 
 def pidname():
-    "return pidfile path."
     return p(Workdir.wdr, f"{Workdir.name}.pid")
 
 
 def store(pth=""):
-    "return objects directory."
     stor = p(Workdir.wdr, "store", "")
     if not os.path.exists(stor):
         skel()
@@ -98,7 +87,6 @@ def store(pth=""):
 
 
 def whitelist(clz):
-    "whitelist classes."
     Workdir.fqns.append(fqn(clz))
 
 
@@ -106,13 +94,11 @@ def whitelist(clz):
 
 
 def cdir(pth):
-    "create directory."
     path = pathlib.Path(pth)
     path.parent.mkdir(parents=True, exist_ok=True)
 
 
 def find(mtc, selector=None, index=None, deleted=False, matching=False):
-    "find object matching the selector dict."
     clz = long(mtc)
     nrs = -1
     for fnm in sorted(fns(clz), key=fntime):
@@ -134,7 +120,6 @@ def find(mtc, selector=None, index=None, deleted=False, matching=False):
 
 
 def fns(mtc=""):
-    "show list of files."
     dname = ''
     pth = store(mtc)
     for rootdir, dirs, _files in os.walk(pth, topdown=False):
@@ -147,7 +132,6 @@ def fns(mtc=""):
 
 
 def fntime(daystr):
-    "convert file name to it's saved time."
     daystr = daystr.replace('_', ':')
     datestr = ' '.join(daystr.split(os.sep)[-2:])
     if '.' in datestr:
@@ -161,7 +145,6 @@ def fntime(daystr):
 
 
 def laps(seconds, short=True):
-    "show elapsed time."
     txt = ""
     nsec = float(seconds)
     if nsec < 1:
@@ -201,7 +184,6 @@ def laps(seconds, short=True):
 
 
 def pidfile(filename):
-    "write the pid to a file."
     if os.path.exists(filename):
         os.unlink(filename)
     path2 = pathlib.Path(filename)
@@ -211,7 +193,6 @@ def pidfile(filename):
 
 
 def skel():
-    "create directory,"
     stor = p(Workdir.wdr, "store", "")
     path = pathlib.Path(stor)
     path.mkdir(parents=True, exist_ok=True)
@@ -219,12 +200,10 @@ def skel():
 
 
 def strip(pth, nmr=3):
-    "reduce to path with directory."
     return os.sep.join(pth.split(os.sep)[-nmr:])
 
 
 def types():
-    "return types stored."
     return os.listdir(store())
 
 
@@ -232,7 +211,6 @@ def types():
 
 
 def fetch(obj, pth):
-    "read object from disk."
     with disklock:
         pth2 = store(pth)
         read(obj, pth2)
@@ -240,7 +218,6 @@ def fetch(obj, pth):
 
 
 def fqn(obj):
-    "return full qualified name of an object."
     kin = str(type(obj)).split()[-1][1:-2]
     if kin == "type":
         kin = f"{obj.__module__}.{obj.__name__}"
@@ -248,12 +225,10 @@ def fqn(obj):
 
 
 def ident(obj):
-    "return an id for an object."
     return p(fqn(obj), *str(datetime.datetime.now()).split())
 
 
 def last(obj, selector=None):
-    "return last object saved."
     if selector is None:
         selector = {}
     result = sorted(
@@ -269,7 +244,6 @@ def last(obj, selector=None):
 
 
 def read(obj, pth):
-    "read an object from file path."
     with lock:
         with open(pth, 'r', encoding='utf-8') as ofile:
             try:
@@ -279,7 +253,6 @@ def read(obj, pth):
 
 
 def sync(obj, pth=None):
-    "sync object to disk."
     if pth is None:
         pth = ident(obj)
     with disklock:
@@ -289,7 +262,6 @@ def sync(obj, pth=None):
 
 
 def write(obj, pth):
-    "write an object to disk."
     with lock:
         cdir(pth)
         with open(pth, 'w', encoding='utf-8') as ofile:

@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=R,W0105,W0212,W0718
+# pylint: disable=C,R,W0105,W0212,W0718
 
 
 "runtime"
@@ -18,13 +18,10 @@ import _thread
 
 class Errors:
 
-    "Errors"
-
     errors = []
 
 
 def fmat(exc):
-    "format an exception"
     return traceback.format_exception(
                                type(exc),
                                exc,
@@ -33,7 +30,6 @@ def fmat(exc):
 
 
 def later(exc):
-    "add an exception"
     excp = exc.with_traceback(exc.__traceback__)
     fmt = fmat(excp)
     if fmt not in Errors.errors:
@@ -44,8 +40,6 @@ def later(exc):
 
 
 class Thread(threading.Thread):
-
-    "Thread"
 
     def __init__(self, func, thrname, *args, daemon=True, **kwargs):
         super().__init__(None, self.run, thrname, (), {}, daemon=daemon)
@@ -65,16 +59,13 @@ class Thread(threading.Thread):
         yield from dir(self)
 
     def size(self):
-        "return qsize"
         return self.queue.qsize()
 
     def join(self, timeout=None):
-        "join this thread."
         super().join(timeout)
         return self.result
 
     def run(self):
-        "run this thread's payload."
         try:
             func, args = self.queue.get()
             self.result = func(*args)
@@ -85,7 +76,6 @@ class Thread(threading.Thread):
 
 
 def launch(func, *args, **kwargs):
-    "launch a thread."
     name = kwargs.get("name", named(func))
     thread = Thread(func, name, *args, **kwargs)
     thread.start()
@@ -93,7 +83,6 @@ def launch(func, *args, **kwargs):
 
 
 def named(obj):
-    "return a full qualified name of an object/function/module."
     if isinstance(obj, types.ModuleType):
         return obj.__name__
     typ = type(obj)
@@ -115,21 +104,17 @@ def named(obj):
 
 class Reactor:
 
-    "Reactor"
-
     def __init__(self):
         self.cbs      = {}
         self.queue    = queue.Queue()
         self.stopped  = threading.Event()
 
     def callback(self, evt):
-        "call callback based on event type."
         func = self.cbs.get(evt.type, None)
         if func:
             evt._thr = launch(func, self, evt)
 
     def loop(self):
-        "proces events until interrupted."
         while not self.stopped.is_set():
             try:
                 evt = self.poll()
@@ -138,47 +123,35 @@ class Reactor:
                 _thread.interrupt_main()
 
     def poll(self):
-        "function to return event."
         return self.queue.get()
 
     def put(self, evt):
-        "put event into the queue."
         self.queue.put_nowait(evt)
 
     def register(self, typ, cbs):
-        "register callback for a type."
         self.cbs[typ] = cbs
 
     def start(self):
-        "start the event loop."
         launch(self.loop)
 
     def stop(self):
-        "stop the event loop."
         self.stopped.set()
 
 
 class Client(Reactor):
 
-    "Client"
-
     def display(self, evt):
-        "show results into a channel."
         for txt in evt.result:
             self.say(evt.channel, txt)
 
     def say(self, _channel, txt):
-        "echo on verbose."
         self.raw(txt)
 
     def raw(self, txt):
-        "print to screen."
         raise NotImplementedError
 
 
 class Event:
-
-    "Event"
 
     def __init__(self):
         self._ready  = threading.Event()
@@ -196,15 +169,12 @@ class Event:
         return str(self.__dict__)
 
     def ready(self):
-        "flag event as ready."
         self._ready.set()
 
     def reply(self, txt):
-        "add text to the result."
         self.result.append(txt)
 
     def wait(self):
-        "wait for results."
         self._ready.wait()
         if self._thr:
             self._thr.join()
@@ -214,8 +184,6 @@ class Event:
 
 
 class Timer:
-
-    "Timer"
 
     def __init__(self, sleep, func, *args, thrname=None, **kwargs):
         self.args  = args
@@ -227,12 +195,10 @@ class Timer:
         self.timer = None
 
     def run(self):
-        "run the payload in a thread."
         self.state["latest"] = time.time()
         launch(self.func, *self.args)
 
     def start(self):
-        "start timer."
         timer = threading.Timer(self.sleep, self.run)
         timer.name   = self.name
         timer.sleep  = self.sleep
@@ -244,14 +210,11 @@ class Timer:
         self.timer   = timer
 
     def stop(self):
-        "stop timer."
         if self.timer:
             self.timer.cancel()
 
 
 class Repeater(Timer):
-
-    "Repeater"
 
     def run(self):
         launch(self.start)
@@ -262,7 +225,6 @@ class Repeater(Timer):
 
 
 def forever():
-    "it doesn't stop, until ctrl-c"
     while True:
         try:
             time.sleep(1.0)
@@ -271,7 +233,6 @@ def forever():
 
 
 def wrap(func):
-    "reset console."
     try:
         func()
     except (KeyboardInterrupt, EOFError):

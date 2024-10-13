@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # This file is placed in the Public Domain.
-# pylint: disable=C0413,W0105,W0611
+# pylint: disable=C,W0105,W0611
 
 
 "cli"
@@ -25,22 +25,17 @@ cfg = Config()
 
 class CLI(Client):
 
-    "CLI"
-
     def raw(self, txt):
-        "print text."
         print(txt)
 
 
 def errors():
-    "print errors."
     for error in Errors.errors:
         for line in error:
             print(line)
 
 
 def main():
-    "main"
     parse(cfg, " ".join(sys.argv[1:]))
     scan(face)
     cli = CLI()
