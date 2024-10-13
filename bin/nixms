@@ -9,12 +9,16 @@
 import getpass
 import os
 import pwd
+import sys
 
 
-from nixt.main    import forever, init, scan, wrap
-from nixt.modules import face as FACE
-from nixt.persist import pidfile, pidname
-from nixt.runtime import Errors
+sys.path.insert(0, os.getcwd())
+
+
+from nixm.main    import forever, init, scan, wrap
+from nixm.modules import face as FACE
+from nixm.persist import pidfile, pidname
+from nixm.runtime import Errors
 
 
 def errors():
