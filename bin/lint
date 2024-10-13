@@ -9,7 +9,7 @@ import os
 import sys
 
 
-NAME = "nixt"
+NAME = "nixm"
 
 
 def popen(txt):
@@ -23,4 +23,4 @@ if os.path.exists("bin/clean"):
     popen("bin/clean")
 
 
-popen("pylint nixm/*.py nixm/modules/*.py bin/check bin/clean bin/profile bin/tinder tests/*.py")
+popen("pylint nixm/*.py nixm/modules/*.py bin/* tests/*.py")
