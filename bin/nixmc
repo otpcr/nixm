@@ -87,6 +87,7 @@ def main():
     if "v" in Cfg.opts:
         readline.redisplay()
         banner()
+        face.irc.output = print
     if "i" in Cfg.opts:
         for _mod, thr in init(face):
             if "w" in Cfg.opts:
