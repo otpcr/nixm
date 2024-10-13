@@ -2,202 +2,63 @@ N I X M
 =======
 
 
-**NAME**
-
-::
-
-   NIXM - Nix Em.
-
-
-**SYNOPSIS**
-
-::
-
-    nixm  <cmd> [key=val] [key==val]
-    nixmc [-i] [-v]
-    nixmd
-    nixms
+| **Information and Evidence Unit**
+| **Office of the Prosecutor**
+| **Post Office Box 19519**
+| **2500 CM The Hague**
+| **The Netherlands** 
+|
 
 
-**DESCRIPTION**
+Hello Office of the Prosecutor, 
 
-::
+i write you in the context of communications and claims under art.15 of 
+the Rome Statute. i want to inform the prosecutor that the king of the 
+netherlands and his government are commiting 3 of the 5 crimes defined 
+in the Rome Statute. 
 
-    NIXM can connect to IRC, fetch and display RSS feeds, take todo
-    notes and log text. You can also copy/paste the service file and
-    run it under systemd for 24/7 presence in a IRC channel.
+The dutch government has introduced three new forced care laws, the Wfz 
+(wet forensische zorg) for criminals, the WvGGZ (Wet verplichte GGZ) for 
+the disturbed and addicted and the Wzd (Wet zorg en dwang) for the 
+handicapped.
 
-
-**INSTALL**
-
-
-installation is done with pipx
-
-::
-
-    $ pipx install nixm
-    $ pipx ensurepath
-
-
-**USAGE**
-
-
-without any argument the bot does nothing
-
-::
-
-    $ nixm
-    $
-
-see list of commands
-
-::
-
-    $ nixm cmd
-    cfg,cmd,dne,dpl,err,exp,imp,log,mod,mre,nme,
-    pwd,rem,req,res,rss,srv,syn,tdo,thr,upt
-
-
-start a console
-
-::
-
-    $ nixmc
-    >
-
-
-use -v to enable verbose
-
-::
-
-    $ nixmc -v
-    NIXM since Tue Sep 17 04:10:08 2024
-    > 
-
-
-use -i to init modules
-
-::
-
-    $ nixmc -i
-    >
-
-
-
-start daemon
-
-::
-
-    $ nixmd
-    $
-
-
-start service
-
-::
-
-   $ nixms
-   <runs until ctrl-c>
-
-
-**CONFIGURATION**
-
-
-*irc*
-
-::
-
-    $ nixm cfg server=<server>
-    $ nixm cfg channel=<channel>
-    $ nixm cfg nick=<nick>
-
-*sasl*
-
-::
-
-    $ nixm pwd <nsvnick> <nspass>
-    $ nixm cfg password=<frompwd>4
-
-*rss*
-
-::
+Both the chamber suggesting these laws to the king and the king himself 
+have been informed about the fact the the substances administered under 
+these laws are proven to be poison.
  
-    $ nixm rss <url>
-    $ nixm dpl <url> <item1,item2>
-    $ nixm rem <url>
-    $ nixm nme <url> <name>
+There is proof the medication used in forced treatements in the 
+netherlands are poison, see copies of the ECHA <`European Chemical Agency`>
+website for:
 
-*opml*
+(1) haldol
+(2) clozapine
+(3) zyprexa
+(4) abilify
 
-::
+With the mass scale torture with poison the king of the netherlands and 
+his chamber:
 
-    $ nixm exp
-    $ nixm imp <filename>
+(1) kills
+(2) does grave bodily and mental harm
+(3) makes impotent
 
+on the following victim groups here in the Netherlands:
 
-**SYSTEMD**
+(1) verslaafden (addicts)
+(2) bejaarden (elderly)
+(3) ggz patienten (psychiatric patients)
+(4) criminelen (criminials)
+(5) gehandicapten (handicapped)
 
-::
-
-    $ nixm srv > nixm.service
-    $ sudo mv nixm.service /etc/systemd/system/
-    $ sudo systemctl enable nixm --now
-
-    joins #nixm on localhost
-
-
-**COMMANDS**
-
-::
-
-    here is a list of available commands
-
-    cfg - irc configuration
-    cmd - commands
-    dpl - sets display items
-    err - show errors
-    exp - export opml (stdout)
-    imp - import opml
-    log - log text
-    mre - display cached output
-    pwd - sasl nickserv name/pass
-    rem - removes a rss feed
-    res - restore deleted feeds
-    rss - add a feed
-    srv - create service file
-    syn - sync rss feeds
-    tdo - add todo item
-    thr - show running threads
+Since the members of the chamber and the king were aware that these medicine
+are poison at the time they voted for this law and the day the Wfz law took
+effect (1-1-2019), i ask the prosecutor to prosecute the king for making the
+commiting of the above mentioned crimes (killing, torture and impotent making)
+possible.
 
 
-**SOURCE**
-
-::
-
-    source is at ``https://github.com/otpcr/nixm``
+p.s.
 
 
-**FILES**
-
-::
-
-    ~/.nixm
-    ~/.local/bin/nixm   (cli)
-    ~/.local/bin/nixmc  (console)
-    ~/.local/bin/nixmd  (daemon)
-    ~/.local/bin/nixms  (service)
-    ~/.local/pipx/venvs/nixm/*
-
-
-**AUTHOR**
-
-::
-
-    Bart Thate <record11719@gmail.com>
-
-
-**COPYRIGHT**
-
-::
-
-    NIXM is Public Domain.
+1) Entered in the Communications Register of the Office on ``4 march 2019``
+2) Your reference ``OTP-CR-117/19``

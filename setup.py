@@ -8,4 +8,9 @@ import setuptools
 
 
 if __name__ == "__main__":
-    setuptools.setup()
+    setuptools.setup(scripts=[
+        'bin/nixm',
+        'bin/nixmc',
+        'bin/nixmd',
+        'bin/nixms
+    ])

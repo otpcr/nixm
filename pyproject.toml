@@ -8,11 +8,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nixm"
-version = "4"
+version = "5"
 authors = [
     {name = "Bart Thate", email = "record11719@gmail.com" },
 ]
-description = "Nix Em."
+description = "Nix Em"
 readme = "README.rst"
 license = { text="Public Domain"}
 classifiers=[
@@ -24,13 +24,6 @@ classifiers=[
 ]
 
 
-[project.scripts]
-"nixm" = "nixm.cli:main"
-"nixmc" = "nixm.console:wrapped"
-"nixmd" = "nixm.daemon:main"
-"nixms" = "nixm.service:main"
-
-
 [project.urls]
 "home" = "https://pypi.org/project/nixm"
 "bugs" = "https://github.com/otpcr/nixm/issues"
@@ -38,6 +31,12 @@ classifiers=[
 
 
 [tool.setuptools]
+script-files = [
+    'bin/nixm',
+    'bin/nixmc',
+    'bin/nixmd',
+    'bin/nixms'
+]
 packages = [
    'nixm',
    'nixm.modules'

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # This file is placed in the Public Domain.
-# pylint: disable=C0413,W0105,W0718
+# pylint: disable=C0413,W0105,W0212,W0718
 
 
 "tinder"
@@ -17,18 +17,22 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from nixm.command import Commands, boot, command, parse
+from nixm.main    import NAME, STARTTIME, Commands, Config, command, scan
 from nixm.modules import face
-from nixm.object  import Object
+from nixm.object  import Object, parse
 from nixm.persist import Workdir, laps, skel
-from nixm.runtime import NAME, STARTTIME, Client, Config, Errors, Event
-from nixm.runtime import later, launch
-
-
-"defines"
+from nixm.runtime import Client, Errors, Event, later, launch
 
 
 cfg = Config()
+
+
+if os.path.exists("mods"):
+    import mods.face as MODS
+    MODS.rss.DEBUG = True
+else:
+    MODS = None
+    face.rss.DEBUG = True
 
 
 LAP = 1
@@ -59,9 +63,6 @@ param.tdo = ["mekker", ""]
 param.ver = [""]
 
 
-"cli"
-
-
 class CLI(Client):
 
     "command line interface."
@@ -80,10 +81,6 @@ class CLI(Client):
         "check verboise."
         if "v" in cfg.opts:
             print(txt)
-            sys.stdout.flush()
-
-
-"utilities"
 
 
 def banner():
@@ -136,15 +133,11 @@ def wrap(function):
             termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, old3)
 
 
-"main"
-
-
 def main():
     "main"
     Workdir.wdr = ".test"
-    face.rss.DEBUG = True
     parse(cfg, " ".join(sys.argv[1:]))
-    boot(face)
+    scan(MODS, face)
     nrcommands = len(Commands.cmds) or 1
     if "v" in cfg.opts:
         banner()
