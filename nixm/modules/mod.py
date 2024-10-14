@@ -8,7 +8,7 @@
 import os
 
 
-from nixm.main import Commands
+from ..main import Commands
 
 
 def mod(event):

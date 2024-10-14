@@ -76,7 +76,7 @@ p.s.
 """
 
 
-from nixm.main import Commands
+from ..main import Commands
 
 
 def req(event):

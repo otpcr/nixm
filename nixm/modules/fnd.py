@@ -8,9 +8,9 @@
 import time
 
 
-from nixm.main    import Commands
-from nixm.object  import fmt
-from nixm.persist import find, fntime, laps, long, skel, types
+from ..main    import Commands
+from ..object  import fmt
+from ..persist import find, fntime, laps, long, skel, types
 
 
 def fnd(event):

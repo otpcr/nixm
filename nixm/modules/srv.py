@@ -8,7 +8,7 @@
 import getpass
 
 
-from nixm.main import NAME, Commands
+from ..main import NAME, Commands
 
 
 TXT = """[Unit]

@@ -9,9 +9,9 @@ import threading
 import time
 
 
-from nixm.main    import STARTTIME, Commands
-from nixm.object  import Object, update
-from nixm.persist import laps
+from ..main    import STARTTIME, Commands
+from ..object  import Object, update
+from ..persist import laps
 
 
 def thr(event):

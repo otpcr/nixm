@@ -8,9 +8,9 @@
 import time
 
 
-from nixm.main    import Commands
-from nixm.object  import Object
-from nixm.persist import find, laps, sync, fntime
+from ..main    import Commands
+from ..object  import Object
+from ..persist import find, laps, sync, fntime
 
 
 class Log(Object):

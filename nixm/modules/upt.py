@@ -8,8 +8,8 @@
 import time
 
 
-from nixm.main    import STARTTIME, Commands
-from nixm.persist import laps
+from ..main    import STARTTIME, Commands
+from ..persist import laps
 
 
 def upt(event):

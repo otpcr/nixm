@@ -221,26 +221,6 @@ class Repeater(Timer):
         super().run()
 
 
-"utilities"
-
-
-def forever():
-    while True:
-        try:
-            time.sleep(1.0)
-        except (KeyboardInterrupt, EOFError):
-            _thread.interrupt_main()
-
-
-def wrap(func):
-    try:
-        func()
-    except (KeyboardInterrupt, EOFError):
-        pass
-    except Exception as ex:
-        later(ex)
-
-
 "interface"
 
 
@@ -253,11 +233,7 @@ def __dir__():
         'Repeater',
         'Thread',
         'Timer',
-        'forever',
-        'format',
         'later',
         'launch',
-        'init',
-        'named',
-        'wrap'
+        'named'
     )
