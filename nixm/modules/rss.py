@@ -43,7 +43,6 @@ skipped = []
 
 
 def init():
-    "start fetcher."
     fetcher = Fetcher()
     fetcher.start()
     return fetcher
@@ -52,12 +51,10 @@ def init():
 
 class Feed(Obj):
 
-    "Feed"
+    pass
 
 
 class Rss(Obj):
-
-    "Rss"
 
     def __init__(self):
         Obj.__init__(self)
@@ -68,12 +65,10 @@ class Rss(Obj):
 
 class Urls(Obj):
 
-    "Seen"
+    pass
 
 
 class Fetcher(Object):
-
-    "Fetcher"
 
     def __init__(self):
         self.dosave = False
@@ -82,7 +77,6 @@ class Fetcher(Object):
 
     @staticmethod
     def display(obj):
-        "display object."
         result = ''
         displaylist = []
         try:
@@ -103,7 +97,6 @@ class Fetcher(Object):
         return result[:-2].rstrip()
 
     def fetch(self, feed, silent=False):
-        "fetch feed."
         with fetchlock:
             result = []
             seen = getattr(self.seen, feed.rss, [])
@@ -140,14 +133,12 @@ class Fetcher(Object):
         return counter
 
     def run(self, silent=False):
-        "fetch all feeds."
         thrs = []
         for _fn, feed in find('rss'):
             thrs.append(launch(self.fetch, feed, silent, name=f"{feed.rss}"))
         return thrs
 
     def start(self, repeat=True):
-        "start fetcher."
         self.seenfn = last(self.seen)
         if repeat:
             repeater = Repeater(300.0, self.run)
@@ -156,11 +147,8 @@ class Fetcher(Object):
 
 class Parser:
 
-    "Parser"
-
     @staticmethod
     def getitem(line, item):
-        "match items."
         lne = ''
         index1 = line.find(f'<{item}>')
         if index1 == -1:
@@ -175,7 +163,6 @@ class Parser:
 
     @staticmethod
     def getitems(text, token):
-        "loop for items."
         index = 0
         result = []
         stop = False
@@ -194,7 +181,6 @@ class Parser:
 
     @staticmethod
     def parse(txt, toke="item", items='title,link'):
-        "parse a text for tokens."
         result = []
         for line in Parser.getitems(txt, toke):
             line = line.strip()
@@ -212,16 +198,12 @@ class Parser:
 
 class OPMLParser:
 
-    "OPMLParser"
-
     @staticmethod
     def getnames(line):
-        "return list of attribute names."
         return [x.split('="')[0]  for x in line.split()]
 
     @staticmethod
     def getvalue(line, attr):
-        "retrieve attribute value."
         lne = ''
         index1 = line.find(f'{attr}="')
         if index1 == -1:
@@ -259,7 +241,6 @@ class OPMLParser:
 
     @staticmethod
     def parse(txt, toke="outline", itemz=None):
-        "parse on outlines."
         if itemz is None:
             itemz = ",".join(OPMLParser.getnames(txt))
         result = []
@@ -281,12 +262,10 @@ class OPMLParser:
 
 
 def attrs(obj, txt):
-    "parse attributes into the object."
     update(obj, OPMLParser.parse(txt))
 
 
 def cdata(line):
-    "retrieve text from CDATA."
     if 'CDATA' in line:
         lne = line.replace('![CDATA[', '')
         lne = lne.replace(']]', '')
@@ -296,7 +275,6 @@ def cdata(line):
 
 
 def getfeed(url, items):
-    "fetch a feed."
     result = [Object(), Object()]
     if DEBUG:
         return result
@@ -313,7 +291,6 @@ def getfeed(url, items):
 
 
 def gettinyurl(url):
-    "fetch a tinyurl."
     postarray = [
         ('submit', 'submit'),
         ('url', url),
@@ -332,7 +309,6 @@ def gettinyurl(url):
 
 
 def geturl(url):
-    "fetch a url."
     if not url.startswith("http://") and not url.startswith("https://"):
         return ""
     url = urllib.parse.urlunparse(urllib.parse.urlparse(url))
@@ -344,24 +320,20 @@ def geturl(url):
 
 
 def shortid():
-    "create short id."
     return str(uuid.uuid4())[:8]
 
 
 def striphtml(text):
-    "strip html."
     clean = re.compile('<.*?>')
     return re.sub(clean, '', text)
 
 
 def unescape(text):
-    "unescape text."
     txt = re.sub(r'\s+', ' ', text)
     return html.unescape(txt)
 
 
 def useragent(txt):
-    "return useragent."
     return 'Mozilla/5.0 (X11; Linux x86_64) ' + txt
 
 
@@ -369,7 +341,6 @@ def useragent(txt):
 
 
 def dpl(event):
-    "set display items."
     if len(event.args) < 2:
         event.reply('dpl <stringinurl> <item1,item2>')
         return
@@ -382,7 +353,6 @@ def dpl(event):
 
 
 def exp(event):
-    "export to opml."
     event.reply(TEMPLATE)
     nrs = 0
     for _fn, ooo in find("rss"):
@@ -398,7 +368,6 @@ def exp(event):
 
 
 def imp(event):
-    "import opml."
     if not event.args:
         event.reply("imp <filename>")
         return
@@ -437,7 +406,6 @@ def imp(event):
 
 
 def nme(event):
-    "set name of feed."
     if len(event.args) != 2:
         event.reply('nme <stringinurl> <name>')
         return
@@ -450,7 +418,6 @@ def nme(event):
 
 
 def rem(event):
-    "remove a feed."
     if len(event.args) != 1:
         event.reply('rem <stringinurl>')
         return
@@ -464,7 +431,6 @@ def rem(event):
 
 
 def res(event):
-    "restore a feed."
     if len(event.args) != 1:
         event.reply('res <stringinurl>')
         return
@@ -478,7 +444,6 @@ def res(event):
 
 
 def rss(event):
-    "add a feed."
     if not event.rest:
         nrs = 0
         for fnm, feed in find('rss'):
@@ -503,7 +468,6 @@ def rss(event):
 
 
 def syn(event):
-    "synchronize feeds."
     if DEBUG:
         return
     fetcher = Fetcher()
@@ -520,7 +484,6 @@ def syn(event):
 
 
 def register():
-    "register commands."
     Commands.add(dpl)
     Commands.add(exp)
     Commands.add(imp)

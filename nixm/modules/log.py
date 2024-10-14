@@ -15,15 +15,12 @@ from nixm.persist import find, laps, sync, fntime
 
 class Log(Object):
 
-    "Log"
-
     def __init__(self):
         super().__init__()
         self.txt = ''
 
 
 def log(event):
-    "log text."
     if not event.rest:
         nmr = 0
         for fnm, obj in find('log'):
@@ -43,5 +40,4 @@ def log(event):
 
 
 def register():
-    "register commands."
     Commands.add(log)

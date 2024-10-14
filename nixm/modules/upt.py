@@ -13,7 +13,6 @@ from nixm.persist import laps
 
 
 def upt(event):
-    "show uptime"
     event.reply(laps(time.time()-STARTTIME))
 
 
@@ -21,5 +20,4 @@ def upt(event):
 
 
 def register():
-    "register commands."
     Commands.add(upt)

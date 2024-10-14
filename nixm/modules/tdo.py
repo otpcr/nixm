@@ -15,15 +15,12 @@ from nixm.persist import find, fntime, laps, sync
 
 class Todo(Object):
 
-    "Todo"
-
     def __init__(self):
         Object.__init__(self)
         self.txt = ''
 
 
 def dne(event):
-    "flag todo as done."
     if not event.args:
         event.reply("dne <txt>")
         return
@@ -40,7 +37,6 @@ def dne(event):
 
 
 def tdo(event):
-    "add todo."
     if not event.rest:
         nmr = 0
         for fnm, obj in find('todo'):
@@ -60,6 +56,5 @@ def tdo(event):
 
 
 def register():
-    "register commands."
     Commands.add(dne)
     Commands.add(tdo)

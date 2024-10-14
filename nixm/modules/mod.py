@@ -12,7 +12,6 @@ from nixm.main import Commands
 
 
 def mod(event):
-    "show available modules."
     path = os.path.dirname(__file__)
     mods = []
     for mdd in os.listdir(path):
@@ -30,5 +29,4 @@ def mod(event):
 
 
 def register():
-    "register commands."
     Commands.add(mod)

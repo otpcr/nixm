@@ -80,7 +80,6 @@ from nixm.main import Commands
 
 
 def req(event):
-    "reconsider"
     event.reply(__doc__)
 
 
@@ -88,5 +87,4 @@ def req(event):
 
 
 def register():
-    "register commands."
     Commands.add(req)

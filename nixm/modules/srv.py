@@ -26,7 +26,6 @@ WantedBy=multi-user.target"""
 
 
 def srv(event):
-    "create service file (pipx)."
     name  = getpass.getuser()
     event.reply(TXT % (NAME.upper(), name, name, name, NAME))
 
@@ -35,5 +34,4 @@ def srv(event):
 
 
 def register():
-    "register commands."
     Commands.add(srv)

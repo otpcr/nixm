@@ -15,7 +15,6 @@ from nixm.persist import laps
 
 
 def thr(event):
-    "list threads."
     result = []
     for thread in sorted(threading.enumerate(), key=lambda x: x.name):
         if str(thread).startswith('<_'):
@@ -45,5 +44,4 @@ def thr(event):
 
 
 def register():
-    "register commands."
     Commands.add(thr)

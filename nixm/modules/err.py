@@ -10,7 +10,6 @@ from nixm.runtime import Errors
 
 
 def err(event):
-    "show errors."
     nmr = 0
     for exc in Errors.errors:
         for line in exc:
@@ -26,5 +25,4 @@ def err(event):
 
 
 def register():
-    "register commands."
     Commands.add(err)

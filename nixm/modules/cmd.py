@@ -10,7 +10,6 @@ from nixm.object import keys
 
 
 def cmd(event):
-    "list commands."
     event.reply(",".join(sorted(keys(Commands.cmds))))
 
 
@@ -18,5 +17,4 @@ def cmd(event):
 
 
 def register():
-    "register commands."
     Commands.add(cmd)
