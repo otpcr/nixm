@@ -75,6 +75,7 @@ class Event:
         self._thr    = None
         self.orig    = ""
         self.result  = []
+        self.txt     = ""
         self.type    = "event"
 
     def __getattr__(self, key):
@@ -114,10 +115,10 @@ class Commands:
 
 def modloop(*pkgs):
     for pkg in pkgs:
-        for modname in dir(pkg):
-            if modname.startswith("__"):
+        for modn in dir(pkg):
+            if modn.startswith("__"):
                 continue
-            yield getattr(pkg, modname)
+            yield getattr(pkg, modn)
 
 
 def scanner(*pkgs, init=False):
@@ -236,7 +237,6 @@ else:
 
 
 def main():
-    wait = False
     parse(cfg, " ".join(sys.argv[1:]))
     if "d" in cfg.opts:
         daemon("v" in cfg.opts)
