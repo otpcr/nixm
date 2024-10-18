@@ -6,8 +6,10 @@
 "program helpers"
 
 
+import getpass
 import inspect
 import os
+import pwd
 import readline
 import sys
 import termios
@@ -20,7 +22,7 @@ sys.path.insert(0, os.getcwd())
 
 
 from nixm.object  import Obj, parse
-from nixm.persist import Workdir, modname, pidname
+from nixm.persist import Workdir, modname, pidname, pidfile
 from nixm.runtime import Errors, Reactor, later, launch
 
 
@@ -52,6 +54,7 @@ class CLI(Client):
     def raw(self, txt):
         print(txt)
         sys.stdout.flush()
+
 
 class Console(CLI):
 
@@ -108,6 +111,17 @@ class Commands:
                 continue
             if 'event' in cmdz.__code__.co_varnames:
                 Commands.add(cmdz)
+
+
+def scanner(*pkgs, init=False):
+    result = []
+    for mod in modloop(*pkgs):
+        Commands.scan(mod)
+        thr = None
+        if init and "init" in dir(mod):
+            thr = launch(mod.init, "init")
+        result.append((mod, thr))
+    return result
 
 
 "utilities"
@@ -180,15 +194,6 @@ def privileges():
     os.setuid(pwnam.pw_uid)
             
 
-def scanner(*pkgs, init=False):
-    result = []
-    for mod in modloop(*pkgs):
-        Commands.scan(mod)
-        thr = None
-        if init and "init" in dir(mod):
-            thr = launch(mod.init, "init")
-        result.append((mod, thr))
-    return result
             
 
 def wrap(func):
@@ -237,7 +242,7 @@ def main():
         daemon("v" in cfg.opts)
         privileges()
         pidfile(pidname(NAME))
-        scanner(MODS, MODULES)
+        scanner(MODS, MODULES, init=True)
         forever()
     elif "c" in cfg.opts:
         readline.redisplay()

@@ -150,7 +150,6 @@ class Repeater(Timer):
 
 def __dir__():
     return (
-        'Client',
         'Reactor',
         'Errors',
         'Event',
