@@ -16,10 +16,10 @@ import time
 import _thread
 
 
-from ..main    import NAME, command
-from ..object  import Object, Obj, edit, fmt, keys
-from ..persist import Cache, ident, last, sync
-from ..runtime import Reactor, later, launch
+from nixm.main    import NAME, command
+from nixm.object  import Object, Obj, edit, fmt, keys
+from nixm.persist import Cache, ident, last, sync
+from nixm.runtime import Reactor, later, launch
 
 
 IGNORE = ["PING", "PONG", "PRIVMSG"]

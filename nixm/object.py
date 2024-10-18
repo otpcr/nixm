@@ -29,10 +29,6 @@ class Obj(Object):
         return self.__dict__.get(key, "")
 
 
-class Config(Obj):
-
-    pass
-
 def construct(obj, *args, **kwargs):
     if args:
         val = args[0]
@@ -209,6 +205,24 @@ def match(obj, txt):
             yield key
 
 
+def named(obj):
+    "return a full qualified name of an object/function/module."
+    if isinstance(obj, types.ModuleType):
+        return obj.__name__
+    typ = type(obj)
+    if '__builtins__' in dir(typ):
+        return obj.__name__
+    if '__self__' in dir(obj):
+        return f'{obj.__self__.__class__.__name__}.{obj.__name__}'
+    if '__class__' in dir(obj) and '__name__' in dir(obj):
+        return f'{obj.__class__.__name__}.{obj.__name__}'
+    if '__class__' in dir(obj):
+        return f"{obj.__class__.__module__}.{obj.__class__.__name__}"
+    if '__name__' in dir(obj):
+        return f'{obj.__class__.__name__}.{obj.__name__}'
+    return None
+
+
 def parse(obj, txt=None):
     if txt is None:
         txt = ""
@@ -288,7 +302,6 @@ def search(obj, selector, matching=None):
 
 def __dir__():
     return (
-        'Config',
         'Object',
         'Obj',
         'construct',
@@ -300,6 +313,7 @@ def __dir__():
         'loads',
         'items',
         'match',
+        'named',
         'parse',
         'search',
         'update',

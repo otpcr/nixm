@@ -19,9 +19,9 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote_plus, urlencode
 
 
-from ..object  import Object, Obj, fmt, update
-from ..persist import Cache, find, fntime, laps, last, sync
-from ..runtime import Repeater, launch
+from nixm.object  import Object, Obj, fmt, update
+from nixm.persist import Cache, find, fntime, laps, last, sync
+from nixm.runtime import Repeater, launch
 
 
 DEBUG = False

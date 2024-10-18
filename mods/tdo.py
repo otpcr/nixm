@@ -8,8 +8,8 @@
 import time
 
 
-from ..object  import Object
-from ..persist import find, fntime, laps, sync
+from nixm.object  import Object
+from nixm.persist import find, fntime, laps, sync
 
 
 class Todo(Object):

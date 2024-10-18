@@ -5,8 +5,8 @@
 "list of commands"
 
 
-from ..object import keys
-from ..main   import Commands
+from nixm.object import keys
+from nixm.main   import Commands
 
 
 def cmd(event):

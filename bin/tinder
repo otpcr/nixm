@@ -6,10 +6,12 @@
 "tinder"
 
 
+import inspect
 import os
 import shutil
 import sys
 import termios
+import threading
 import time
 import _thread
 
@@ -17,17 +19,126 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from nixm.main    import NAME, STARTTIME, Commands, Config, command, scan
-from nixm.modules import face
-from nixm.object  import Object, parse
-from nixm.persist import Workdir, laps, skel
-from nixm.runtime import Client, Errors, Event, later, launch
+from nixm.object  import Object, Obj, parse
+from nixm.persist import Workdir, laps, modname, skel
+from nixm.runtime import Errors, Reactor, later, launch
+
+
+NAME = Reactor.__module__.split(".", maxsplit=2)[-2]
+Workdir.wdr = os.path.expanduser(f"~/.{NAME}")
+
+class Config(Obj):
+
+    pass
 
 
 cfg = Config()
 
 
-face.rss.DEBUG = True
+class Client(Reactor):
+
+    def __init__(self):
+        Reactor.__init__(self)
+        self.register("command", command)
+
+    def display(self, evt):
+        for txt in evt.result:
+            self.raw(txt)
+
+    def raw(self, txt):
+        raise NotImplementedError
+
+
+class Commands:
+
+    cmds = {}
+
+    @staticmethod
+    def add(func):
+        Commands.cmds[func.__name__] = func
+
+    @staticmethod
+    def scan(mod):
+        for key, cmdz in inspect.getmembers(mod, inspect.isfunction):
+            if key.startswith("cb"):
+                continue
+            if 'event' in cmdz.__code__.co_varnames:
+                Commands.add(cmdz)
+
+
+def command(bot, evt):
+    parse(evt, evt.txt)
+    if "ident" in dir(bot):
+        evt.orig = bot.ident
+    funct = Commands.cmds.get(evt.cmd, None)
+    if funct:
+        try:
+            funct(evt)
+            bot.display(evt)
+        except Exception as ex:
+            later(ex)
+    evt.ready()
+
+
+def scanner(*pkgs, init=False):
+    result = []
+    for mod in modloop(*pkgs):
+        Commands.scan(mod)
+        thr = None
+        if init and "init" in dir(mod):
+            thr = launch(mod.init, "init")
+        result.append((mod, thr))
+    return result
+
+
+class Event:
+
+    def __init__(self):
+        self._ready  = threading.Event()
+        self._thr    = None
+        self.orig    = ""
+        self.result  = []
+        self.type    = "event"
+
+    def __getattr__(self, key):
+        return self.__dict__.get(key, "")
+
+    def __str__(self):
+        return str(self.__dict__)
+
+    def ready(self):
+        self._ready.set()
+
+    def reply(self, txt):
+        self.result.append(txt)
+
+    def wait(self):
+        self._ready.wait()
+        if self._thr:
+            self._thr.join()
+
+
+"runtime"
+
+
+if os.path.exists("mods"):
+    import mods.face as MODS
+    if "rss" in dir(MODS):
+        MODS.rss.DEBUG = True
+else:
+    MODS = None
+
+
+modpath = modname()
+
+
+if os.path.exists(modpath):
+    sys.path.insert(0, os.getcwd())
+    import mods.face as MODULES
+    if "rss" in dir(MODULES):
+        MODULES.rss.DEBUG = True
+else:
+    MODULES = None
 
 
 LAP = 1
@@ -90,6 +201,14 @@ def errors():
             print(line)
 
 
+def modloop(*pkgs):
+    for pkg in pkgs:
+        for modname in dir(pkg):
+            if modname.startswith("__"):
+                continue
+            yield getattr(pkg, modname)
+
+
 def payload(clt):
     nmr = 0
     for cmdd in sorted(Commands.cmds):
@@ -122,7 +241,7 @@ def wrap(function):
 def main():
     Workdir.wdr = ".test"
     parse(cfg, " ".join(sys.argv[1:]))
-    scan(face)
+    scanner(MODS,MODULES)
     nrcommands = len(Commands.cmds) or 1
     if "v" in cfg.opts:
         banner()
@@ -135,7 +254,7 @@ def main():
     nrs = cfg.index or 1
     thrs = []
     for _nr in range(nrs):
-        thrs.append(launch(payload, clt))
+        thrs.append(launch(payload, "payload", clt))
     for thr in thrs:
         thr.join()
     consume(events)

@@ -13,7 +13,6 @@ import sys
 
 
 from nixm.main    import NAME, forever, scanner, wrap
-from nixm.modules import face
 from nixm.persist import modname, pidfile, pidname
 from nixm.runtime import Errors
 

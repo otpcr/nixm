@@ -9,8 +9,8 @@ import threading
 import time
 
 
-from ..object  import Object, update
-from ..persist import laps
+from nixm.object  import Object, update
+from nixm.persist import laps
 
 
 STARTTIME = time.time()

@@ -12,13 +12,45 @@ import time
 import _thread
 
 
-from .object  import parse
+from .object  import Obj, parse
 from .persist import Workdir
 from .runtime import Reactor, later, launch
 
 
 NAME = Reactor.__module__.split(".", maxsplit=2)[-2]
 Workdir.wdr = os.path.expanduser(f"~/.{NAME}")
+
+
+class Config(Obj):
+
+    pass
+
+
+class Event:
+
+    def __init__(self):
+        self._ready  = threading.Event()
+        self._thr    = None
+        self.orig    = ""
+        self.result  = []
+        self.type    = "event"
+
+    def __getattr__(self, key):
+        return self.__dict__.get(key, "")
+
+    def __str__(self):
+        return str(self.__dict__)
+
+    def ready(self):
+        self._ready.set()
+
+    def reply(self, txt):
+        self.result.append(txt)
+
+    def wait(self):
+        self._ready.wait()
+        if self._thr:
+            self._thr.join()
 
 
 class Commands:
@@ -130,8 +162,10 @@ def wrap(func):
 
 def __dir__():
     return (
+        'Config',
         'Commands',
         'Command',
+        'Event',
         'forever',
         'scan',
         'wrap'

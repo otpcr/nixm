@@ -8,7 +8,10 @@
 import getpass
 
 
-from ..main import NAME
+from nixm.object import Object
+
+
+NAME = Object.__module__.split(".", maxsplit=2)[-2]
 
 
 TXT = """[Unit]

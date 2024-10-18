@@ -8,7 +8,7 @@
 import time
 
 
-from ..persist import laps
+from nixm.persist import laps
 
 
 STARTTIME = time.time()

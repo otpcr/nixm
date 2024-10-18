@@ -5,7 +5,7 @@
 "show errors"
 
 
-from ..runtime import Errors
+from nixm.runtime import Errors
 
 
 def err(event):

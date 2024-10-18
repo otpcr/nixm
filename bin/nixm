@@ -13,9 +13,8 @@ import time
 import _thread
 
 
-from nixm.main    import NAME, Client, Command, command, scanner
-from nixm.modules import face
-from nixm.object  import Config, parse
+from nixm.main    import NAME, Client, Command, Config, command, scanner
+from nixm.object  import parse
 from nixm.persist import Workdir, modname
 from nixm.runtime import Errors, Reactor, later
 
@@ -53,7 +52,7 @@ def errors():
 
 def main():
     parse(cfg, " ".join(sys.argv[1:]))
-    scanner(face, MODS, MODULES)
+    scanner(MODS, MODULES)
     cli = CLI()
     evt = Command()
     evt.txt = cfg.txt
