@@ -41,6 +41,7 @@ def main():
     popen("rm -fR DEAD* build dist MANIFEST *.egg-info *.whl")
     popen("rm -fR .pytest_cache .test __pycache__ .ruff_cache")
     popen("rm -fR .*~ *~")
+    popen("rm -fR .venv uv.lock")
     loop(".", "rm -fR *~")
     loop(".", "rm -fR __pycache__")
 
