@@ -13,6 +13,9 @@ class Object:
     def __contains__(self, key):
         return key in dir(self)
 
+    def __getstate__(self):
+        pass
+
     def __iter__(self):
         return iter(self.__dict__)
 
