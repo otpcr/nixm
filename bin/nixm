@@ -53,7 +53,6 @@ class CLI(Client):
 
     def raw(self, txt):
         print(txt)
-        sys.stdout.flush()
 
 
 class Console(CLI):
@@ -113,6 +112,14 @@ class Commands:
                 Commands.add(cmdz)
 
 
+def modloop(*pkgs):
+    for pkg in pkgs:
+        for modname in dir(pkg):
+            if modname.startswith("__"):
+                continue
+            yield getattr(pkg, modname)
+
+
 def scanner(*pkgs, init=False):
     result = []
     for mod in modloop(*pkgs):
@@ -133,6 +140,9 @@ def banner():
 
 
 def command(bot, evt):
+    if not evt.txt:
+        evt.ready()
+        return
     parse(evt, evt.txt)
     if "ident" in dir(bot):
         evt.orig = bot.ident
@@ -180,20 +190,10 @@ def forever():
             _thread.interrupt_main()
 
 
-def modloop(*pkgs):
-    for pkg in pkgs:
-        for modname in dir(pkg):
-            if modname.startswith("__"):
-                continue
-            yield getattr(pkg, modname)
-
-
 def privileges():
     pwnam = pwd.getpwnam(getpass.getuser())
     os.setgid(pwnam.pw_gid)
     os.setuid(pwnam.pw_uid)
-            
-
             
 
 def wrap(func):
@@ -245,14 +245,12 @@ def main():
         scanner(MODS, MODULES, init=True)
         forever()
     elif "c" in cfg.opts:
-        readline.redisplay()
         banner()
-        if "i" in cfg.opts:
-            for mod, thr in scanner(MODS, MODULES, init=True):
-                if "v" in cfg.opts and "output" in dir(mod):
-                    mod.output = print
-                if thr and "w" in cfg.opts:
-                    thr.join()
+        for mod, thr in scanner(MODS, MODULES, init="i" in cfg.opts):
+            if "v" in cfg.opts and "output" in dir(mod):
+                mod.output = print
+            if thr and "w" in cfg.opts:
+                thr.join()
         csl = Console()
         csl.start()
         forever()
