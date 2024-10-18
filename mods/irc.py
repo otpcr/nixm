@@ -16,17 +16,22 @@ import time
 import _thread
 
 
-from nixm.main    import NAME, command
 from nixm.object  import Object, Obj, edit, fmt, keys
 from nixm.persist import Cache, ident, last, sync
 from nixm.runtime import Reactor, later, launch
 
 
+from . import getmain
+
 IGNORE = ["PING", "PONG", "PRIVMSG"]
+NAME = Reactor.__module__.split(".", maxsplit=2)[-2]
 
 
 output = None
 saylock = _thread.allocate_lock()
+
+
+command = getmain("command")
 
 
 def init():

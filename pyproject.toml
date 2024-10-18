@@ -33,11 +33,27 @@ classifiers=[
 [tool.setuptools]
 script-files = [
     'bin/nixm',
-    'bin/nixmc',
-    'bin/nixmd',
-    'bin/nixms'
 ]
 packages = [
    'nixm',
-   'nixm.modules'
 ]
+
+
+[tool.setuptools.data-files]
+"share/nixm/mods/" = [
+    'mods/__init__.py',
+    'mods/cmd.py',
+    'mods/err.py',
+    'mods/fnd.py',
+    'mods/irc.py',
+    'mods/log.py',
+    'mods/mod.py',
+    'mods/opm.py',
+    'mods/req.py',
+    'mods/rss.py',
+    'mods/srv.py',
+    'mods/tdo.py',
+    'mods/thr.py',
+    'mods/upt.py'
+]
+

@@ -6,8 +6,14 @@
 
 
 from nixm.object import keys
-from nixm.main   import Commands
+
+
+from . import getmain
+
+
+Commands = getmain("Commands")
 
 
 def cmd(event):
-    event.reply(",".join(sorted(keys(Commands.cmds))))
+    if Commands:
+        event.reply(",".join(sorted(keys(Commands.cmds))))
