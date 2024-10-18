@@ -88,6 +88,8 @@ class TestInterface(unittest.TestCase):
         for meth in METHODS:
             if meth not in dirr:
                 okd = False
+            else:
+                print(f"{meth} not found")
         self.assertTrue(okd)
 
 
