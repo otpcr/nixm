@@ -1,14 +1,11 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,W0105
+# pylint: disable=C
 
 
 "show available modules."
 
 
 import os
-
-
-from ..main import Commands
 
 
 def mod(event):
@@ -23,10 +20,3 @@ def mod(event):
             continue
         mods.append(mdd[:-3])
     event.reply(",".join(sorted(mods)))
-
-
-"register"
-
-
-def register():
-    Commands.add(mod)

@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=R,C,W0105,W0201,W0613,w0622,W0718,E1102
+# pylint: disable=C,R,W0105,W0201,W0613,w0622,W0718,E1102
 
 
 "internet relay chat"
@@ -16,10 +16,10 @@ import time
 import _thread
 
 
-from ..main    import NAME, Commands, command
+from ..main    import NAME, command
 from ..object  import Object, Obj, edit, fmt, keys
 from ..persist import Cache, ident, last, sync
-from ..runtime import Event, Reactor, later, launch
+from ..runtime import Reactor, later, launch
 
 
 IGNORE = ["PING", "PONG", "PRIVMSG"]
@@ -62,6 +62,34 @@ class Config(Obj):
         self.realname = self.realname or Config.realname
         self.server = self.server or Config.server
         self.username = self.username or Config.username
+
+
+class Event:
+
+    def __init__(self):
+        self._ready  = threading.Event()
+        self._thr    = None
+        self.orig    = ""
+        self.result  = []
+        self.type    = "event"
+
+    def __getattr__(self, key):
+        return self.__dict__.get(key, "")
+
+    def __str__(self):
+        return str(self.__dict__)
+
+    def ready(self):
+        self._ready.set()
+
+    def reply(self, txt):
+        self.result.append(txt)
+
+    def wait(self):
+        self._ready.wait()
+        if self._thr:
+            self._thr.join()
+
 
 
 class TextWrap(textwrap.TextWrapper):
@@ -466,16 +494,17 @@ class IRC(Reactor, Output):
         self.events.ready.clear()
         self.events.connected.clear()
         self.events.joined.clear()
-        launch(Output.out, self)
+        launch(Output.out, "output", self)
         Reactor.start(self)
         launch(
                self.doconnect,
+               "connect",
                self.cfg.server or "localhost",
                self.cfg.nick,
                int(self.cfg.port or '6667')
               )
         if not self.state.keeprunning:
-            launch(self.keep)
+            launch(self.keep, "keep")
 
     def stop(self):
         self.state.stopkeep = True
@@ -617,12 +646,3 @@ def pwd(event):
     base = base64.b64encode(enc)
     dcd = base.decode('ascii')
     event.reply(dcd)
-
-
-"register"
-
-
-def register():
-    Commands.add(cfg)
-    Commands.add(mre)
-    Commands.add(pwd)

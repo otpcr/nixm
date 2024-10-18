@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,W0105
+# pylint: disable=C
 
 
 "running threads."
@@ -9,9 +9,11 @@ import threading
 import time
 
 
-from ..main    import STARTTIME, Commands
 from ..object  import Object, update
 from ..persist import laps
+
+
+STARTTIME = time.time()
 
 
 def thr(event):
@@ -38,10 +40,3 @@ def thr(event):
         event.reply(' '.join(res))
     else:
         event.reply('no threads')
-
-
-"register"
-
-
-def register():
-    Commands.add(thr)

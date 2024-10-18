@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,W0105
+# pylint: disable=C
 
 
 """| **Information and Evidence Unit**
@@ -76,15 +76,5 @@ p.s.
 """
 
 
-from ..main import Commands
-
-
 def req(event):
     event.reply(__doc__)
-
-
-"register"
-
-
-def register():
-    Commands.add(req)

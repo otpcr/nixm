@@ -5,16 +5,9 @@
 "list of commands"
 
 
-from ..main   import Commands
 from ..object import keys
+from ..main   import Commands
 
 
 def cmd(event):
     event.reply(",".join(sorted(keys(Commands.cmds))))
-
-
-"register"
-
-
-def register():
-    Commands.add(cmd)

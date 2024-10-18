@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.  pylint:
-# pylint: disable=C,R0903,W0105,W0719
+# pylint: disable=C,R,W0105,W0719
 
 
 "persist to disk"
@@ -20,9 +20,6 @@ cachelock = _thread.allocate_lock()
 disklock  = _thread.allocate_lock()
 lock      = _thread.allocate_lock()
 p         = os.path.join
-
-
-"cache"
 
 
 class Cache:
@@ -48,17 +45,10 @@ class Cache:
                 yield Cache.objs.get(key)
 
 
-"workdir"
-
-
 class Workdir:
 
     fqns = []
-    name = Obj.__module__.split(".", maxsplit=2)[-2]
-    wdr = os.path.expanduser(f"~/.{name}")
-
-
-"paths"
+    wdr = ''
 
 
 def long(name):
@@ -75,8 +65,8 @@ def modname():
     return p(Workdir.wdr, "mods")
 
 
-def pidname():
-    return p(Workdir.wdr, f"{Workdir.name}.pid")
+def pidname(name):
+    return p(Workdir.wdr, f"{name}.pid")
 
 
 def store(pth=""):

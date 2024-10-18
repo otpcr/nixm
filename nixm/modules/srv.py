@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,W0105,W0611
+# pylint: disable=C,W0611
 
 
 "create service file"
@@ -8,7 +8,7 @@
 import getpass
 
 
-from ..main import NAME, Commands
+from ..main import NAME
 
 
 TXT = """[Unit]
@@ -28,10 +28,3 @@ WantedBy=multi-user.target"""
 def srv(event):
     name  = getpass.getuser()
     event.reply(TXT % (NAME.upper(), name, name, name, NAME))
-
-
-"register"
-
-
-def register():
-    Commands.add(srv)

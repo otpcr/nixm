@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # This file is placed in the Public Domain.
-# pylint: disable=C,W0105,W0212,W0718
+# pylint: disable=C,W0212,W0718
 
 
 "console"
@@ -13,30 +13,40 @@ import termios
 import time
 
 
-sys.path.insert(0, os.getcwd())
-
-
-from nixm.main    import NAME, Config, command, forever, scan, init
+from nixm.main    import NAME, Client, Command, forever, scanner
 from nixm.modules import face
-from nixm.object  import parse
-from nixm.runtime import Client, Errors, Event, later
+from nixm.object  import Config, parse
+from nixm.persist import modname
+from nixm.runtime import Errors, later
 
 
 Cfg = Config()
 
 
-class Console(Client):
+if os.path.exists("mods"):
+    import mods.face as MODS
+else:
+    MODS = None
 
-    def __init__(self):
-        Client.__init__(self)
-        self.register("event", command)
+
+modpathz = modname()
+
+
+if os.path.exists(modpathz):
+    sys.path.insert(0, modpathz)
+    import mods.face as MODZ
+else:
+    MODZ = None
+
+
+class Console(Client):
 
     def callback(self, evt):
         Client.callback(self, evt)
         evt.wait()
 
     def poll(self):
-        evt = Event()
+        evt = Command()
         evt.txt = input("> ")
         return evt
 
@@ -74,15 +84,14 @@ def wrap(func):
 
 def main():
     parse(Cfg, " ".join(sys.argv[1:]))
-    scan(face)
     if "v" in Cfg.opts:
         readline.redisplay()
         banner()
-        face.irc.output = print
-    if "i" in Cfg.opts:
-        for _mod, thr in init(face):
-            if "w" in Cfg.opts:
-                thr.join()
+    for mod, thr in scanner(face, MODS, MODZ, init="i" in Cfg.opts):
+        if "v" in Cfg.opts and "output" in dir(mod):
+            mod.output = print
+        if "w" in Cfg.opts and thr:
+            thr.join()
     csl = Console()
     csl.start()
     forever()
