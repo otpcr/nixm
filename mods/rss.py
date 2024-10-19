@@ -19,7 +19,7 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote_plus, urlencode
 
 
-from nixm.object  import Object, Obj, fmt, update
+from nixm.object  import Object, fmt, update
 from nixm.persist import Cache, find, fntime, laps, last, sync
 from nixm.runtime import Repeater, launch
 
@@ -36,21 +36,21 @@ def init():
     return fetcher
 
 
-class Feed(Obj):
+class Feed(Object):
 
     pass
 
 
-class Rss(Obj):
+class Rss(Object):
 
     def __init__(self):
-        Obj.__init__(self)
+        Object.__init__(self)
         self.display_list = 'title,link,author'
         self.insertid     = None
         self.rss          = ''
 
 
-class Urls(Obj):
+class Urls(Object):
 
     pass
 
@@ -171,7 +171,7 @@ class Parser:
         result = []
         for line in Parser.getitems(txt, toke):
             line = line.strip()
-            obj = Obj()
+            obj = Object()
             for itm in spl(items):
                 val = Parser.getitem(line, itm)
                 if val:

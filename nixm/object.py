@@ -26,12 +26,6 @@ class Object:
         return str(self.__dict__)
 
 
-class Obj(Object):
-
-    def __getattr__(self, key):
-        return self.__dict__.get(key, "")
-
-
 def construct(obj, *args, **kwargs):
     if args:
         val = args[0]
@@ -209,7 +203,6 @@ def match(obj, txt):
 
 
 def named(obj):
-    "return a full qualified name of an object/function/module."
     typ = type(obj)
     if '__builtins__' in dir(typ):
         return obj.__name__
@@ -230,13 +223,13 @@ def parse(obj, txt=None):
     args = []
     obj.args    = []
     obj.cmd     = ""
-    obj.gets    = Obj()
+    obj.gets    = Object()
     obj.hasmods = False
     obj.index   = None
     obj.mod     = ""
     obj.opts    = ""
     obj.result  = []
-    obj.sets    = Obj()
+    obj.sets    = Object()
     obj.txt     = txt or ""
     obj.otxt    = obj.txt
     _nr = -1

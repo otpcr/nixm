@@ -32,40 +32,6 @@ def later(exc):
         Errors.errors.append(fmt)
 
 
-class Reactor:
-
-    def __init__(self):
-        self.cbs      = {}
-        self.queue    = queue.Queue()
-        self.stopped  = threading.Event()
-
-    def callback(self, evt):
-        func = self.cbs.get(evt.type, None)
-        if func:
-            evt._thr = launch(func, "callback", self, evt)
-
-    def loop(self):
-        while not self.stopped.is_set():
-            try:
-                evt = self.poll()
-                self.callback(evt)
-            except (KeyboardInterrupt, EOFError):
-                _thread.interrupt_main()
-
-    def poll(self):
-        return self.queue.get()
-
-    def put(self, evt):
-        self.queue.put_nowait(evt)
-
-    def register(self, typ, cbs):
-        self.cbs[typ] = cbs
-
-    def start(self):
-        launch(self.loop, "loop")
-
-    def stop(self):
-        self.stopped.set()
 
 
 class Thread(threading.Thread):
@@ -109,6 +75,41 @@ def launch(func, name, *args, **kwargs):
     thread.start()
     return thread
 
+
+class Reactor:
+
+    def __init__(self):
+        self.cbs      = {}
+        self.queue    = queue.Queue()
+        self.stopped  = threading.Event()
+
+    def callback(self, evt):
+        func = self.cbs.get(evt.type, None)
+        if func:
+            evt._thr = launch(func, "callback", self, evt)
+
+    def loop(self):
+        while not self.stopped.is_set():
+            try:
+                evt = self.poll()
+                self.callback(evt)
+            except (KeyboardInterrupt, EOFError):
+                _thread.interrupt_main()
+
+    def poll(self):
+        return self.queue.get()
+
+    def put(self, evt):
+        self.queue.put_nowait(evt)
+
+    def register(self, typ, cbs):
+        self.cbs[typ] = cbs
+
+    def start(self):
+        launch(self.loop, "loop")
+
+    def stop(self):
+        self.stopped.set()
 
 class Timer:
 

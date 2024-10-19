@@ -19,7 +19,7 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from nixm.object  import Object, Obj, parse
+from nixm.object  import Object, parse
 from nixm.persist import Workdir, laps, modname, skel
 from nixm.runtime import Errors, Reactor, later, launch
 
@@ -27,7 +27,7 @@ from nixm.runtime import Errors, Reactor, later, launch
 NAME = Reactor.__module__.split(".", maxsplit=2)[-2]
 Workdir.wdr = os.path.expanduser(f"~/.{NAME}")
 
-class Config(Obj):
+class Config(Object):
 
     pass
 

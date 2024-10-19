@@ -16,7 +16,7 @@ import time
 import _thread
 
 
-from nixm.object  import Object, Obj, edit, fmt, keys
+from nixm.object  import Object, edit, fmt, keys
 from nixm.persist import Cache, ident, last, sync
 from nixm.runtime import Reactor, later, launch
 
@@ -42,7 +42,7 @@ def init():
     return irc
 
 
-class Config(Obj):
+class Config(Object):
 
     channel = f'#{NAME}'
     commands = True
@@ -59,7 +59,7 @@ class Config(Obj):
     users = False
 
     def __init__(self):
-        Obj.__init__(self)
+        Object.__init__(self)
         self.channel = self.channel or Config.channel
         self.commands = self.commands or Config.commands
         self.nick = self.nick or Config.nick
@@ -182,14 +182,14 @@ class IRC(Reactor, Output):
         self.buffer = []
         self.cfg = Config()
         self.channels = []
-        self.events = Obj()
+        self.events = Object()
         self.events.authed = threading.Event()
         self.events.connected = threading.Event()
         self.events.joined = threading.Event()
         self.events.ready = threading.Event()
         self.idents = []
         self.sock = None
-        self.state = Obj()
+        self.state = Object()
         self.state.dostop = False
         self.state.error = ""
         self.state.keeprunning = False
