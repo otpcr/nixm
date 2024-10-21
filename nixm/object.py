@@ -297,18 +297,13 @@ def search(obj, selector, matching=None):
 def __dir__():
     return (
         'Object',
-        'Obj',
         'construct',
         'edit',
         'fmt',
         'fqn',
-        'dumps',
         'keys',
-        'loads',
         'items',
         'match',
-        'named',
-        'parse',
         'search',
         'update',
         'values'

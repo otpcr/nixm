@@ -32,8 +32,6 @@ def later(exc):
         Errors.errors.append(fmt)
 
 
-
-
 class Thread(threading.Thread):
 
     def __init__(self, func, thrname, *args, daemon=True, **kwargs):
@@ -87,6 +85,8 @@ class Reactor:
         func = self.cbs.get(evt.type, None)
         if func:
             evt._thr = launch(func, "callback", self, evt)
+        else:
+            evt.ready()
 
     def loop(self):
         while not self.stopped.is_set():
