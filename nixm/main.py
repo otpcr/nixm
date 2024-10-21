@@ -13,7 +13,7 @@ import _thread
 
 
 from .default import Default
-from .object  import Object
+from .object  import keys
 from .persist import Workdir
 from .runtime import Reactor, later, launch
 
@@ -67,8 +67,8 @@ def command(bot, evt):
 def modloop(*pkgs, disable=""):
     for pkg in pkgs:
         for modname in dir(pkg):
-            #if modname in spl(disable):
-            #    continue
+            if modname in spl(disable):
+                continue
             if modname.startswith("__"):
                 continue
             yield getattr(pkg, modname)

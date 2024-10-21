@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # This file is place in the Public Domain.
-
+# pylint: disable=C,
 
 "Nix Em"
 
@@ -22,10 +22,10 @@ class CLI(Client):
         print(txt)
 
 
-def opts(opts):
-    for opt in opts:
+def opts(opties):
+    for opt in opties:
         if opt in cfg.opts:
-             return True
+            return True
     return False
 
 
@@ -48,4 +48,4 @@ def main():
 if __name__ == "__main__":
     wrap(main)
     if opts("v"):
-       errors()
+        errors()

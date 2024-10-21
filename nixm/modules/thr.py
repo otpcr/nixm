@@ -10,7 +10,7 @@ import time
 
 
 from ..object  import Object, update
-from ..persist import fntime, laps
+from ..persist import laps
 
 
 STARTTIME = time.time()

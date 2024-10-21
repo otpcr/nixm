@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # This file is placed in the Public Domain.
+# pylint: disable=C,W0718
 
 
 "Nix Em Console"
@@ -12,7 +13,6 @@ import time
 
 from nixm.main    import NAME, Client, Config, Event, forever, parse, scanner
 from nixm.modules import face
-from nixm.object  import Object
 from nixm.runtime import Errors, later
 
 
@@ -45,10 +45,10 @@ def errors():
             print(line)
 
 
-def opts(opts):
-    for opt in opts:
+def opts(options):
+    for opt in options:
         if opt in cfg.opts:
-             return True
+            return True
     return False
 
 
