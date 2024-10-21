@@ -11,7 +11,6 @@ import shutil
 import sys
 import termios
 import time
-import threading
 import _thread
 
 
@@ -19,14 +18,15 @@ sys.path.insert(0, os.getcwd())
 
 
 from nixm.main    import NAME, STARTTIME, Client, Commands, Config, Event
-from nixm.main    import command, scanner
+from nixm.main    import scanner
 from nixm.modules import face
 from nixm.object  import Object, parse
 from nixm.persist import Workdir, laps, skel
-from nixm.runtime import Errors, Reactor, later, launch
+from nixm.runtime import Errors, later, launch
 
 
 cfg = Config()
+cfg.index = 0
 
 
 LAP = 1

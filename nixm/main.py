@@ -5,10 +5,8 @@
 "program helpers"
 
 
-import getpass
 import inspect
 import os
-import pwd
 import threading
 import time
 import _thread
@@ -62,6 +60,25 @@ def command(bot, evt):
     evt.ready()
 
 
+def modloop(*pkgs):
+    for pkg in pkgs:
+        for modname in dir(pkg):
+            if modname.startswith("__"):
+                continue
+            yield getattr(pkg, modname)
+
+
+def scanner(*pkgs, init=False):
+    result = []
+    for mod in modloop(*pkgs):
+        Commands.scan(mod)
+        thr = None
+        if init and "init" in dir(mod):
+            thr = launch(mod.init, "init")
+        result.append((mod, thr))
+    return result
+
+
 class Client(Reactor):
 
     def __init__(self):
@@ -83,6 +100,7 @@ class Event:
         self._thr    = None
         self.result  = []
         self.type    = "event"
+        self.txt     = ""
 
     def __getattr__(self, key):
         return self.__dict__.get(key, "")
@@ -110,29 +128,12 @@ def forever():
             _thread.interrupt_main()
 
 
-def modloop(*pkgs):
-    for pkg in pkgs:
-        for modname in dir(pkg):
-            if modname.startswith("__"):
-                continue
-            yield getattr(pkg, modname)
-
-
 def privileges():
+    import getpass
+    import pwd
     pwnam2 = pwd.getpwnam(getpass.getuser())
     os.setgid(pwnam2.pw_gid)
     os.setuid(pwnam2.pw_uid)
-            
-
-def scanner(*pkgs, init=False):
-    result = []
-    for mod in modloop(*pkgs):
-        Commands.scan(mod)
-        thr = None
-        if init and "init" in dir(mod):
-            thr = launch(mod.init, "init")
-        result.append((mod, thr))
-    return result
             
 
 def wrap(func):

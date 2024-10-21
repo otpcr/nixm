@@ -21,14 +21,14 @@ def popen(txt):
 
 def main():
     "grep for error"
-    #popen(f'grep -R {NAME} {NAME}')
-    #popen(f'grep -R getpass {NAME}')
+    popen(f'grep -R {NAME} {NAME}')
+    popen(f'grep -R getpass {NAME}')
     popen(f'grep -R "print(" {NAME}')
     popen(f'grep -R __import__ {NAME}')
     popen(f'grep -R importlib {NAME}')
     popen(f'grep -R "import sys" {NAME}')
     popen(f'grep -R "import inspect" {NAME}')
-    #popen(f'fgrep -R "import os" {NAME}')
+    popen(f'fgrep -R "import os" {NAME}')
 
 
 if __name__ == "__main__":

@@ -1,10 +1,8 @@
 # This file is placed in the Public Domain.
 
-
 [build-system]
 requires = ["setuptools>=43.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
-
 
 [project]
 name = "nixm"
@@ -23,12 +21,10 @@ classifiers=[
     'Topic :: Utilities'
 ]
 
-
 [project.urls]
 "home" = "https://pypi.org/project/nixm"
 "bugs" = "https://github.com/otpcr/nixm/issues"
 "source" = "https://github.com/otpcr/nixm"
-
 
 [tool.setuptools]
 script-files = [
@@ -36,24 +32,5 @@ script-files = [
 ]
 packages = [
    'nixm',
+   'nixm.modules'
 ]
-
-
-[tool.setuptools.data-files]
-"share/nixm/mods/" = [
-    'mods/__init__.py',
-    'mods/cmd.py',
-    'mods/err.py',
-    'mods/fnd.py',
-    'mods/irc.py',
-    'mods/log.py',
-    'mods/mod.py',
-    'mods/opm.py',
-    'mods/req.py',
-    'mods/rss.py',
-    'mods/srv.py',
-    'mods/tdo.py',
-    'mods/thr.py',
-    'mods/upt.py'
-]
-

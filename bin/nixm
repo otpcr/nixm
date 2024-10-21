@@ -21,18 +21,21 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from nixm.main    import NAME, Client, Config, Event, command, forever, scanner
+from nixm.main    import NAME, Client, Config, Event
+from nixm.main    import command, forever, privileges, scanner
 from nixm.modules import face
 from nixm.object  import Object, parse
 from nixm.persist import Workdir, modname, pidname, pidfile
 from nixm.runtime import Errors, Reactor, later, launch
 
 
-cfg = Config()
+cfg      = Config()
+cfg.opts = Object()
+cfg.txt  = ""
 
 
 if os.path.exists("mods/face.py"):
-    import mods.face as MODS
+    import mods.face as MODS # pylint: disable=E0401,E0611
 else:
     MODS = None
 
