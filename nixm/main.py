@@ -60,21 +60,24 @@ def command(bot, evt):
     evt.ready()
 
 
-def modloop(*pkgs):
+def modloop(*pkg, disable=""):
     for pkg in pkgs:
         for modname in dir(pkg):
+            if modname in spl(disable):
+                continue
             if modname.startswith("__"):
                 continue
             yield getattr(pkg, modname)
 
 
-def scanner(*pkgs, init=False):
+def scanner(*pkgs, init=False, disable=""):
     result = []
-    for mod in modloop(*pkgs):
+    for mod in modloop(*pkgs, disable=disable):
+        print(mod)
         Commands.scan(mod)
         thr = None
         if init and "init" in dir(mod):
-            thr = launch(mod.init, "init")
+            thr = launch(mod.init)
         result.append((mod, thr))
     return result
 
@@ -134,7 +137,15 @@ def privileges():
     pwnam2 = pwd.getpwnam(getpass.getuser())
     os.setgid(pwnam2.pw_gid)
     os.setuid(pwnam2.pw_uid)
-            
+
+
+def spl(txt):
+    try:
+        result = txt.split(',')
+    except (TypeError, ValueError):
+        result = txt
+    return [x for x in result if x]
+
 
 def wrap(func):
     try:
@@ -155,5 +166,6 @@ def __dir__():
         'forever',
         'privileges',
         'scan',
+        'spl',
         'wrap'
     )

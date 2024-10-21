@@ -36,7 +36,7 @@ class Thread(threading.Thread):
 
     def __init__(self, func, thrname, *args, daemon=True, **kwargs):
         super().__init__(None, self.run, thrname, (), {}, daemon=daemon)
-        self.name      = thrname
+        self.name      = thrname or name(func)
         self.queue     = queue.Queue()
         self.result    = None
         self.starttime = time.time()
@@ -68,10 +68,27 @@ class Thread(threading.Thread):
             later(ex)
 
 
-def launch(func, name, *args, **kwargs):
-    thread = Thread(func, name, *args, **kwargs)
+def launch(func, *args, **kwargs):
+    nme = kwargs.get("name", name(func))
+    thread = Thread(func, nme, *args, **kwargs)
     thread.start()
     return thread
+
+
+def name(obj):
+    typ = type(obj)
+    if '__builtins__' in dir(typ):
+        return obj.__name__
+    if '__self__' in dir(obj):
+        return f'{obj.__self__.__class__.__name__}.{obj.__name__}'
+    if '__class__' in dir(obj) and '__name__' in dir(obj):
+        return f'{obj.__class__.__name__}.{obj.__name__}'
+    if '__class__' in dir(obj):
+        return f"{obj.__class__.__module__}.{obj.__class__.__name__}"
+    if '__name__' in dir(obj):
+        return f'{obj.__class__.__name__}.{obj.__name__}'
+    return None
+
 
 
 class Reactor:
@@ -84,7 +101,7 @@ class Reactor:
     def callback(self, evt):
         func = self.cbs.get(evt.type, None)
         if func:
-            evt._thr = launch(func, "callback", self, evt)
+            evt._thr = launch(func, self, evt)
         else:
             evt.ready()
 
@@ -106,7 +123,7 @@ class Reactor:
         self.cbs[typ] = cbs
 
     def start(self):
-        launch(self.loop, "loop")
+        launch(self.loop)
 
     def stop(self):
         self.stopped.set()
@@ -124,7 +141,7 @@ class Timer:
 
     def run(self):
         self.state["latest"] = time.time()
-        launch(self.func, "timer", *self.args)
+        launch(self.func, *self.args)
 
     def start(self):
         timer = threading.Timer(self.sleep, self.run)
@@ -145,7 +162,7 @@ class Timer:
 class Repeater(Timer):
 
     def run(self):
-        launch(self.start, "repeater")
+        launch(self.start)
         super().run()
 
 
@@ -158,5 +175,6 @@ def __dir__():
         'Thread',
         'Timer',
         'later',
-        'launch'
+        'launch',
+        'name'
     )

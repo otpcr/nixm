@@ -10,7 +10,7 @@ import time
 
 
 from ..main    import Event
-from ..object  import Object, construct, keys
+from ..object  import Object, construct, keys, named
 from ..persist import Cache, laps
 from ..runtime import Repeater, launch
 
@@ -25,6 +25,8 @@ STARTTIME = time.mktime(time.strptime(STARTDATE, "%Y-%m-%d %H:%M:%S"))
 def init():
     "start repeaters"
     for key in keys(oorzaken):
+        if "Psych" not in key:
+            continue
         val = getattr(oorzaken, key, None)
         if val and int(val) > 10000:
             evt = Event()
@@ -33,7 +35,8 @@ def init():
             sec = seconds(val)
             repeater = Repeater(sec, cbstats, evt, thrname=aliases.get(key))
             repeater.start()
-    launch(daily, name="daily")
+    launch(daily)
+    launch(hourly)
 
 
 oor = """"Totaal onderliggende doodsoorzaken (aantal)";
@@ -337,10 +340,10 @@ def cbnow(_evt):
         if needed > 60*60:
             continue
         nrtimes = int(delta/needed)
-        txt += f"{getalias(name)} {nrtimes} |"
+        txt += f"{getalias(name)} {nrtimes} | "
     txt += " http://genocide.rtfd.io"
     for obj in Cache.typed("IRC"):
-        obj.announce(txt)
+        obj.announce(txt.upper())
 
 
 def cbstats(evt):
@@ -364,7 +367,7 @@ def cbstats(evt):
             laps(delta)
         )
         for obj in Cache.typed("IRC"):
-            obj.announce(txt)
+            obj.announce(txt.upper())
 
 
 def now(event):
