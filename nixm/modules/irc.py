@@ -16,8 +16,8 @@ import time
 import _thread
 
 
-from ..object  import Object, edit, fmt, keys, named
-from ..main    import NAME, command
+from ..object  import Object, edit, keys
+from ..main    import NAME, command, fmt
 from ..persist import Cache, ident, last, sync
 from ..runtime import Reactor, later, launch
 

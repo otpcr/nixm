@@ -10,7 +10,7 @@ import time
 
 
 from ..main    import Event
-from ..object  import Object, construct, keys, named
+from ..object  import Object, construct, keys
 from ..persist import Cache, laps
 from ..runtime import Repeater, launch
 
@@ -291,10 +291,10 @@ def getday():
     return day.timestamp()
 
 
-def getnr(name):
+def getnr(nme):
     "fetch mortality number."
     for k in keys(oorzaken):
-        if name.lower() in k.lower():
+        if nme.lower() in k.lower():
             return int(getattr(oorzaken, k))
     return 0
 
@@ -335,12 +335,12 @@ def cbnow(_evt):
     "now callback"
     delta = time.time() - STARTTIME
     txt = laps(delta) + " "
-    for name in sorted(keys(oorzaken), key=lambda x: seconds(getnr(x))):
-        needed = seconds(getnr(name))
+    for nme in sorted(keys(oorzaken), key=lambda x: seconds(getnr(x))):
+        needed = seconds(getnr(nme))
         if needed > 60*60:
             continue
         nrtimes = int(delta/needed)
-        txt += f"{getalias(name)} {nrtimes} | "
+        txt += f"{getalias(nme)} {nrtimes} | "
     txt += " http://genocide.rtfd.io"
     for obj in Cache.typed("IRC"):
         obj.announce(txt.upper())
@@ -348,8 +348,8 @@ def cbnow(_evt):
 
 def cbstats(evt):
     "stats callback."
-    name = evt.rest or "Psych"
-    needed = seconds(getnr(name))
+    nme = evt.rest or "Psych"
+    needed = seconds(getnr(nme))
     if needed:
         delta = time.time() - STARTTIME
         nrtimes = int(delta/needed)
@@ -358,7 +358,7 @@ def cbstats(evt):
         delta2 = time.time() - getday()
         thisday = int(delta2/needed)
         txt = "%s #%s (%s/%s/%s) every %s %s" % (
-            getalias(name).upper(),
+            getalias(nme).upper(),
             nrtimes,
             thisday,
             nrday,
@@ -372,8 +372,8 @@ def cbstats(evt):
 
 def now(event):
     "now command."
-    name = event.rest or "Psych"
-    needed = seconds(getnr(name))
+    nme = event.rest or "Psych"
+    needed = seconds(getnr(nme))
     if needed:
         delta = time.time() - STARTTIME
         txt = ""
@@ -382,7 +382,7 @@ def now(event):
         nrday = int(DAY/needed)
         thisday = int(DAY % needed)
         txt += "%s #%s (%s/%s/%s) every %s %s" % (
-            getalias(name).upper(),
+            getalias(nme).upper(),
             nrtimes,
             thisday,
             nrday,

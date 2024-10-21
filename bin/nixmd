@@ -10,6 +10,7 @@ import sys
 
 
 from nixm.main    import NAME, forever, privileges, scanner
+from nixm.modules import face
 from nixm.persist import pidfile, pidname
 
 

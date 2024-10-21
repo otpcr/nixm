@@ -8,9 +8,8 @@
 import sys
 
 
-from nixm.main    import Client, Config, Event, scanner, command, wrap
+from nixm.main    import Client, Config, Event, scanner, command, parse, wrap
 from nixm.modules import face
-from nixm.object  import parse
 from nixm.runtime import Errors
 
 
