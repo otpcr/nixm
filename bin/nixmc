@@ -6,6 +6,7 @@
 "Nix Em Console"
 
 
+import readline
 import sys
 import termios
 import time

@@ -5,9 +5,7 @@
 "create service file"
 
 
-
-
-from ..main import NAME
+from ..runtime import NAME
 
 
 TXT = """[Unit]

@@ -12,6 +12,12 @@ import traceback
 import _thread
 
 
+STARTTIME = time.time()
+
+
+"errors"
+
+
 class Errors:
 
     errors = []
@@ -30,6 +36,9 @@ def later(exc):
     fmt = fmat(excp)
     if fmt not in Errors.errors:
         Errors.errors.append(fmt)
+
+
+"threads"
 
 
 class Thread(threading.Thread):
@@ -90,6 +99,8 @@ def name(obj):
     return None
 
 
+"reactor"
+
 
 class Reactor:
 
@@ -127,6 +138,10 @@ class Reactor:
 
     def stop(self):
         self.stopped.set()
+
+
+"timers"
+
 
 class Timer:
 
@@ -166,8 +181,17 @@ class Repeater(Timer):
         super().run()
 
 
+
+NAME = Repeater.__module__.split(".", maxsplit=2)[-2]
+
+
+"interface"
+
+
 def __dir__():
     return (
+        'NAME',
+        'STARTTIME',
         'Reactor',
         'Errors',
         'Event',

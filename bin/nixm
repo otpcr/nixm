@@ -22,13 +22,6 @@ class CLI(Client):
         print(txt)
 
 
-def opts(opties):
-    for opt in opties:
-        if opt in cfg.opts:
-            return True
-    return False
-
-
 def errors():
     for error in Errors.errors:
         for line in error:
@@ -47,5 +40,5 @@ def main():
 
 if __name__ == "__main__":
     wrap(main)
-    if opts("v"):
+    if cfg.has("v"):
         errors()

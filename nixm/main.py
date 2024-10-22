@@ -14,14 +14,13 @@ import _thread
 
 from .object  import Object, keys
 from .persist import Workdir
-from .runtime import Reactor, later, launch
-
-
-NAME = Reactor.__module__.split(".", maxsplit=2)[-2]
-STARTTIME = time.time()
+from .runtime import NAME, Reactor, later, launch
 
 
 Workdir.wdr = os.path.expanduser(f"~/.{NAME}")
+
+
+"defaults"
 
 
 class Default(Object):
@@ -32,7 +31,12 @@ class Default(Object):
 
 class Config(Default):
 
-    pass
+    def has(self, opties):
+        if "opts" in self:
+            for opt in opties:
+                if opt in self.opts:
+                    return True
+        return False
     
 
 "commands"
@@ -90,7 +94,7 @@ def scanner(*pkgs, init=False, disable=""):
     return result
 
 
-"Client/Event"
+"client"
 
 
 class Client(Reactor):
@@ -143,8 +147,6 @@ def forever():
             time.sleep(1.0)
         except (KeyboardInterrupt, EOFError):
             _thread.interrupt_main()
-
-
 
 
 def privileges():
@@ -254,10 +256,11 @@ def parse(obj, txt=None):
     return obj
 
 
+"interface"
+
+
 def __dir__():
     return (
-        'NAME',
-        'STARTTIME',
         'Commands',
         'Config',
         'Event',
