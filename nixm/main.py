@@ -12,8 +12,7 @@ import time
 import _thread
 
 
-from .default import Default
-from .object  import keys
+from .object  import Object, keys
 from .persist import Workdir
 from .runtime import Reactor, later, launch
 
@@ -23,6 +22,12 @@ STARTTIME = time.time()
 
 
 Workdir.wdr = os.path.expanduser(f"~/.{NAME}")
+
+
+class Default(Object):
+
+    def __getattr__(self, key):
+        return self.__dict__.get(key, "")
 
 
 class Config(Default):

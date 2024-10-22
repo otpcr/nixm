@@ -12,7 +12,7 @@ import time
 from ..main    import Event
 from ..object  import Object, construct, keys
 from ..persist import Cache, laps
-from ..runtime import Repeater, launch
+from ..runtime import Repeater
 
 
 DAY = 24*60*60
@@ -35,8 +35,6 @@ def init():
             sec = seconds(val)
             repeater = Repeater(sec, cbstats, evt, thrname=aliases.get(key))
             repeater.start()
-    launch(daily)
-    launch(hourly)
 
 
 oor = """"Totaal onderliggende doodsoorzaken (aantal)";
