@@ -12,9 +12,6 @@ import traceback
 import _thread
 
 
-STARTTIME = time.time()
-
-
 "errors"
 
 
@@ -150,7 +147,7 @@ class Timer:
         self.func  = func
         self.kwargs = kwargs
         self.sleep = sleep
-        self.name  = thrname or kwargs.get("name", "timer")
+        self.name  = thrname or kwargs.get("name", name(func))
         self.state = {}
         self.timer = None
 
@@ -181,17 +178,11 @@ class Repeater(Timer):
         super().run()
 
 
-
-NAME = Repeater.__module__.split(".", maxsplit=2)[-2]
-
-
 "interface"
 
 
 def __dir__():
     return (
-        'NAME',
-        'STARTTIME',
         'Reactor',
         'Errors',
         'Event',

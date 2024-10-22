@@ -5,7 +5,7 @@
 "create service file"
 
 
-from ..runtime import NAME
+from ..persist import NAME
 
 
 TXT = """[Unit]

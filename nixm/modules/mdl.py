@@ -304,7 +304,6 @@ def seconds(nrs):
     return 60*60*24*365 / float(nrs)
 
 
-
 def iswanted(k, line):
     "see whether filtered or not."
     for word in line:
@@ -341,7 +340,7 @@ def cbnow(_evt):
         txt += f"{getalias(nme)} {nrtimes} | "
     txt += " http://genocide.rtfd.io"
     for obj in Cache.typed("IRC"):
-        obj.announce(txt.upper())
+        obj.announce(txt)
 
 
 def cbstats(evt):
@@ -355,17 +354,17 @@ def cbstats(evt):
         nrday = int(DAY/needed)
         delta2 = time.time() - getday()
         thisday = int(delta2/needed)
-        txt = "%s #%s (%s/%s/%s) every %s %s" % (
+        txt = "%s %s #%s (%s/%s/%s) every %s %s" % (
+            laps(delta),
             getalias(nme).upper(),
             nrtimes,
             thisday,
             nrday,
             nryear,
-            laps(needed),
-            laps(delta)
+            laps(needed)
         )
         for obj in Cache.typed("IRC"):
-            obj.announce(txt.upper())
+            obj.announce(txt)
 
 
 def now(event):
@@ -380,13 +379,13 @@ def now(event):
         nrday = int(DAY/needed)
         thisday = int(DAY % needed)
         txt += "%s #%s (%s/%s/%s) every %s %s" % (
+            laps(delta),
             getalias(nme).upper(),
             nrtimes,
             thisday,
             nrday,
             nryear,
-            laps(needed),
-            laps(delta)
+            laps(needed)
         )
         event.reply(txt)
 

@@ -13,8 +13,8 @@ import _thread
 
 
 from .object  import Object, keys
-from .persist import Workdir
-from .runtime import NAME, Reactor, later, launch
+from .persist import NAME, Workdir
+from .runtime import Reactor, later, launch
 
 
 Workdir.wdr = os.path.expanduser(f"~/.{NAME}")

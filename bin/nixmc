@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # This file is placed in the Public Domain.
-# pylint: disable=C,W0718
+# pylint: disable=C,W0611,W0718
 
 
 "Nix Em Console"
@@ -12,8 +12,9 @@ import termios
 import time
 
 
-from nixm.main    import NAME, Client, Config, Event, forever, parse, scanner
+from nixm.main    import Client, Config, Event, forever, parse, scanner
 from nixm.modules import face
+from nixm.persist import NAME
 from nixm.runtime import Errors, later
 
 
@@ -72,12 +73,12 @@ def wrap(func):
 
 def main():
     parse(cfg, " ".join(sys.argv[1:]))
-    if opts("v"):
+    if "v" in cfg.opts:
         banner()
-    for mod, thr in scanner(face, init=opts("i"), disable=cfg.sets.dis):
-        if opts("v") and "output" in dir(mod):
+    for mod, thr in scanner(face, init="i" in cfg.opts, disable=cfg.sets.dis):
+        if "v" in cfg.opts and "output" in dir(mod):
             mod.output = print
-        if thr and opts("w"):
+        if thr and "w" in cfg.opts:
             thr.join()
     csl = Console()
     csl.start()
