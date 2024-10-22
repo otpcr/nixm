@@ -2,7 +2,7 @@
 # pylint: disable=C,W0212
 
 
-"Nix Em Daemon"
+"daemon"
 
 
 import os

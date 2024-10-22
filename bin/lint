@@ -23,4 +23,4 @@ if os.path.exists("bin/clean"):
     popen("bin/clean")
 
 
-popen("pylint nixm/*.py nixm/modules/*.py bin/* tests/*.py")
+popen("pylint nixm/*.py nixm/modules/*.py tests/*.py")

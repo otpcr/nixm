@@ -2,7 +2,7 @@
 # pylint: disable=C,W0611,W0718
 
 
-"Nix Em Console"
+"console"
 
 
 import readline

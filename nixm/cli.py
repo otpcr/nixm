@@ -2,15 +2,15 @@
 # pylint: disable=C
 
 
-"Nix Em"
+"cli"
 
 
 import sys
 
 
-from nixm.main    import Client, Config, Event, scanner, command, parse, wrap
-from nixm.modules import face
-from nixm.runtime import Errors
+from .main    import Client, Config, Event, scanner, command, parse, wrap
+from .modules import face
+from .runtime import Errors
 
 
 cfg = Config()
