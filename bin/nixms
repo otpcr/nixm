@@ -1,25 +1,2 @@
-#!/usr/bin/env python3
-# This file is placed in the Public Domain.
-# pylint: disable=C
-
-
-"Nix Em Service"
-
-
-from nixm.main    import forever, privileges, scanner, wrap
-from nixm.modules import face
-from nixm.persist import NAME, pidfile, pidname
-
-
-scan = scanner
-
-
-def main():
-    privileges()
-    pidfile(pidname(NAME))
-    scan(face, init=True)
-    forever()
-
-
-if __name__ == "__main__":
-    wrap(main)
+export PYTHONPATH="."
+python3 -m nixm.service $* ;
