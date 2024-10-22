@@ -31,13 +31,8 @@ class Default(Object):
 
 class Config(Default):
 
-    def has(self, opties):
-        if "opts" in self:
-            for opt in opties:
-                if opt in self.opts:
-                    return True
-        return False
-    
+    pass
+
 
 "commands"
 

@@ -40,5 +40,5 @@ def main():
 
 if __name__ == "__main__":
     wrap(main)
-    if cfg.has("v"):
+    if "v" in cfg.opts:
         errors()
