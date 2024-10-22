@@ -1,11 +1,11 @@
 # This file is placed in the Public Domain.
 
 
-"stub"
+"exec"
 
 
-import setuptools
+from .cli import wrapped
 
 
 if __name__ == "__main__":
-    setuptools.setup()
+    wrapped()

@@ -354,7 +354,7 @@ def cbstats(evt):
         nrday = int(DAY/needed)
         delta2 = time.time() - getday()
         thisday = int(delta2/needed)
-        txt = "%s %s #%s (%s/%s/%s) every %s %s" % (
+        txt = "%s %s #%s (%s/%s/%s) every %s" % (
             laps(delta),
             getalias(nme).upper(),
             nrtimes,
@@ -373,12 +373,11 @@ def now(event):
     needed = seconds(getnr(nme))
     if needed:
         delta = time.time() - STARTTIME
-        txt = ""
         nrtimes = int(delta/needed)
         nryear = int(YEAR/needed)
         nrday = int(DAY/needed)
         thisday = int(DAY % needed)
-        txt += "%s #%s (%s/%s/%s) every %s %s" % (
+        txt = "%s %s #%s (%s/%s/%s) every %s" % (
             laps(delta),
             getalias(nme).upper(),
             nrtimes,

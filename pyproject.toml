@@ -21,15 +21,20 @@ classifiers=[
     'Topic :: Utilities'
 ]
 
+
+[project.scripts]
+"nixm" = "nixm.cli:wrapped"
+"nixmc" = "nixm.console:wrapped"
+"nixmd" = "nixm.daemon:wrapped"
+"nixms" = "nixm.service:wrapped"
+
+
 [project.urls]
 "home" = "https://pypi.org/project/nixm"
 "bugs" = "https://github.com/otpcr/nixm/issues"
 "source" = "https://github.com/otpcr/nixm"
 
 [tool.setuptools]
-script-files = [
-    'bin/nixm',
-]
 packages = [
    'nixm',
    'nixm.modules'
