@@ -13,8 +13,8 @@ from nixt.object  import Config
 from nixt.runtime import Client, Event, errors, wrap
 
 
-from .command import NAME, scanner, command, parse
-from .modules import face
+from ..command import NAME, scanner, command, parse
+from ..modules import face
 
 
 cfg  = Config()

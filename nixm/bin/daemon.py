@@ -13,8 +13,8 @@ from nixt.persist import pidfile, pidname
 from nixt.runtime import forever, privileges, errors, wrap
 
 
-from .command import NAME, scanner
-from .modules import face
+from ..command import NAME, scanner
+from ..modules import face
 
 
 def daemon(verbose=False):

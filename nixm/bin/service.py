@@ -12,8 +12,8 @@ from nixt.persist import pidfile, pidname
 from nixt.runtime import errors, forever, privileges, wrap
 
 
-from .command import NAME, scanner
-from .modules import face
+from ..command import NAME, scanner
+from ..modules import face
 
 
 def main():
