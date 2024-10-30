@@ -12,11 +12,13 @@ import termios
 import time
 
 
+from nixt.object  import Config
+from nixt.persist import Workdir
+from nixt.runtime import Client, Errors, Event, errors, forever, later
+
+
 from .command import NAME, command, parse, scanner
 from .modules import face
-from .object  import Config
-from .persist import Workdir
-from .runtime import Client, Errors, Event, errors, forever, later
 
 
 Workdir.wdr = os.path.expanduser(f"~/.{NAME}")

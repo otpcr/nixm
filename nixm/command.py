@@ -8,9 +8,9 @@
 import inspect
 
 
-from .object  import Obj
-from .persist import Workdir
-from .runtime import later, launch
+from nixt.object  import Obj
+from nixt.persist import Workdir
+from nixt.runtime import later, launch
 
 
 NAME = Workdir.__module__.rsplit(".", maxsplit=2)[-2]

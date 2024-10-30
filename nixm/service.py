@@ -8,10 +8,12 @@
 import os
 
 
+from nixt.persist import Workdir, pidfile, pidname
+from nixt.runtime import errors, forever, privileges, wrap
+
+
 from .command import NAME, scanner
 from .modules import face
-from .persist import Workdir, pidfile, pidname
-from .runtime import errors, forever, privileges, wrap
 
 
 Workdir.wdr = os.path.expanduser(f"~/.{NAME}")

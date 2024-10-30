@@ -9,10 +9,12 @@ import os
 import sys
 
 
+from nixt.object  import Config, keys
+from nixt.persist import Workdir
+from nixt.runtime import Client, Event, errors, wrap
+
+
 from .command import NAME, Commands, command, parse
-from .object  import Config, keys
-from .persist import Workdir
-from .runtime import Client, Event, errors, wrap
 
 
 Workdir.wdr = os.path.expanduser(f"~/.{NAME}")

@@ -1,18 +1,24 @@
 # This file is placed in the Public Domain.
 
 [build-system]
-requires = ["setuptools>=43.0.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = [
+    'setuptools>=43.0.0',
+    'wheel'
+]
+build-backend = 'setuptools.build_meta'
 
 [project]
-name = "nixm"
-version = "7"
+name = 'nixm'
+version = '11'
 authors = [
-    {name = "Bart Thate", email = "record11719@gmail.com" },
+    {name = 'Bart Thate', email = 'record11719@gmail.com' },
 ]
-description = "Nix Em"
-readme = "README.rst"
-license = { text="Public Domain"}
+description = 'Nix Em'
+readme = 'README.rst'
+license = { text='Public Domain'}
+dependencies = [
+    'nixt'
+]
 classifiers=[
     'Development Status :: 4 - Beta',
     'License :: Public Domain',
@@ -23,16 +29,17 @@ classifiers=[
 
 
 [project.scripts]
-"nixm" = "nixm.cli:wrapped"
-"nixmc" = "nixm.console:wrapped"
-"nixmd" = "nixm.daemon:wrapped"
-"nixms" = "nixm.service:wrapped"
+'nixm'  = 'nixm.cli:wrapped'
+'nixma' = 'nixm.admin:wrapped'
+'nixmc' = 'nixm.console:wrapped'
+'nixmd' = 'nixm.daemon:main'
+'nixms' = 'nixm.service:wrapped'
 
 
 [project.urls]
-"home" = "https://pypi.org/project/nixm"
-"bugs" = "https://github.com/otpcr/nixm/issues"
-"source" = "https://github.com/otpcr/nixm"
+'home'   = 'https://pypi.org/project/nixm'
+'bugs'   = 'https://github.com/otpcr/nixm/issues'
+'source' = 'https://github.com/otpcr/nixm'
 
 [tool.setuptools]
 packages = [
