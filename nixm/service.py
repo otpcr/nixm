@@ -19,21 +19,18 @@ from .modules import face
 Workdir.wdr = os.path.expanduser(f"~/.{NAME}")
 
 
-scan = scanner
-
-
 def main():
     privileges()
     pidfile(pidname(NAME))
-    scan(face, init=True)
+    scanner(face, init=True)
     forever()
 
 
 def wrapped():
     wrap(main)
+    for line in errors():
+        print(line)
 
 
 if __name__ == "__main__":
     wrapped()
-    for line in errors():
-        print(line)
