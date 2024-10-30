@@ -12,8 +12,8 @@ import uuid
 import _thread
 
 
-from ..object  import Object, update
-from ..persist import find, write
+from nixt.object  import Object, update
+from nixt.persist import find, write
 
 
 from .rss import Rss

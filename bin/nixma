@@ -1,1 +1,1 @@
-python3 -m nixm.admin $* ;
+python3 -m nixm.bin.admin $* ;

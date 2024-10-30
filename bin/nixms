@@ -1,1 +1,1 @@
-python3 -m nixm.service $* ;
+python3 -m nixm.bin.service $* ;

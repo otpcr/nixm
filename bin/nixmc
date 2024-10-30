@@ -1,1 +1,1 @@
-python3 -m nixm.console $* ;
+python3 -m nixm.bin.console $* ;
