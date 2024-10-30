@@ -9,15 +9,12 @@ import os
 import sys
 
 
-from nixt.persist import Workdir, pidfile, pidname
+from nixt.persist import pidfile, pidname
 from nixt.runtime import forever, privileges, errors, wrap
 
 
 from .command import NAME, scanner
 from .modules import face
-
-
-Workdir.wdr = os.path.expanduser(f"~/.{NAME}")
 
 
 def daemon(verbose=False):

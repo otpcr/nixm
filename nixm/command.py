@@ -6,6 +6,7 @@
 
 
 import inspect
+import os
 
 
 from nixt.object  import Obj
@@ -14,6 +15,9 @@ from nixt.runtime import later, launch
 
 
 NAME = "nixm"
+
+
+Workdir.wdr = os.path.expanduser("~/.{NAME}")
 
 
 "commands"

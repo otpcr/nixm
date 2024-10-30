@@ -25,7 +25,7 @@ p         = os.path.join
 class Workdir:
 
     fqns = []
-    wdr = ''
+    wdr = os.path.expanduser('~/.nixm')
 
 
 def long(name):

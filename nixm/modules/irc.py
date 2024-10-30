@@ -25,12 +25,13 @@ from ..runtime import Reactor, later, launch
 IGNORE = ["PING", "PONG", "PRIVMSG"]
 
 
-output = None
+output = print
 saylock = _thread.allocate_lock()
 
 
 def debug(txt):
-    pass
+    if output:
+        output(txt)
 
 
 def init():
