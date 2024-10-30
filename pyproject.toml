@@ -9,7 +9,7 @@ build-backend = 'setuptools.build_meta'
 
 [project]
 name = 'nixm'
-version = '11'
+version = '30'
 authors = [
     {name = 'Bart Thate', email = 'record11719@gmail.com' },
 ]
@@ -40,7 +40,7 @@ classifiers=[
 
 [tool.setuptools]
 packages = [
-    'nixt',
+    'nixm',
     'nixm.bin',
     'nixm.modules'
 ]
