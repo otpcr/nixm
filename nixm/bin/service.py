@@ -8,12 +8,10 @@
 import os
 
 
-from nixt.persist import pidfile, pidname
-from nixt.runtime import errors, forever, privileges, wrap
-
-
 from ..command import NAME, scanner
 from ..modules import face
+from ..persist import pidfile, pidname
+from ..runtime import errors, forever, privileges, wrap
 
 
 def main():

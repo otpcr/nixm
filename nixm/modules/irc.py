@@ -16,22 +16,24 @@ import time
 import _thread
 
 
-from nixt.object  import Object, edit, format, keys
-from nixt.persist import Cache, ident, last, write
-from nixt.runtime import Reactor, later, launch
-
-
+from ..object  import Object, edit, format, keys
+from ..persist import Cache, ident, last, write
+from ..runtime import Reactor, later, launch
 from ..command import NAME, command
 
 
 IGNORE = ["PING", "PONG", "PRIVMSG"]
 
 
-output = print
+output = None
 saylock = _thread.allocate_lock()
 
 
+
 def debug(txt):
+    for ign in IGNORE:
+        if ign in txt:
+            return
     if output:
         output(txt)
 
@@ -596,12 +598,6 @@ def cb_quit(bot, evt):
         bot.stop()
 
 
-def debug(txt):
-    for ign in IGNORE:
-        if ign in txt:
-            return
-    if output:
-        output(txt)
 
 
 "commands"

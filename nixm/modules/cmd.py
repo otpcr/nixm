@@ -5,9 +5,7 @@
 "list of commands"
 
 
-from nixt.object  import keys
-
-
+from ..object  import keys
 from ..command import Commands
 
 

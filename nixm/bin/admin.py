@@ -9,11 +9,11 @@ import os
 import sys
 
 
-from nixt.object  import Config, keys
-from nixt.runtime import Client, Event, errors, wrap
-
-
 from ..command import NAME, Commands, command, parse
+from ..object  import Config, keys
+from ..runtime import Client, Event, errors, wrap
+
+
 
 
 cfg = Config()

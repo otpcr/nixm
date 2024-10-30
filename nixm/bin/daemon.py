@@ -9,12 +9,10 @@ import os
 import sys
 
 
-from nixt.persist import pidfile, pidname
-from nixt.runtime import forever, privileges, errors, wrap
-
-
 from ..command import NAME, scanner
 from ..modules import face
+from ..persist import pidfile, pidname
+from ..runtime import forever, privileges, errors, wrap
 
 
 def daemon(verbose=False):

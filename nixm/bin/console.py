@@ -12,12 +12,10 @@ import termios
 import time
 
 
-from nixt.object  import Config
-from nixt.runtime import Client, Errors, Event, errors, forever, later
-
-
 from ..command import NAME, command, parse, scanner
 from ..modules import face
+from ..object  import Config
+from ..runtime import Client, Errors, Event, errors, forever, later
 
 
 cfg  = Config()
