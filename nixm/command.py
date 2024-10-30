@@ -14,7 +14,7 @@ from .persist import Workdir
 from .runtime import later, launch
 
 
-NAME = "nixm"
+NAME = __file__.rsplit(os.sep, maxsplit=2)[-2]
 
 
 Workdir.wdr = os.path.expanduser("~/.{NAME}")

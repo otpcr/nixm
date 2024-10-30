@@ -29,14 +29,14 @@ def popen(txt):
 
 
 def main():
+    popen(f'grep -R "print(" {NAME}/*.py {NAME}/modules/*.py')
+    popen(f'grep -R "__import__" {NAME}/*.py {NAME}/modules/*.py')
+    popen(f'grep -R "importlib" {NAME}/*.py {NAME}/modules/*.py')
+    popen(f'grep -R "import os" {NAME}/*.py {NAME}/modules/*.py')
+    popen(f'grep -R "import sys" {NAME}/*.py {NAME}/modules/*.py')
+    popen(f'grep -R "import inspect" {NAME}/*.py {NAME}/modules/*.py')
+    popen(f'grep -R "getpass" {NAME}/*.py {NAME}/modules/*.py')
     popen(f'grep -R {NAME} {NAME}')
-    popen(f'grep -R "print(" {NAME}')
-    popen(f'grep -R __import__ {NAME}')
-    popen(f'grep -R importlib {NAME}')
-    #popen(f'grep -R "import os" {NAME}')
-    #popen(f'grep -R "import sys" {NAME}')
-    #popen(f'grep -R "import inspect" {NAME}')
-    #popen(f'grep -R getpass {NAME}')
 
 
 if __name__ == "__main__":

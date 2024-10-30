@@ -9,9 +9,9 @@ import datetime
 import time
 
 
-from nixm.object  import Object, construct, keys
-from nixm.persist import Cache, laps
-from nixm.runtime import Event, Repeater
+from ..object  import Object, construct, keys
+from ..persist import Cache, laps
+from ..runtime import Event, Repeater
 
 
 DAY = 24*60*60
