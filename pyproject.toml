@@ -16,9 +16,6 @@ authors = [
 description = 'Nix Em'
 readme = 'README.rst'
 license = { text='Public Domain'}
-dependencies = [
-    'nixt'
-]
 classifiers=[
     'Development Status :: 4 - Beta',
     'License :: Public Domain',
@@ -43,6 +40,7 @@ classifiers=[
 
 [tool.setuptools]
 packages = [
+   'nixt',
    'nixm',
    'nixm.modules'
 ]
