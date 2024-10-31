@@ -16,6 +16,9 @@ from nixm.persist import pidfile, pidname
 from nixm.runtime import forever, privileges, errors, wrap
 
 
+scan = scanner
+
+
 def daemon(verbose=False):
     pid = os.fork()
     if pid != 0:
@@ -37,19 +40,12 @@ def daemon(verbose=False):
 
 
 def main():
-    daemon("-v" in sys.argv)
+    daemon()
     privileges()
     pidfile(pidname(NAME))
-    scanner(face, init=True)
+    scan(face, init=True)
     forever()
 
 
-def wrapped():
-    wrap(main)
-    if "-v" in sys.argv:
-        for line in errors():
-            print(line)
-
-
 if __name__ == "__main__":
-    wrapped()
+    wrap(main)

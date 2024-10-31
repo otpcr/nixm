@@ -7,6 +7,7 @@
 
 import inspect
 import os
+import time
 
 
 from .object  import Obj
@@ -17,7 +18,7 @@ from .runtime import later, launch
 NAME = __file__.rsplit(os.sep, maxsplit=2)[-2]
 
 
-Workdir.wdr = os.path.expanduser("~/.{NAME}")
+Workdir.wdr = os.path.expanduser(f"~/.{NAME}")
 
 
 "commands"
@@ -55,6 +56,11 @@ def command(bot, evt):
 
 
 "utilities"
+
+
+def banner():
+    tme = time.ctime(time.time()).replace("  ", " ")
+    print(f"{NAME.upper()} since {tme}")
 
 
 def modloop(*pkgs, disable=""):
@@ -149,7 +155,6 @@ def __dir__():
     return (
         'Commands',
         'command',
-        'modloop',
         'parse',
         'scanner',
         'spl'
