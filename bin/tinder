@@ -17,11 +17,16 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
+from nixt.object  import Config, Object
+from nixt.persist import Workdir, laps, skel
+from nixt.runtime import Client, Errors, Event, later, launch
+
+
 from nixm.command import NAME, Commands, command, parse, scanner
-from nixm.modules import face
-from nixm.object  import Config, Object
-from nixm.persist import Workdir, laps, skel
-from nixm.runtime import Client, Errors, Event, later, launch
+from nixm          import face
+
+
+"defines"
 
 
 Workdir.wdr = os.path.expanduser(f"~/.{NAME}")
@@ -60,6 +65,9 @@ param.tdo = ["mekker", ""]
 param.ver = [""]
 
 
+"cli"
+
+
 class CLI(Client):
 
     def __init__(self):
@@ -69,6 +77,9 @@ class CLI(Client):
     def raw(self, txt):
         if "v" in cfg.opts:
             print(txt)
+
+
+"utilities"
 
 
 def banner():
@@ -116,6 +127,9 @@ def wrap(function):
     finally:
         if old3:
             termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, old3)
+
+
+"runtime"
 
 
 def main():
