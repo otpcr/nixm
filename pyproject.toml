@@ -7,6 +7,7 @@ requires = [
 ]
 build-backend = 'setuptools.build_meta'
 
+
 [project]
 name = 'nixm'
 version = '30'
@@ -30,10 +31,10 @@ classifiers=[
 'bugs'   = 'https://github.com/otpcr/nixm/issues'
 'source' = 'https://github.com/otpcr/nixm'
 
+
 [tool.setuptools]
 script-files = [
     'bin/nixm',
-    'bin/nixma',
     'bin/nixmc',
     'bin/nixmd',
     'bin/nixms'
@@ -41,4 +42,11 @@ script-files = [
 packages = [
     'nixm',
     'nixm.modules'
+]
+
+
+[tool.setuptools.data-files]
+"share/doc/nixm/" = [
+    'files/MANUAL.rst',
+    'README.rst'
 ]

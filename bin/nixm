@@ -9,13 +9,27 @@
 import sys
 
 
-from nixm.command import scanner, command, parse
+from nixm.command import NAME, Commands, scanner, command, parse
 from nixm.modules import face
 from nixm.object  import Config
 from nixm.runtime import Client, Event, errors, wrap
 
 
 cfg = Config()
+
+
+TXT = """[Unit]
+Description=%s
+After=network-online.target
+
+[Service]
+Type=simple
+User=%s
+Group=%s
+ExecStart=/home/%s/.local/bin/%ss
+
+[Install]
+WantedBy=multi-user.target"""
 
 
 class CLI(Client):
@@ -28,6 +42,16 @@ class CLI(Client):
         print(txt)
 
 
+def cmd(event):
+    event.reply(",".join(sorted(keys(Commands.cmds))))
+
+
+def srv(event):
+    import getpass
+    name  = getpass.getuser()
+    event.reply(TXT % (NAME.upper(), name, name, name, NAME))
+
+
 def wrapped():
     wrap(main)
     for txt in errors():
@@ -35,6 +59,7 @@ def wrapped():
 
 
 def main():
+    Commands.add(srv)
     parse(cfg, " ".join(sys.argv[1:]))
     scanner(face)
     evt = Event()
