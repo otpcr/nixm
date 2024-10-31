@@ -7,7 +7,6 @@
 
 import inspect
 import os
-import time
 
 
 from .object  import Obj
@@ -15,9 +14,10 @@ from .persist import Workdir
 from .runtime import later, launch
 
 
+"defines"
+
+
 NAME = __file__.rsplit(os.sep, maxsplit=2)[-2]
-
-
 Workdir.wdr = os.path.expanduser(f"~/.{NAME}")
 
 
