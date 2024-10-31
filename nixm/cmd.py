@@ -5,8 +5,10 @@
 "list of commands"
 
 
-from ..object  import keys
-from ..command import Commands
+from nixt.object  import keys
+
+
+from .command import Commands
 
 
 "commands"

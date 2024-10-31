@@ -16,10 +16,12 @@ import time
 import _thread
 
 
-from ..command import NAME, command
-from ..object  import Object, edit, format, keys
-from ..persist import Cache, ident, last, write
-from ..runtime import Event, Reactor, later, launch
+from nixt.object  import Object, edit, format, keys
+from nixt.persist import Cache, ident, last, write
+from nixt.runtime import Event, Reactor, later, launch
+
+
+from .command import NAME, command
 
 
 "defines"

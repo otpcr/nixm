@@ -9,9 +9,9 @@ import inspect
 import os
 
 
-from .object  import Obj
-from .persist import Workdir
-from .runtime import later, launch
+from nixt.object  import Obj
+from nixt.persist import Workdir
+from nixt.runtime import later, launch
 
 
 "defines"

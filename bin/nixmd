@@ -10,10 +10,12 @@ import os
 import sys
 
 
+from nixt.persist import pidfile, pidname
+from nixt.runtime import forever, privileges, wrap
+
+
 from nixm.command import NAME, scanner
-from nixm.modules import face
-from nixm.persist import pidfile, pidname
-from nixm.runtime import forever, privileges, wrap
+from nixm         import face
 
 
 "defines"

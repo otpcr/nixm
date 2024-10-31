@@ -13,11 +13,13 @@ import termios
 import time
 
 
+from nixt.object  import Config
+from nixt.persist import Workdir
+from nixt.runtime import Client, Errors, Event, errors, forever, later
+
+
 from nixm.command import NAME, command, parse, scanner
-from nixm.modules import face
-from nixm.object  import Config
-from nixm.persist import Workdir
-from nixm.runtime import Client, Errors, Event, errors, forever, later
+from nixm         import face
 
 
 "defines"
