@@ -1,4 +1,4 @@
 # This file is placed in the Public Domain.
 
 
-"Nix Em"
+__doc__ = __file__.rsplit("/", maxsplit=2)[-2].upper()
