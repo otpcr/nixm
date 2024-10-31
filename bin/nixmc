@@ -43,6 +43,11 @@ class Console(Client):
         print(txt)
 
 
+def banner():
+    tme = time.ctime(time.time()).replace("  ", " ")
+    print(f"{NAME.upper()} since {tme}")
+
+
 def wrap(func):
     old = None
     try:

@@ -58,11 +58,6 @@ def command(bot, evt):
 "utilities"
 
 
-def banner():
-    tme = time.ctime(time.time()).replace("  ", " ")
-    print(f"{NAME.upper()} since {tme}")
-
-
 def modloop(*pkgs, disable=""):
     for pkg in pkgs:
         for modname in dir(pkg):

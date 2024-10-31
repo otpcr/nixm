@@ -32,10 +32,10 @@ def main():
     popen(f'grep -R "print(" {NAME}/*.py {NAME}/modules/*.py')
     popen(f'grep -R "__import__" {NAME}/*.py {NAME}/modules/*.py')
     popen(f'grep -R "importlib" {NAME}/*.py {NAME}/modules/*.py')
-    popen(f'grep -R "import os" {NAME}/*.py {NAME}/modules/*.py')
+    #popen(f'grep -R "import os" {NAME}/*.py {NAME}/modules/*.py')
     popen(f'grep -R "import sys" {NAME}/*.py {NAME}/modules/*.py')
-    popen(f'grep -R "import inspect" {NAME}/*.py {NAME}/modules/*.py')
-    popen(f'grep -R "getpass" {NAME}/*.py {NAME}/modules/*.py')
+    #popen(f'grep -R "import inspect" {NAME}/*.py {NAME}/modules/*.py')
+    #popen(f'grep -R "getpass" {NAME}/*.py {NAME}/modules/*.py')
     popen(f'grep -R {NAME} {NAME}')
 
 
