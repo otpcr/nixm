@@ -10,13 +10,16 @@ build-backend = 'setuptools.build_meta'
 
 [project]
 name = 'nixm'
-version = '30'
+version = '41'
 authors = [
     {name = 'Bart Thate', email = 'record11719@gmail.com' },
 ]
-description = 'Nix Em'
+description = 'NIXM'
 readme = 'README.rst'
 license = { text='Public Domain'}
+dependencies = [
+    'nixt',
+]
 classifiers=[
     'Development Status :: 4 - Beta',
     'License :: Public Domain',
@@ -41,7 +44,6 @@ script-files = [
 ]
 packages = [
     'nixm',
-    'nixm.modules'
 ]
 
 
