@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # This file is place in the Public Domain.
-# pylint: disable=C
+# pylint: disable=C,W0105
 
 
 "cli"
@@ -15,10 +15,13 @@ from nixm.object  import Config, keys
 from nixm.runtime import Client, Event, errors, wrap
 
 
+"defines"
+
+
 cfg = Config()
 
 
-TXT = """[Unit]
+TEXT = """[Unit]
 Description=%s
 After=network-online.target
 
@@ -32,6 +35,9 @@ ExecStart=/home/%s/.local/bin/%ss
 WantedBy=multi-user.target"""
 
 
+"classes"
+
+
 class CLI(Client):
 
     def __init__(self):
@@ -42,6 +48,9 @@ class CLI(Client):
         print(txt)
 
 
+"commands"
+
+
 def cmd(event):
     event.reply(",".join(sorted(keys(Commands.cmds))))
 
@@ -49,13 +58,10 @@ def cmd(event):
 def srv(event):
     import getpass
     name  = getpass.getuser()
-    event.reply(TXT % (NAME.upper(), name, name, name, NAME))
+    event.reply(TEXT % (NAME.upper(), name, name, name, NAME))
 
 
-def wrapped():
-    wrap(main)
-    for txt in errors():
-        print(txt)
+"runtime"
 
 
 def main():
@@ -70,4 +76,6 @@ def main():
 
 
 if __name__ == "__main__":
-    wrapped()
+    wrap(main)
+    for text in errors():
+        print(text)

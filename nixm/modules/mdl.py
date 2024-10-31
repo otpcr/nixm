@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C0209
+# pylint: disable=C0209,W0105
 
 
 "Genocide model of the Netherlands since 4 March 2019"
@@ -12,6 +12,9 @@ import time
 from ..object  import Object, construct, keys
 from ..persist import Cache, laps
 from ..runtime import Event, Repeater
+
+
+"defines"
 
 
 DAY = 24*60*60
@@ -272,6 +275,9 @@ construct(oorzaak, zip(oor, aantal))
 oorzaken = Object()
 
 
+"utilities"
+
+
 def getalias(txt):
     "return value of alias."
     result = ""
@@ -366,6 +372,9 @@ def cbstats(evt):
             obj.announce(txt)
 
 
+"commands"
+
+
 def now(event):
     "now command."
     nme = event.rest or "Psych"
@@ -386,6 +395,9 @@ def now(event):
             laps(needed)
         )
         event.reply(txt)
+
+
+"runtime"
 
 
 def boot():
@@ -418,6 +430,8 @@ def boot():
         nms = nms.strip()
         setattr(oorzaken, nms, aantal[_nr])
 
+
+"interace"
 
 def __dir__():
     return (

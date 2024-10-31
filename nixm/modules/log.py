@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,R
+# pylint: disable=C,R,W0105
 
 
 "log text"
@@ -12,11 +12,17 @@ from ..object  import Object
 from ..persist import find, fntime, laps, write
 
 
+"classes"
+
+
 class Log(Object):
 
     def __init__(self):
         super().__init__()
         self.txt = ''
+
+
+"commands"
 
 
 def log(event):

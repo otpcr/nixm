@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,R
+# pylint: disable=C,R,W0105
 
 
 "todo list"
@@ -12,11 +12,17 @@ from ..object  import Object
 from ..persist import find, fntime, laps, write
 
 
+"todo"
+
+
 class Todo(Object):
 
     def __init__(self):
         Object.__init__(self)
         self.txt = ''
+
+
+"commands"
 
 
 def dne(event):

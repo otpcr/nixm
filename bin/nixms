@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # This file is placed in the Public Domain.
-# pylint: disable=C
+# pylint: disable=C,W0105
 
 
 "service"
@@ -10,6 +10,9 @@ from nixm.command import NAME, scanner
 from nixm.modules import face
 from nixm.persist import pidfile, pidname
 from nixm.runtime import errors, forever, privileges, wrap
+
+
+"runtime"
 
 
 def main():

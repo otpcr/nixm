@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C
+# pylint: disable=C,W0105
 
 
 "OPML"
@@ -19,6 +19,9 @@ from ..persist import find, write
 from .rss import Rss
 
 
+"defines"
+
+
 importlock = _thread.allocate_lock()
 skipped    = []
 
@@ -29,6 +32,9 @@ TEMPLATE = """<opml version="1.0">
     </head>
     <body>
         <outline title="opml" text="rss feeds">"""
+
+
+"parser"
 
 
 class OPMLParser:
@@ -95,6 +101,9 @@ class OPMLParser:
         return result
 
 
+"utilities"
+
+
 def attrs(obj, txt):
     update(obj, OPMLParser.parse(txt))
 
@@ -123,6 +132,9 @@ def unescape(text):
 
 def useragent(txt):
     return 'Mozilla/5.0 (X11; Linux x86_64) ' + txt
+
+
+"commands"
 
 
 def exp(event):

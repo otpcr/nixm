@@ -19,6 +19,10 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote_plus, urlencode
 
 
+"defines"
+
+
+from ..command import spl
 from ..object  import Object, format, update
 from ..persist import Cache, find, fntime, laps, last, write
 from ..runtime import Repeater, launch
@@ -34,6 +38,9 @@ def init():
     fetcher = Fetcher()
     fetcher.start()
     return fetcher
+
+
+"classes"
 
 
 class Feed(Object):
@@ -185,6 +192,9 @@ class Parser:
         return result
 
 
+"utilities"
+
+
 def cdata(line):
     if 'CDATA' in line:
         lne = line.replace('![CDATA[', '')
@@ -241,14 +251,6 @@ def geturl(url):
 
 def shortid():
     return str(uuid.uuid4())[:8]
-
-
-def spl(txt):
-    try:
-        result = txt.split(',')
-    except (TypeError, ValueError):
-        result = txt
-    return [x for x in result if x]
 
 
 def striphtml(text):

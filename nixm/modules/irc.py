@@ -19,15 +19,15 @@ import _thread
 from ..command import NAME, command
 from ..object  import Object, edit, format, keys
 from ..persist import Cache, ident, last, write
-from ..runtime import Reactor, later, launch
+from ..runtime import Event, Reactor, later, launch
+
+
+"defines"
 
 
 IGNORE = ["PING", "PONG", "PRIVMSG"]
-
-
 output = None
 saylock = _thread.allocate_lock()
-
 
 
 def debug(txt):
@@ -44,6 +44,9 @@ def init():
     irc.events.ready.wait()
     debug(f'{format(Config, skip="edited,password")}')
     return irc
+
+
+"config"
 
 
 class Config(Object):
@@ -74,32 +77,7 @@ class Config(Object):
         self.username = Config.username
 
 
-class Event:
-
-    def __init__(self):
-        self._ready  = threading.Event()
-        self._thr    = None
-        self.orig    = ""
-        self.result  = []
-        self.type    = "event"
-
-    def __getattr__(self, key):
-        return self.__dict__.get(key, "")
-
-    def __str__(self):
-        return str(self.__dict__)
-
-    def ready(self):
-        self._ready.set()
-
-    def reply(self, txt):
-        self.result.append(txt)
-
-    def wait(self):
-        self._ready.wait()
-        if self._thr:
-            self._thr.join()
-
+"wrapper"
 
 
 class TextWrap(textwrap.TextWrapper):
@@ -115,6 +93,9 @@ class TextWrap(textwrap.TextWrapper):
 
 
 wrapper = TextWrap()
+
+
+"output"
 
 
 class Output:
@@ -177,6 +158,9 @@ class Output:
         if chan in Output.cache:
             return len(getattr(Output.cache, chan, []))
         return 0
+
+
+"irc"
 
 
 class IRC(Reactor, Output):
@@ -527,6 +511,9 @@ class IRC(Reactor, Output):
         self.events.ready.wait()
 
 
+"callbacks"
+
+
 def cb_auth(bot, evt):
     bot.docommand(f'AUTHENTICATE {bot.cfg.password}')
 
@@ -596,8 +583,6 @@ def cb_quit(bot, evt):
     debug(f"quit from {bot.cfg.server}")
     if evt.orig and evt.orig in bot.zelf:
         bot.stop()
-
-
 
 
 "commands"
