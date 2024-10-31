@@ -11,25 +11,16 @@ import sys
 import unittest
 
 
-import nixm
-import nixm.object
-import nixm.persist
-import nixm.runtime
+import nixt
+import nixt.object
+import nixt.persist
+import nixt.runtime
 
 
-from nixm.object import *
+from nixt.object import *
 
 
 PACKAGE = [
-    '__builtins__',
-    '__cached__',
-    '__doc__',
-    '__file__',
-    '__loader__',
-    '__name__',
-    '__package__',
-    '__path__',
-    '__spec__',
     'object',
     'persist',
     'runtime'
@@ -75,9 +66,10 @@ class TestInterface(unittest.TestCase):
     def test_package(self):
         okd = True
         for mod in PACKAGE:
-            mod1 = getattr(nixm, mod, None)
+            mod1 = getattr(nixt, mod, None)
             if not mod1:
                 okd = False
+                print(mod)
                 break
         self.assertTrue(okd)
 
