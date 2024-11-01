@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # This file is in the Public Domain.
+# pylint: disable=W0105
 
 
 "check basics"
@@ -9,8 +10,14 @@ import os
 import sys
 
 
+"defines"
+
+
 IGNORE = ["cli", "console", "daemon", "service", "modules/srv"]
 NAME = "nixm"
+
+
+"utilities"
 
 
 def ignore(txt):
@@ -26,6 +33,9 @@ def popen(txt):
              continue
         print(line.rstrip())
         sys.stdout.flush()
+
+
+"runtime"
 
 
 def main():

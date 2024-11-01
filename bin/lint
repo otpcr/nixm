@@ -9,7 +9,13 @@ import os
 import sys
 
 
+"defines"
+
+
 NAME = "nixm"
+
+
+"utilities"
 
 
 def popen(txt):
@@ -17,6 +23,9 @@ def popen(txt):
     for line in os.popen(txt).readlines():
         print(line.rstrip())
         sys.stdout.flush()
+
+
+"runtime"
 
 
 if os.path.exists("bin/clean"):

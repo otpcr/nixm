@@ -10,6 +10,9 @@ import sys
 import __main__
 
 
+"runtime"
+
+
 def main():
     "profile given filename."
     if len(sys.argv) <= 1:

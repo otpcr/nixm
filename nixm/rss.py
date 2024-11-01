@@ -19,15 +19,15 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote_plus, urlencode
 
 
-"defines"
-
-
 from nixt.object  import Object, format, update
 from nixt.persist import Cache, find, fntime, laps, last, write
 from nixt.runtime import Repeater, launch
 
 
 from .command import spl
+
+
+"defines"
 
 
 DEBUG = False
