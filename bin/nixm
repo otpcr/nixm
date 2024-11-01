@@ -10,10 +10,10 @@ import sys
 
 
 from nixt.object  import Config, keys
-from nixt.runtime import Client, Event, errors, wrap
+from nixt.runtime import Client, Event, errors
 
 
-from nixm.command import NAME, Commands, scanner, command, parse
+from nixm.command import NAME, Commands, scanner, command, parse, wrap
 from nixm         import face
 
 
