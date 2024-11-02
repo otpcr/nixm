@@ -99,7 +99,11 @@ def main():
         csl = Console()
         command(csl, evt)
         evt.wait()
+
+
+def wrapped():
+    wrap(main)
     
 
 if __name__ == "__main__":
-    wrap(main)
+    wrapped()

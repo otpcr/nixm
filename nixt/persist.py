@@ -13,7 +13,7 @@ import time
 import _thread
 
 
-from . import Object, dump, load, search, update
+from .object import Object, dump, load, search, update
 
 
 "defines"

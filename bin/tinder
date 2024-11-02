@@ -18,13 +18,13 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from nixt import Object
+from nixt.object  import Object
 from nixt.persist import Workdir, laps, skel
 
 
 from nixm.command import NAME, Config, Commands, command, parse, scanner
 from nixm.runtime import Client, Errors, Event, later, launch
-from nixm          import face
+from nixm         import face
 
 
 "defines"

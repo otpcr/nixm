@@ -29,6 +29,10 @@ classifiers=[
 ]
 
 
+[project.scripts]
+"nixm" = "nixm.main:wrapped"
+
+
 [project.urls]
 'home'   = 'https://pypi.org/project/nixm'
 'bugs'   = 'https://github.com/otpcr/nixm/issues'
@@ -37,8 +41,7 @@ classifiers=[
 
 [tool.setuptools]
 script-files = [
-    'bin/nixm',
-    'bin/nixmc',
+    'bin/nixmctl',
     'bin/nixmd',
     'bin/nixms'
 ]

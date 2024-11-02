@@ -7,8 +7,7 @@
 **SYNOPSIS**
 
 
-    | ``nixm  <cmd> [key=val] [key==val]``
-    | ``nixmc [-i] [-v]``
+    | ``nixmctl  <cmd> [key=val] [key==val]``
     | ``nixmd`` 
     | ``nixms``
 
@@ -27,12 +26,12 @@
     methods, so the namespace is not cluttered with method names. This
     makes storing and reading to/from json possible.
 
-    NIXT has all you need to program a unix cli program, such as disk
+    NIXM has all you need to program a unix cli program, such as disk
     perisistence for configuration files, event handler to handle the
     client/server connection, deferred exception handling to not crash
     on an error, etc.
 
-    NIXM is the demo bot using NIXT and both are Public Domain.
+    NIXM is the demo using NIXT and both are Public Domain.
 
     1. You need to set PYTHONPATH if you run this locally.
     2. You might need to uninstall and rm ~/.cache/pip in case of error.
@@ -66,16 +65,6 @@
     | ``$ nixm cmd``
     | ``cfg,cmd,dne,dpl,err,exp,imp,log,mod,mre,nme,``
     | ``now,pwd,rem,req,res,rss,srv,syn,tdo,thr,upt``
-
-    start a console
-
-    | ``$ nixmc``
-    | ``>``
-
-    use -i to init modules
-
-    | ``$ nixmc -i``
-    | ``>``
 
     start daemon
 
@@ -125,26 +114,26 @@
 
     irc
 
-    | ``$ nixm cfg server=<server>``
-    | ``$ nixm cfg channel=<channel>``
-    | ``$ nixm cfg nick=<nick>``
+    | ``$ nixmctl cfg server=<server>``
+    | ``$ nixmctl cfg channel=<channel>``
+    | ``$ nixmctl cfg nick=<nick>``
 
     sasl
 
-    | ``$ nixm pwd <nsvnick> <nspass>``
-    | ``$ nixm cfg password=<frompwd>``
+    | ``$ nixmctl pwd <nsvnick> <nspass>``
+    | ``$ nixmctl cfg password=<frompwd>``
 
     rss
 
-    | ``$ nixm rss <url>``
-    | ``$ nixm dpl <url> <item1,item2>``
-    | ``$ nixm rem <url>``
-    | ``$ nixm nme <url> <name>``
+    | ``$ nixmctl rss <url>``
+    | ``$ nixmctl dpl <url> <item1,item2>``
+    | ``$ nixmctl rem <url>``
+    | ``$ nixmctl nme <url> <name>``
 
     opml
 
-    | ``$ nixm exp``
-    | ``$ nixm imp <filename>``
+    | ``$ nixmctl exp``
+    | ``$ nixmctl imp <filename>``
 
 
 **SOURCE**
@@ -155,8 +144,7 @@
 **FILES**
 
     | ``~/.nixm``
-    | ``~/.local/bin/nixm``
-    | ``~/.local/bin/nixmc``
+    | ``~/.local/bin/nixmctl``
     | ``~/.local/bin/nixmd``
     | ``~/.local/bin/nixms``
     | ``~/.local/pipx/venvs/nixm/*``

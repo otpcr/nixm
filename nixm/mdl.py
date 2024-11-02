@@ -9,7 +9,7 @@ import datetime
 import time
 
 
-from nixt         import Object, construct, keys
+from nixt.object  import Object, construct, keys
 from nixt.persist import Cache, laps
 
 

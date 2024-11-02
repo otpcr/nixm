@@ -8,7 +8,7 @@
 import time
 
 
-from nixt         import Object
+from nixt.object  import Object
 from nixt.persist import find, fntime, laps, ident, write
 
 

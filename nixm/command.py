@@ -11,7 +11,7 @@ import time
 import _thread
 
 
-from nixt import Object
+from nixt.object  import Object
 from nixt.persist import Workdir
 
 

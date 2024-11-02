@@ -19,7 +19,7 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote_plus, urlencode
 
 
-from nixt         import Object, format, update
+from nixt.object  import Object, format, update
 from nixt.persist import Cache, find, fntime, laps, last, ident, write
 
 

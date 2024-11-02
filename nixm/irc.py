@@ -16,7 +16,7 @@ import time
 import _thread
 
 
-from nixt         import Object, edit, format, keys
+from nixt.object  import Object, edit, format, keys
 from nixt.persist import Cache, ident, last, write
 
 
