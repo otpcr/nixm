@@ -9,7 +9,7 @@ import time
 
 
 from nixt.object  import Object
-from nixt.persist import find, fntime, laps, write
+from nixt.persist import find, fntime, laps, ident, write
 
 
 "todo"
@@ -53,5 +53,5 @@ def tdo(event):
         return
     obj = Todo()
     obj.txt = event.rest
-    write(obj)
+    write(obj, ident(obj))
     event.reply('ok')

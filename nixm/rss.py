@@ -20,7 +20,7 @@ from urllib.parse import quote_plus, urlencode
 
 
 from nixt.object  import Object, format, update
-from nixt.persist import Cache, find, fntime, laps, last, write
+from nixt.persist import Cache, find, fntime, laps, last, ident, write
 from nixt.runtime import Repeater, launch
 
 
@@ -114,7 +114,7 @@ class Fetcher(Object):
                 if uurl in seen:
                     continue
                 if self.dosave:
-                    write(fed)
+                    write(fed, ident(fed))
                 result.append(fed)
             setattr(self.seen, feed.rss, urls)
             self.seenfn = write(self.seen, self.seenfn)
@@ -343,7 +343,7 @@ def rss(event):
             return
     feed = Rss()
     feed.rss = event.args[0]
-    write(feed)
+    write(feed, ident(feed))
     event.reply('ok')
 
 

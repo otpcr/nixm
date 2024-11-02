@@ -13,7 +13,7 @@ import _thread
 
 
 from nixt.object  import Object, update
-from nixt.persist import find, write
+from nixt.persist import find, ident, write
 
 
 from .rss import Rss
@@ -182,7 +182,7 @@ def imp(event):
             update(feed, obj)
             feed.rss = obj.xmlUrl
             feed.insertid = insertid
-            write(feed)
+            write(feed, ident(feed))
             nrs += 1
     if nrskip:
         event.reply(f"skipped {nrskip} urls.")

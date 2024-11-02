@@ -21,13 +21,13 @@ class Errors:
     errors = []
 
 
-def errors():
+def errors() -> list:
     for err in Errors.errors:
         for line in err:
             yield line
 
 
-def fmat(exc):
+def fmat(exc) -> str:
     return traceback.format_exception(
                                type(exc),
                                exc,
@@ -35,7 +35,7 @@ def fmat(exc):
                               )
 
 
-def later(exc):
+def later(exc) -> None:
     excp = exc.with_traceback(exc.__traceback__)
     fmt = fmat(excp)
     if fmt not in Errors.errors:
@@ -55,23 +55,23 @@ class Thread(threading.Thread):
         self.starttime = time.time()
         self.queue.put_nowait((func, args))
 
-    def __contains__(self, key):
+    def __contains__(self, key) -> bool:
         return key in self.__dict__
 
-    def __iter__(self):
+    def __iter__(self) -> list:
         return self
 
-    def __next__(self):
+    def __next__(self) -> list:
         yield from dir(self)
 
-    def size(self):
+    def size(self) -> int:
         return self.queue.qsize()
 
     def join(self, timeout=None):
         super().join(timeout)
         return self.result
 
-    def run(self):
+    def run(self) -> None:
         try:
             func, args = self.queue.get()
             self.result = func(*args)
@@ -81,14 +81,14 @@ class Thread(threading.Thread):
             later(ex)
 
 
-def launch(func, *args, **kwargs):
+def launch(func, *args, **kwargs) -> Thread:
     nme = kwargs.get("name", name(func))
     thread = Thread(func, nme, *args, **kwargs)
     thread.start()
     return thread
 
 
-def name(obj):
+def name(obj) -> str:
     typ = type(obj)
     if '__builtins__' in dir(typ):
         return obj.__name__
@@ -113,14 +113,14 @@ class Reactor:
         self.queue    = queue.Queue()
         self.stopped  = threading.Event()
 
-    def callback(self, evt):
+    def callback(self, evt) -> None:
         func = self.cbs.get(evt.type, None)
         if func:
             evt._thr = launch(func, self, evt)
         else:
             evt.ready()
 
-    def loop(self):
+    def loop(self) -> None:
         while not self.stopped.is_set():
             try:
                 evt = self.poll()
@@ -131,26 +131,26 @@ class Reactor:
     def poll(self):
         return self.queue.get()
 
-    def put(self, evt):
+    def put(self, evt) -> None:
         self.queue.put_nowait(evt)
 
-    def register(self, typ, cbs):
+    def register(self, typ, cbs) -> None:
         self.cbs[typ] = cbs
 
-    def start(self):
+    def start(self) -> None:
         launch(self.loop)
 
-    def stop(self):
+    def stop(self) -> None:
         self.stopped.set()
 
 
 class Client(Reactor):
 
-    def display(self, evt):
+    def display(self, evt) -> None:
         for txt in evt.result:
             self.raw(txt)
 
-    def raw(self, txt):
+    def raw(self, txt) -> None:
         raise NotImplementedError
 
 
@@ -166,19 +166,19 @@ class Event:
         self.type   = "event"
         self.txt    = ""
 
-    def __getattr__(self, key):
+    def __getattr__(self, key) -> "":
         return self.__dict__.get(key, "")
 
-    def __str__(self):
+    def __str__(self) -> "":
         return str(self.__dict__)
 
-    def ready(self):
+    def ready(self) -> None:
         self._ready.set()
 
-    def reply(self, txt):
+    def reply(self, txt) -> None:
         self.result.append(txt)
 
-    def wait(self):
+    def wait(self) -> None:
         self._ready.wait()
         if self._thr:
             self._thr.join()
@@ -198,11 +198,11 @@ class Timer:
         self.state = {}
         self.timer = None
 
-    def run(self):
+    def run(self) -> None:
         self.state["latest"] = time.time()
         launch(self.func, *self.args)
 
-    def start(self):
+    def start(self) -> None:
         timer = threading.Timer(self.sleep, self.run)
         timer.name   = self.name
         timer.sleep  = self.sleep
@@ -213,14 +213,14 @@ class Timer:
         timer.start()
         self.timer   = timer
 
-    def stop(self):
+    def stop(self) -> None:
         if self.timer:
             self.timer.cancel()
 
 
 class Repeater(Timer):
 
-    def run(self):
+    def run(self) -> None:
         launch(self.start)
         super().run()
 
