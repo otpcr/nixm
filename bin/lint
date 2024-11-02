@@ -32,4 +32,4 @@ if os.path.exists("bin/clean"):
     popen("bin/clean")
 
 
-popen(f"pylint {NAME} bin/{NAME}* bin/tinder tests")
+popen(f"pylint {NAME} bin/{NAME}ctl bin/{NAME}d bin/{NAME}s bin/tinder tests")
