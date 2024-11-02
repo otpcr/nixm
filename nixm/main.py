@@ -12,12 +12,11 @@ import termios
 import time
 
 
-from nixt.object  import Config
 from nixt.persist import Workdir
 from nixt.runtime import Client, Errors, Event, errors, later
 
 
-from .command import NAME, command, forever, parse, scanner
+from .command import NAME, Config, command, forever, parse, scanner
 from .        import face
 
 

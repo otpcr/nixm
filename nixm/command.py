@@ -23,6 +23,14 @@ NAME = __file__.rsplit(os.sep, maxsplit=2)[-2]
 Workdir.wdr = os.path.expanduser(f"~/.{NAME}")
 
 
+"config"
+
+
+class Config(Obj):
+
+    pass
+
+
 "commands"
 
 

@@ -35,11 +35,6 @@ class Obj(Object):
         return self.__dict__.get(key, "")
 
 
-class Config(Obj):
-
-    pass
-
-
 "methods"
 
 
@@ -233,7 +228,6 @@ def dumps(*args, **kw):
 
 def __dir__():
     return (
-        'Config',
         'Object',
         'Obj',
         'construct',
