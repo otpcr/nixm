@@ -13,10 +13,10 @@ import time
 
 
 from nixt.persist import Workdir
-from nixt.runtime import Client, Errors, Event, errors, later
 
 
 from .command import NAME, Config, command, forever, parse, scanner
+from .runtime import Client, Errors, Event, errors, later
 from .        import face
 
 

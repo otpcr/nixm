@@ -11,9 +11,11 @@ import time
 import _thread
 
 
-from nixt.object  import Obj
+from nixt import Object
 from nixt.persist import Workdir
-from nixt.runtime import later, launch
+
+
+from .runtime import later, launch
 
 
 "defines"
@@ -24,6 +26,13 @@ Workdir.wdr = os.path.expanduser(f"~/.{NAME}")
 
 
 "config"
+
+
+class Obj(Object):
+
+    def __getattr__(self, key):
+        return self.__dict__.get(key, "")
+
 
 
 class Config(Obj):

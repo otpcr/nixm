@@ -12,7 +12,7 @@ import uuid
 import _thread
 
 
-from nixt.object  import Object, update
+from nixt         import Object, update
 from nixt.persist import find, ident, write
 
 

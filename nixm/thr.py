@@ -9,7 +9,7 @@ import threading
 import time
 
 
-from nixt.object  import Object, update
+from nixt         import Object, update
 from nixt.persist import laps
 
 

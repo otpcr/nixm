@@ -223,21 +223,26 @@ def dumps(*args, **kw) -> str:
     return json.dumps(*args, **kw)
 
 
+from nixt.persist import ident, read, write
+
+
 "interface"
 
 
 def __dir__():
     return (
         'Object',
-        'Obj',
         'construct',
         'dumps',
         'edit',
+        'ident',
         'keys',
         'loads',
         'items',
         'match',
+        'read',
         'search',
         'update',
-        'values'
+        'values',
+        'write'
     )
