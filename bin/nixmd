@@ -14,7 +14,7 @@ from nixt.persist import pidfile, pidname
 
 
 from nixm.command import NAME, forever, privileges, scanner, wrap
-from nixm         import face
+from nixm.modules import face
 
 
 "defines"

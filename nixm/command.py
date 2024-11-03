@@ -15,7 +15,7 @@ from nixt.object  import Object
 from nixt.persist import Workdir
 
 
-from .runtime import later, launch
+from nixm.runtime import later, launch
 
 
 "defines"
