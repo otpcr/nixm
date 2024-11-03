@@ -5,7 +5,7 @@
 "show errors"
 
 
-from .runtime import Errors
+from ..runtime import Errors
 
 
 "commands"

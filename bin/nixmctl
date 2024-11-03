@@ -9,12 +9,12 @@
 import sys
 
 
-from nixt import keys
+from nixt.object  import keys
 
 
 from nixm.command import NAME, Commands, Config, scanner, command, parse, wrap
+from nixm.modules import face
 from nixm.runtime import Client, Event, errors
-from nixm         import face
 
 
 "defines"

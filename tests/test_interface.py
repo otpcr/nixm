@@ -14,7 +14,6 @@ import unittest
 import nixt
 import nixt.object
 import nixt.persist
-import nixt.runtime
 
 
 from nixt.object import *
@@ -22,8 +21,7 @@ from nixt.object import *
 
 PACKAGE = [
     'object',
-    'persist',
-    'runtime'
+    'persist'
 ]
 
 
