@@ -11,17 +11,19 @@ import sys
 import unittest
 
 
-import nixt
-import nixt.object
-import nixt.persist
+import nixm
+import nixm.object
+import nixm.persist
 
 
-from nixt.object import *
+from nixm.object import *
 
 
 PACKAGE = [
+    'command',
     'object',
-    'persist'
+    'persist',
+    'runtime'
 ]
 
 
@@ -64,7 +66,7 @@ class TestInterface(unittest.TestCase):
     def test_package(self):
         okd = True
         for mod in PACKAGE:
-            mod1 = getattr(nixt, mod, None)
+            mod1 = getattr(nixm, mod, None)
             if not mod1:
                 okd = False
                 print(mod)

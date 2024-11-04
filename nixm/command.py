@@ -11,11 +11,9 @@ import time
 import _thread
 
 
-from nixt.object  import Object
-from nixt.persist import Workdir
-
-
-from nixm.runtime import later, launch
+from .object  import Object
+from .persist import Workdir
+from .runtime import later, launch
 
 
 "defines"

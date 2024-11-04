@@ -6,11 +6,9 @@
 "service"
 
 
-from nixt.persist import pidfile, pidname
-
-
 from nixm.command import NAME, forever, privileges, scanner, wrap
 from nixm.modules import face
+from nixm.persist import pidfile, pidname
 from nixm.runtime import errors
 
 

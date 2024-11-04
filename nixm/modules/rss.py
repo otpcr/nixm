@@ -19,11 +19,9 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote_plus, urlencode
 
 
-from nixt.object  import Object, format, update
-from nixt.persist import Cache, find, fntime, laps, last, ident, write
-
-
-from ..command import spl
+from ..command import laps, spl
+from ..object  import Object, format, update
+from ..persist import Cache, find, fntime, last, ident, write
 from ..runtime import Repeater, launch
 
 

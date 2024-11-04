@@ -8,8 +8,9 @@
 import time
 
 
-from nixt.object  import Object
-from nixt.persist import find, fntime, laps, ident, write
+from ..command import laps
+from ..object  import Object
+from ..persist import find, fntime, ident, write
 
 
 "classes"

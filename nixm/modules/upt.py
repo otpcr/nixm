@@ -8,7 +8,7 @@
 import time
 
 
-from nixt.persist import laps
+from ..command import laps
 
 
 "defines"

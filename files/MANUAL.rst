@@ -1,3 +1,7 @@
+N I X M
+=======
+
+
 **NAME**
 
 
@@ -15,13 +19,13 @@
 **DESCRIPTION**
 
 
-    NIXT contains all the python3 code to program objects in a functional
+    NIXM contains all the python3 code to program objects in a functional
     way. It provides a base Object class that has only dunder methods, all
     methods are factored out into functions with the objects as the first
     argument. It is called Object Programming (OP), OOP without the
     oriented.
 
-    NIXT allows for easy json save//load to/from disk of objects. It
+    NIXM allows for easy json save//load to/from disk of objects. It
     provides an "clean namespace" Object class that only has dunder
     methods, so the namespace is not cluttered with method names. This
     makes storing and reading to/from json possible.
@@ -31,7 +35,7 @@
     client/server connection, deferred exception handling to not crash
     on an error, etc.
 
-    NIXM is the demo using NIXT and both are Public Domain.
+    NIXM is Public Domain.
 
     1. You need to set PYTHONPATH if you run this locally.
     2. You might need to uninstall and rm ~/.cache/pip in case of error.
@@ -62,7 +66,7 @@
 
     see list of commands
 
-    | ``$ nixm cmd``
+    | ``$ nixmctl cmd``
     | ``cfg,cmd,dne,dpl,err,exp,imp,log,mod,mre,nme,``
     | ``now,pwd,rem,req,res,rss,srv,syn,tdo,thr,upt``
 

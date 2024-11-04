@@ -8,8 +8,9 @@
 import time
 
 
-from nixt.object  import format
-from nixt.persist import find, fntime, laps, long, skel, types
+from ..command import laps
+from ..object  import format
+from ..persist import find, fntime, long, skel, types
 
 
 "commands"

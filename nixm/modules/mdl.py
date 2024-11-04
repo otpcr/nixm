@@ -9,10 +9,9 @@ import datetime
 import time
 
 
-from nixt.object  import Object, construct, keys
-from nixt.persist import Cache, laps
-
-
+from ..command import laps
+from ..object  import Object, construct, keys
+from ..persist import Cache
 from ..runtime import Event, Repeater
 
 

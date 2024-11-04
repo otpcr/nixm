@@ -6,9 +6,8 @@
 "interface"
 
 
-from . import cmd, err, fnd, irc, log, mdl, mod, opm, req
-from . import rss, tdo, thr, upt
-
+from . import cmd, err, fnd, irc, log, mod, opm, rss, tdo, thr, upt
+from . import mdl, req
 
 def __dir__():
     return (
