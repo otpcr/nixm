@@ -12,8 +12,10 @@ import unittest
 
 
 import nixm
+import nixm.command
 import nixm.object
 import nixm.persist
+import nixm.runtime
 
 
 from nixm.object import *
