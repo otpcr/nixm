@@ -142,10 +142,6 @@ class Event:
             self._thr.join()
 
 
-"output"
-
-
-
 "threads"
 
 

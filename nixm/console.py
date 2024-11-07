@@ -76,14 +76,23 @@ def main():
     parse(cfg, " ".join(sys.argv[1:]))
     if "v" in cfg.opts:
         banner()
-    for mod, thr in scanner(face, init="i" in cfg.opts, disable=cfg.sets.dis):
-        if "v" in cfg.opts and "output" in dir(mod):
-            mod.output = print
-        if thr and "w" in cfg.opts:
-            thr.join()
-    csl = Console()
-    csl.start()
-    forever()
+    if "c" in cfg.opts:
+        for mod, thr in scanner(face, init="i" in cfg.opts, disable=cfg.sets.dis):
+            if "v" in cfg.opts and "output" in dir(mod):
+                mod.output = print
+            if thr and "w" in cfg.opts:
+                thr.join()
+        csl = Console()
+        csl.start()
+        forever()
+    else:
+        scanner(face)
+        evt = Event()
+        evt.txt = cfg.txt
+        evt.type = "command"
+        csl = CLI()
+        command(csl, evt)
+        evt.wait()
 
 
 if __name__ == "__main__":
