@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-
+ 
 [build-system]
 requires = [
     'setuptools>=43.0.0',
@@ -10,7 +10,7 @@ build-backend = 'setuptools.build_meta'
 
 [project]
 name = 'nixm'
-version = '44'
+version = '45'
 authors = [
     {name = 'Bart Thate', email = 'record11719@gmail.com' },
 ]
@@ -34,6 +34,7 @@ classifiers=[
 
 [tool.setuptools]
 script-files = [
+    'bin/nixm',
     'bin/nixmctl',
     'bin/nixmd',
     'bin/nixms'

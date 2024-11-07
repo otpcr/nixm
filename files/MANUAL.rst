@@ -10,7 +10,6 @@ N I X M
 
 **SYNOPSIS**
 
-
     | ``nixmctl  <cmd> [key=val] [key==val]``
     | ``nixmd`` 
     | ``nixms``
