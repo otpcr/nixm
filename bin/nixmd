@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # This file is placed in the Public Domain.
-# pylint: disable=C,W0105,W0212
+# pylint: disable=C,W0212
 
 
 "daemon"
@@ -15,13 +15,7 @@ from nixm.modules import face
 from nixm.persist import pidfile, pidname
 
 
-"defines"
-
-
 scan = scanner
-
-
-"utilities"
 
 
 def daemon(verbose=False):
@@ -42,9 +36,6 @@ def daemon(verbose=False):
     os.umask(0)
     os.chdir("/")
     os.nice(10)
-
-
-"runttime"
 
 
 def main():

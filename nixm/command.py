@@ -11,34 +11,14 @@ import time
 import _thread
 
 
-from .object  import Object
+from .object  import Obj
 from .persist import Workdir
 from .runtime import later, launch
 
 
-"defines"
-
-
-NAME = __file__.rsplit(os.sep, maxsplit=2)[-2]
+NAME        = __file__.rsplit(os.sep, maxsplit=2)[-2]
+STARTTIME   = time.time()
 Workdir.wdr = os.path.expanduser(f"~/.{NAME}")
-
-
-"config"
-
-
-class Obj(Object):
-
-    def __getattr__(self, key):
-        return self.__dict__.get(key, "")
-
-
-
-class Config(Obj):
-
-    pass
-
-
-"commands"
 
 
 class Commands:
@@ -72,7 +52,9 @@ def command(bot, evt):
     evt.ready()
 
 
-"utilities"
+class Config(Obj):
+
+    pass
 
 
 def forever():
@@ -224,15 +206,16 @@ def wrap(func):
         later(ex)
 
 
-"interface"
-
-
 def __dir__():
     return (
         'Commands',
+        'Config',
         'command',
+        'forever',
         'laps',
         'parse',
+        'privileges',
         'scanner',
-        'spl'
+        'spl',
+        'wrap'
     )

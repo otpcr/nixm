@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,R,W0105,W0719,E1101
+# pylint: disable=C,R,W0105,W0719,E1101,E0402
 
 
 "persist to disk"
@@ -16,16 +16,10 @@ import _thread
 from .object import Object, dump, load, search, update
 
 
-"defines"
-
-
 cachelock = _thread.allocate_lock()
 disklock  = _thread.allocate_lock()
 lock      = _thread.allocate_lock()
 p         = os.path.join
-
-
-"workdir"
 
 
 class Workdir:
@@ -34,7 +28,7 @@ class Workdir:
     wdr = ''
 
 
-def long(name) -> str:
+def long(name):
     split = name.split(".")[-1].lower()
     res = name
     for names in types():
@@ -44,26 +38,23 @@ def long(name) -> str:
     return res
 
 
-def modname() -> str:
+def modname():
     return p(Workdir.wdr, "mods")
 
 
-def pidname(name) -> str:
+def pidname(name):
     return p(Workdir.wdr, f"{name}.pid")
 
 
-def store(pth="") -> str:
+def store(pth=""):
     stor = p(Workdir.wdr, "store", "")
     if not os.path.exists(stor):
         skel()
     return p(Workdir.wdr, "store", pth)
 
 
-def whitelist(clz) -> None:
+def whitelist(clz):
     Workdir.fqns.append(fqn(clz))
-
-
-"cache"
 
 
 class Cache:
@@ -71,17 +62,17 @@ class Cache:
     objs = {}
 
     @staticmethod
-    def add(path, obj) -> None:
+    def add(path, obj):
         with cachelock:
             Cache.objs[path] = obj
 
     @staticmethod
-    def get(path) -> Object:
+    def get(path):
         with cachelock:
             return Cache.objs.get(path)
 
     @staticmethod
-    def typed(match) -> list:
+    def typed(match):
         with cachelock:
             for key in Cache.objs:
                 if match not in key:
@@ -92,12 +83,12 @@ class Cache:
 "utilities"
 
 
-def cdir(pth) -> str:
+def cdir(pth):
     path = pathlib.Path(pth)
     path.parent.mkdir(parents=True, exist_ok=True)
 
 
-def find(mtc, selector=None, index=None, deleted=False, matching=False) -> list:
+def find(mtc, selector=None, index=None, deleted=False, matching=False):
     clz = long(mtc)
     nrs = -1
     for fnm in sorted(fns(clz), key=fntime):
@@ -118,7 +109,7 @@ def find(mtc, selector=None, index=None, deleted=False, matching=False) -> list:
         yield (fnm, obj)
 
 
-def fns(mtc="") -> list:
+def fns(mtc=""):
     dname = ''
     pth = store(mtc)
     for rootdir, dirs, _files in os.walk(pth, topdown=False):
@@ -130,7 +121,7 @@ def fns(mtc="") -> list:
                         yield strip(p(ddd, fll))
 
 
-def fntime(daystr) -> str:
+def fntime(daystr):
     daystr = daystr.replace('_', ':')
     datestr = ' '.join(daystr.split(os.sep)[-2:])
     if '.' in datestr:
@@ -143,7 +134,46 @@ def fntime(daystr) -> str:
     return timed
 
 
-def pidfile(filename) -> str:
+def laps(seconds, short=True):
+    txt = ""
+    nsec = float(seconds)
+    if nsec < 1:
+        return f"{nsec:.2f}s"
+    yea = 365*24*60*60
+    week = 7*24*60*60
+    nday = 24*60*60
+    hour = 60*60
+    minute = 60
+    yeas = int(nsec/yea)
+    nsec -= yeas*yea
+    weeks = int(nsec/week)
+    nsec -= weeks*week
+    nrdays = int(nsec/nday)
+    nsec -= nrdays*nday
+    hours = int(nsec/hour)
+    nsec -= hours*hour
+    minutes = int(nsec/minute)
+    nsec -= int(minute*minutes)
+    sec = int(nsec)
+    if yeas:
+        txt += f"{yeas}y"
+    if weeks:
+        nrdays += weeks * 7
+    if nrdays:
+        txt += f"{nrdays}d"
+    if short and txt:
+        return txt.strip()
+    if hours:
+        txt += f"{hours}h"
+    if minutes:
+        txt += f"{minutes}m"
+    if sec:
+        txt += f"{sec}s"
+    txt = txt.strip()
+    return txt
+
+
+def pidfile(filename):
     if os.path.exists(filename):
         os.unlink(filename)
     path2 = pathlib.Path(filename)
@@ -151,39 +181,44 @@ def pidfile(filename) -> str:
     with open(filename, "w", encoding="utf-8") as fds:
         fds.write(str(os.getpid()))
 
-def skel() -> str:
+
+def skel():
     stor = p(Workdir.wdr, "store", "")
     path = pathlib.Path(stor)
     path.mkdir(parents=True, exist_ok=True)
+    return path
 
 
-def strip(pth, nmr=3) -> str:
+def strip(pth, nmr=3):
     return os.sep.join(pth.split(os.sep)[-nmr:])
 
 
-def types() -> list:
+def types():
     return os.listdir(store())
 
 
 "methods"
 
-def read(obj, pth) -> None:
+
+def read(obj, pth):
     with disklock:
-        fetch(obj, store(pth))
+        pth2 = store(pth)
+        fetch(obj, pth2)
+        return os.sep.join(pth.split(os.sep)[-3:])
 
 
-def fqn(obj) -> str:
+def fqn(obj):
     kin = str(type(obj)).split()[-1][1:-2]
     if kin == "type":
         kin = f"{obj.__module__}.{obj.__name__}"
     return kin
 
 
-def ident(obj) -> str:
+def ident(obj):
     return p(fqn(obj), *str(datetime.datetime.now()).split())
 
 
-def last(obj, selector=None) -> Object:
+def last(obj, selector=None):
     if selector is None:
         selector = {}
     result = sorted(
@@ -198,7 +233,7 @@ def last(obj, selector=None) -> Object:
     return res
 
 
-def fetch(obj, pth) -> None:
+def fetch(obj, pth):
     with lock:
         with open(pth, 'r', encoding='utf-8') as ofile:
             try:
@@ -207,12 +242,16 @@ def fetch(obj, pth) -> None:
                 raise Exception(pth) from ex
 
 
-def write(obj, pth) -> str:
+def write(obj, pth=None):
+    if pth is None:
+        pth = ident(obj)
     with disklock:
-        sync(obj, store(pth))
+        pth2 = store(pth)
+        sync(obj, pth2)
+        return pth
 
 
-def sync(obj, pth) -> None:
+def sync(obj, pth):
     with lock:
         cdir(pth)
         with open(pth, 'w', encoding='utf-8') as ofile:

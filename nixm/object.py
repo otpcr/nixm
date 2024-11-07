@@ -8,24 +8,21 @@
 import json
 
 
-"classes"
-
-
 class Object:
 
     def __contains__(self, key):
         return key in dir(self)
 
-    def __getstate__(self) -> None:
+    def __getstate__(self):
         pass
 
-    def __iter__(self) -> list:
+    def __iter__(self):
         return iter(self.__dict__)
 
-    def __len__(self) -> int:
+    def __len__(self):
         return len(self.__dict__)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return str(self.__dict__)
 
 
@@ -35,10 +32,8 @@ class Obj(Object):
         return self.__dict__.get(key, "")
 
 
-"methods"
 
-
-def construct(obj, *args, **kwargs) -> None:
+def construct(obj, *args, **kwargs):
     if args:
         val = args[0]
         if isinstance(val, zip):
@@ -51,7 +46,7 @@ def construct(obj, *args, **kwargs) -> None:
         update(obj, kwargs)
 
 
-def edit(obj, setter, skip=False) -> None:
+def edit(obj, setter, skip=False):
     for key, val in items(setter):
         if skip and val == "":
             continue
@@ -73,7 +68,7 @@ def edit(obj, setter, skip=False) -> None:
             setattr(obj, key, val)
 
 
-def format(obj, args=None, skip=None, plain=False) -> str:
+def format(obj, args=None, skip=None, plain=False):
     if args is None:
         args = keys(obj)
     if skip is None:
@@ -97,26 +92,26 @@ def format(obj, args=None, skip=None, plain=False) -> str:
 
 
 
-def items(obj) -> dict:
+def items(obj):
     if isinstance(obj,type({})):
         return obj.items()
     else:
         return obj.__dict__.items()
 
 
-def keys(obj) -> list:
+def keys(obj):
     if isinstance(obj, type({})):
         return obj.keys()
     return list(obj.__dict__.keys())
 
 
-def match(obj, txt) -> list:
+def match(obj, txt):
     for key in keys(obj):
         if txt in key:
             yield key
 
 
-def search(obj, selector, matching=None) -> bool:
+def search(obj, selector, matching=None):
     res = False
     if not selector:
         return res
@@ -134,18 +129,15 @@ def search(obj, selector, matching=None) -> bool:
     return res
 
 
-def update(obj, data) -> None:
+def update(obj, data):
     if isinstance(data, type({})):
         obj.__dict__.update(data)
     else:
         obj.__dict__.update(vars(data))
 
 
-def values(obj) -> list:
+def values(obj):
     return obj.__dict__.values()
-
-
-"decoder"
 
 
 class ObjectDecoder(json.JSONDecoder):
@@ -153,35 +145,32 @@ class ObjectDecoder(json.JSONDecoder):
     def __init__(self, *args, **kwargs):
         json.JSONDecoder.__init__(self, *args, **kwargs)
 
-    def decode(self, s, _w=None) -> Object:
+    def decode(self, s, _w=None):
         val = json.JSONDecoder.decode(self, s)
         if not val:
             val = {}
         return hook(val)
 
-    def raw_decode(self, s, idx=0) -> Object:
+    def raw_decode(self, s, idx=0):
         return json.JSONDecoder.raw_decode(self, s, idx)
 
 
-def hook(objdict) -> Object:
+def hook(objdict):
     obj = Object()
     construct(obj, objdict)
     return obj
 
 
-def load(fpt, *args, **kw) -> Object:
+def load(fpt, *args, **kw):
     kw["cls"] = ObjectDecoder
     kw["object_hook"] = hook
     return json.load(fpt, *args, **kw)
 
 
-def loads(string, *args, **kw) -> Object:
+def loads(string, *args, **kw):
     kw["cls"] = ObjectDecoder
     kw["object_hook"] = hook
     return json.loads(string, *args, **kw)
-
-
-"encoder"
 
 
 class ObjectEncoder(json.JSONEncoder):
@@ -209,26 +198,24 @@ class ObjectEncoder(json.JSONEncoder):
     def encode(self, o) -> str:
         return json.JSONEncoder.encode(self, o)
 
-    def iterencode(self, o, _one_shot=False) -> str:
+    def iterencode(self, o, _one_shot=False):
         return json.JSONEncoder.iterencode(self, o, _one_shot)
 
 
-def dump(*args, **kw) -> str:
+def dump(*args, **kw):
     kw["cls"] = ObjectEncoder
     return json.dump(*args, **kw)
 
 
-def dumps(*args, **kw) -> str:
+def dumps(*args, **kw):
     kw["cls"] = ObjectEncoder
     return json.dumps(*args, **kw)
-
-
-"interface"
 
 
 def __dir__():
     return (
         'Object',
+        'Obj',
         'construct',
         'dumps',
         'edit',
@@ -238,5 +225,5 @@ def __dir__():
         'match',
         'search',
         'update',
-        'values',
+        'values'
     )

@@ -25,15 +25,8 @@ from nixm.persist import Workdir, skel
 from nixm.runtime import Client, Errors, Event, later, launch
 
 
-"defines"
-
-
-Workdir.wdr = os.path.expanduser(f"~/.{NAME}")
-
-
 cfg = Config()
 cfg.index = 0
-face.rss.DEBUG = True
 
 
 LAP = 1
@@ -41,6 +34,9 @@ NRS = 1
 NRCOMMAND = 1
 PERCALL   = 1
 STARTTIME = time.time()
+
+
+face.rss.DEBUG = True
 
 
 events = []
@@ -64,9 +60,6 @@ param.tdo = ["mekker", ""]
 param.ver = [""]
 
 
-"cli"
-
-
 class CLI(Client):
 
     def __init__(self):
@@ -76,9 +69,6 @@ class CLI(Client):
     def raw(self, txt):
         if "v" in cfg.opts:
             print(txt)
-
-
-"utilities"
 
 
 def banner():
@@ -128,13 +118,14 @@ def wrap(function):
             termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, old3)
 
 
-"runtime"
-
-
 def main():
     Workdir.wdr = ".test"
     parse(cfg, " ".join(sys.argv[1:]))
-    scanner(face)
+    if "m" in cfg.opts and os.path.exists("examples"):
+        import examples.face as MODS
+    else:
+        MODS = None
+    scanner(face, MODS)
     nrcommands = len(Commands.cmds) or 1
     if "v" in cfg.opts:
         banner()
@@ -161,6 +152,7 @@ def main():
         if not Errors.errors:
             print("no errors")
         print(platform.python_version())
+
 
 if __name__ == "__main__":
     wrap(main)

@@ -12,33 +12,138 @@ import traceback
 import _thread
 
 
-"errors"
+"output"
 
 
-class Errors:
+class Output:
 
-    errors = []
+    cache = {}
+
+    def __init__(self):
+        self.dostop = threading.Event()
+        self.oqueue = queue.Queue()
+
+    def dosay(self, channel, txt):
+        raise NotImplementedError
+
+    @staticmethod
+    def extend(channel, txtlist):
+        if channel not in Output.cache:
+            Output.cache[channel] = []
+        Output.cache[channel].extend(txtlist)
+
+    @staticmethod
+    def gettxt(channel):
+        txt = None
+        try:
+            txt = Output.cache[channel].pop(0)
+        except (KeyError, IndexError):
+            pass
+        return txt
+
+    def oput(self, channel, txt):
+        if channel and channel not in Output.cache:
+            Output.cache[channel] = []
+        self.oqueue.put_nowait((channel, txt))
+
+    def out(self):
+        while not self.dostop.is_set():
+            (channel, txt) = self.oqueue.get()
+            if channel is None and txt is None:
+                break
+            if self.dostop.is_set():
+                break
+            self.dosay(channel, txt)
+
+    @staticmethod
+    def size(chan):
+        if chan in Output.cache:
+            return len(getattr(Output.cache, chan, []))
+
+    def start(self):
+        launch(self.out)
 
 
-def errors() -> list:
-    for err in Errors.errors:
-        for line in err:
-            yield line
+"reactor"
 
 
-def fmat(exc) -> str:
-    return traceback.format_exception(
-                               type(exc),
-                               exc,
-                               exc.__traceback__
-                              )
+class Reactor:
+
+    def __init__(self):
+        self.cbs      = {}
+        self.queue    = queue.Queue()
+        self.stopped  = threading.Event()
+
+    def callback(self, evt):
+        func = self.cbs.get(evt.type, None)
+        if func:
+            evt._thr = launch(func, self, evt)
+        elif "ready" in dir(evt):
+            evt.ready()
+
+    def loop(self):
+        while not self.stopped.is_set():
+            try:
+                evt = self.poll()
+                self.callback(evt)
+            except (KeyboardInterrupt, EOFError):
+                _thread.interrupt_main()
+
+    def poll(self):
+        return self.queue.get()
+
+    def put(self, evt):
+        self.queue.put_nowait(evt)
+
+    def register(self, typ, cbs):
+        self.cbs[typ] = cbs
+
+    def start(self):
+        launch(self.loop)
+
+    def stop(self):
+        self.stopped.set()
 
 
-def later(exc) -> None:
-    excp = exc.with_traceback(exc.__traceback__)
-    fmt = fmat(excp)
-    if fmt not in Errors.errors:
-        Errors.errors.append(fmt)
+class Client(Reactor):
+
+    def display(self, evt):
+        for txt in evt.result:
+            self.raw(txt)
+
+    def raw(self, txt):
+        raise NotImplementedError
+
+
+class Event:
+
+    def __init__(self):
+        self._ready = threading.Event()
+        self._thr   = None
+        self.result = []
+        self.type   = "event"
+        self.txt    = ""
+
+    def __getattr__(self, key):
+        return self.__dict__.get(key, "")
+
+    def __str__(self):
+        return str(self.__dict__)
+
+    def ready(self):
+        self._ready.set()
+
+    def reply(self, txt):
+        self.result.append(txt)
+
+    def wait(self):
+        self._ready.wait()
+        if self._thr:
+            self._thr.join()
+
+
+"output"
+
 
 
 "threads"
@@ -54,23 +159,23 @@ class Thread(threading.Thread):
         self.starttime = time.time()
         self.queue.put_nowait((func, args))
 
-    def __contains__(self, key) -> bool:
+    def __contains__(self, key):
         return key in self.__dict__
 
-    def __iter__(self) -> list:
+    def __iter__(self):
         return self
 
-    def __next__(self) -> list:
+    def __next__(self):
         yield from dir(self)
 
-    def size(self) -> int:
+    def size(self):
         return self.queue.qsize()
 
     def join(self, timeout=None):
         super().join(timeout)
         return self.result
 
-    def run(self) -> None:
+    def run(self):
         try:
             func, args = self.queue.get()
             self.result = func(*args)
@@ -80,14 +185,14 @@ class Thread(threading.Thread):
             later(ex)
 
 
-def launch(func, *args, **kwargs) -> Thread:
+def launch(func, *args, **kwargs):
     nme = kwargs.get("name", name(func))
     thread = Thread(func, nme, *args, **kwargs)
     thread.start()
     return thread
 
 
-def name(obj) -> str:
+def name(obj):
     typ = type(obj)
     if '__builtins__' in dir(typ):
         return obj.__name__
@@ -102,85 +207,32 @@ def name(obj) -> str:
     return None
 
 
-"reactor"
+"errors"
 
 
-class Reactor:
+class Errors:
 
-    def __init__(self):
-        self.cbs      = {}
-        self.queue    = queue.Queue()
-        self.stopped  = threading.Event()
+    errors = []
 
-    def callback(self, evt) -> None:
-        func = self.cbs.get(evt.type, None)
-        if func:
-            evt._thr = launch(func, self, evt)
-        else:
-            evt.ready()
+    @staticmethod
+    def format(exc):
+        return traceback.format_exception(
+                                   type(exc),
+                                   exc,
+                                   exc.__traceback__
+                                  )
 
-    def loop(self) -> None:
-        while not self.stopped.is_set():
-            try:
-                evt = self.poll()
-                self.callback(evt)
-            except (KeyboardInterrupt, EOFError):
-                _thread.interrupt_main()
-
-    def poll(self):
-        return self.queue.get()
-
-    def put(self, evt) -> None:
-        self.queue.put_nowait(evt)
-
-    def register(self, typ, cbs) -> None:
-        self.cbs[typ] = cbs
-
-    def start(self) -> None:
-        launch(self.loop)
-
-    def stop(self) -> None:
-        self.stopped.set()
+def errors():
+    for err in Errors.errors:
+        for line in err:
+            yield line
 
 
-class Client(Reactor):
-
-    def display(self, evt) -> None:
-        for txt in evt.result:
-            self.raw(txt)
-
-    def raw(self, txt) -> None:
-        raise NotImplementedError
-
-
-"event"
-
-
-class Event:
-
-    def __init__(self):
-        self._ready = threading.Event()
-        self._thr   = None
-        self.result = []
-        self.type   = "event"
-        self.txt    = ""
-
-    def __getattr__(self, key) -> "":
-        return self.__dict__.get(key, "")
-
-    def __str__(self) -> "":
-        return str(self.__dict__)
-
-    def ready(self) -> None:
-        self._ready.set()
-
-    def reply(self, txt) -> None:
-        self.result.append(txt)
-
-    def wait(self) -> None:
-        self._ready.wait()
-        if self._thr:
-            self._thr.join()
+def later(exc):
+    excp = exc.with_traceback(exc.__traceback__)
+    fmt = Errors.format(excp)
+    if fmt not in Errors.errors:
+        Errors.errors.append(fmt)
 
 
 "timers"
@@ -197,11 +249,11 @@ class Timer:
         self.state = {}
         self.timer = None
 
-    def run(self) -> None:
+    def run(self):
         self.state["latest"] = time.time()
         launch(self.func, *self.args)
 
-    def start(self) -> None:
+    def start(self):
         timer = threading.Timer(self.sleep, self.run)
         timer.name   = self.name
         timer.sleep  = self.sleep
@@ -212,14 +264,14 @@ class Timer:
         timer.start()
         self.timer   = timer
 
-    def stop(self) -> None:
+    def stop(self):
         if self.timer:
             self.timer.cancel()
 
 
 class Repeater(Timer):
 
-    def run(self) -> None:
+    def run(self):
         launch(self.start)
         super().run()
 
@@ -239,5 +291,5 @@ def __dir__():
         'errors',
         'later',
         'launch',
-        'name',
+        'name'
     )

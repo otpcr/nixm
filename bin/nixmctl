@@ -1,27 +1,57 @@
 #!/usr/bin/env python3
-# This file is place in the Public Domain.
-# pylint: disable=C,W0105
+# This file is placed in the Public Domain.
+# pylint: disable=C
 
 
-"cli"
+"console"
 
 
 import sys
 
 
-from nixm.command import NAME, Commands, Config, scanner, command, parse, wrap
+from nixm.command import NAME, Commands, Config
+from nixm.command import command, parse, scanner, wrap
 from nixm.modules import face
-from nixm.object  import keys
 from nixm.runtime import Client, Event, errors
 
 
-"defines"
+cfg  = Config()
 
 
-cfg = Config()
+class CLI(Client):
+
+    def __init__(self):
+        Client.__init__(self)
+        self.register("command", command)
+
+    def raw(self, txt):
+        print(txt)
 
 
-TEXT = """[Unit]
+def srv(event):
+    import getpass
+    name  = getpass.getuser()
+    event.reply(TXT % (NAME.upper(), name, name, name, NAME))
+
+
+def wrapped():
+    wrap(main)
+    for line in errors():
+        print(line)
+
+def main():
+    Commands.add(srv)
+    parse(cfg, " ".join(sys.argv[1:]))
+    scanner(face)
+    evt = Event()
+    evt.txt = cfg.txt
+    evt.type = "command"
+    csl = CLI()
+    command(csl, evt)
+    evt.wait()
+
+
+TXT = """[Unit]
 Description=%s
 After=network-online.target
 
@@ -35,47 +65,5 @@ ExecStart=/home/%s/.local/bin/%ss
 WantedBy=multi-user.target"""
 
 
-"classes"
-
-
-class CLI(Client):
-
-    def __init__(self):
-        Client.__init__(self)
-        self.register("command", command)
-
-    def raw(self, txt):
-        print(txt)
-
-
-"commands"
-
-
-def cmd(event):
-    event.reply(",".join(sorted(keys(Commands.cmds))))
-
-
-def srv(event):
-    import getpass
-    name  = getpass.getuser()
-    event.reply(TEXT % (NAME.upper(), name, name, name, NAME))
-
-
-"runtime"
-
-
-def main():
-    Commands.add(srv)
-    parse(cfg, " ".join(sys.argv[1:]))
-    scanner(face)
-    evt = Event()
-    evt.txt = cfg.txt
-    csl = CLI()
-    command(csl, evt)
-    evt.wait()
-
-
 if __name__ == "__main__":
-    wrap(main)
-    for text in errors():
-        print(text)
+    wrapped()

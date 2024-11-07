@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # This file is placed in the Public Domain.
-# pylint: disable=C,W0105,W0611,W0718
+# pylint: disable=C,W0718
 
 
 "console"
 
 
 import os
-import readline
+import readline # pylint: disable=W0611
 import sys
 import termios
 import time
@@ -16,31 +16,28 @@ import time
 sys.path.insert(0, os.getcwd())
 
 
-from nixt.persist import Workdir
-
-
 from nixm.command import NAME, Config, command, forever, parse, scanner
 from nixm.modules import face
-from nixm.runtime import Client, Errors, Event, errors, later
+from nixm.runtime import Client, Event, errors, later
 
 
-"defines"
+cfg = Config()
 
 
-cfg  = Config()
-
-
-"classes"
-
-
-class Console(Client):
+class CLI(Client):
 
     def __init__(self):
         Client.__init__(self)
         self.register("command", command)
 
+    def raw(self, txt):
+        print(txt)
+
+
+class Console(CLI):
+
     def callback(self, evt):
-        Client.callback(self, evt)
+        CLI.callback(self, evt)
         evt.wait()
 
     def poll(self):
@@ -49,16 +46,11 @@ class Console(Client):
         evt.type = "command"
         return evt
 
-    def raw(self, txt):
-        print(txt)
-
-
-"utilities"
-
 
 def banner():
     tme = time.ctime(time.time()).replace("  ", " ")
     print(f"{NAME.upper()} since {tme}")
+    sys.stdout.flush()
 
 
 def wrap(func):
@@ -80,34 +72,37 @@ def wrap(func):
         print(txt)
 
 
-"runtime"
-
+def wrapped():
+    wrap(main)
+    
 
 def main():
     parse(cfg, " ".join(sys.argv[1:]))
     if "v" in cfg.opts:
         banner()
-    for mod, thr in scanner(face, init="i" in cfg.opts, disable=cfg.sets.dis):
-        if "v" in cfg.opts and "output" in dir(mod):
-            mod.output = print
-        if thr and "w" in cfg.opts:
-            thr.join()
+    if "m" in cfg.opts and os.path.exists("mods"):
+        import mods.face as MODS
+        MODS.rss.DEBUG = True
+    else:
+        MODS = None
     if "c" in cfg.opts:
+        for mod, thr in scanner(face, MODS, init="i" in cfg.opts, disable=cfg.sets.dis):
+            if "v" in cfg.opts and "output" in dir(mod):
+                mod.output = print
+            if thr and "w" in cfg.opts:
+                thr.join()
         csl = Console()
         csl.start()
         forever()
-    elif cfg.txt:
+    else:
+        scanner(face, MODS)
         evt = Event()
         evt.txt = cfg.txt
         evt.type = "command"
-        csl = Console()
+        csl = CLI()
         command(csl, evt)
         evt.wait()
 
-
-def wrapped():
-    wrap(main)
-    
 
 if __name__ == "__main__":
     wrapped()
