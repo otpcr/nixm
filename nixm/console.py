@@ -1,12 +1,11 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,W0718
+# pylint: disable=C,W0611,W0718
 
 
 "console"
 
 
-import os
-import readline # pylint: disable=W0611
+import readline
 import sys
 import termios
 import time

@@ -38,13 +38,15 @@ def wrapped():
     for line in errors():
         print(line)
 
+scan = scanner
+
 def main():
     Commands.add(srv)
     parse(cfg, " ".join(sys.argv[1:]))
-    scanner(face)
+    scan(face)
     evt = Event()
-    evt.txt = cfg.txt
     evt.type = "command"
+    evt.txt = cfg.txt
     csl = CLI()
     command(csl, evt)
     evt.wait()
