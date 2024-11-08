@@ -55,27 +55,12 @@ class Output:
     def dosay(self, channel, txt):
         raise NotImplementedError
 
-    @staticmethod
-    def extend(channel, txtlist):
-        if channel not in Output.cache:
-            Output.cache[channel] = []
-        Output.cache[channel].extend(txtlist)
-
-    @staticmethod
-    def gettxt(channel):
-        txt = None
-        try:
-            txt = Output.cache[channel].pop(0)
-        except (KeyError, IndexError):
-            pass
-        return txt
-
     def oput(self, channel, txt):
         if channel and channel not in Output.cache:
             Output.cache[channel] = []
         self.oqueue.put_nowait((channel, txt))
 
-    def out(self):
+    def output(self):
         while not self.dostop.is_set():
             (channel, txt) = self.oqueue.get()
             if channel is None and txt is None:
@@ -91,9 +76,9 @@ class Output:
             return len(getattr(Output.cache, chan, []))
 
     def start(self):
-        launch(self.out)
+        launch(self.output)
 
-    def wait(self):
+    def stop(self):
         self.oput(None, None)
         self.done.wait()
 
@@ -170,7 +155,7 @@ class BufferedClient(Client, Output):
         raise NotImplementedError
 
     def start(self):
-        Reactor.start(self)
+        Client.start(self)
         Output.start(self)
 
 
