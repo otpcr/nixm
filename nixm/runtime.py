@@ -166,6 +166,9 @@ class BufferedClient(Client, Output):
     def dosay(self, channel, txt):
         self.raw(txt)
 
+    def raw(self, txt):
+        raise NotImplementedError
+
     def start(self):
         Reactor.start(self)
         Output.start(self)
