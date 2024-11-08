@@ -12,6 +12,34 @@ import traceback
 import _thread
 
 
+"errors"
+
+
+class Errors:
+
+    errors = []
+
+    @staticmethod
+    def format(exc):
+        return traceback.format_exception(
+                                   type(exc),
+                                   exc,
+                                   exc.__traceback__
+                                  )
+
+def errors():
+    for err in Errors.errors:
+        for line in err:
+            yield line
+
+
+def later(exc):
+    excp = exc.with_traceback(exc.__traceback__)
+    fmt = Errors.format(excp)
+    if fmt not in Errors.errors:
+        Errors.errors.append(fmt)
+
+
 "output"
 
 
@@ -111,6 +139,9 @@ class Reactor:
         self.stopped.set()
 
 
+"client"
+
+
 class Client(Reactor):
 
 
@@ -135,10 +166,12 @@ class BufferedClient(Client, Output):
     def dosay(self, channel, txt):
         self.raw(txt)
 
-
     def start(self):
         Reactor.start(self)
         Output.start(self)
+
+
+"event"
 
 
 class Event:
@@ -229,34 +262,6 @@ def name(obj):
     return None
 
 
-"errors"
-
-
-class Errors:
-
-    errors = []
-
-    @staticmethod
-    def format(exc):
-        return traceback.format_exception(
-                                   type(exc),
-                                   exc,
-                                   exc.__traceback__
-                                  )
-
-def errors():
-    for err in Errors.errors:
-        for line in err:
-            yield line
-
-
-def later(exc):
-    excp = exc.with_traceback(exc.__traceback__)
-    fmt = Errors.format(excp)
-    if fmt not in Errors.errors:
-        Errors.errors.append(fmt)
-
-
 "timers"
 
 
@@ -303,6 +308,7 @@ class Repeater(Timer):
 
 def __dir__():
     return (
+        'BufferedClient',
         'Client',
         'Errors',
         'Event',
