@@ -38,7 +38,9 @@ def wrapped():
     for line in errors():
         print(line)
 
+
 scan = scanner
+
 
 def main():
     Commands.add(srv)

@@ -20,6 +20,7 @@ class Output:
     cache = {}
 
     def __init__(self):
+        self.done   = threading.Event()
         self.dostop = threading.Event()
         self.oqueue = queue.Queue()
 
@@ -54,6 +55,7 @@ class Output:
             if self.dostop.is_set():
                 break
             self.dosay(channel, txt)
+        self.done.set()
 
     @staticmethod
     def size(chan):
@@ -62,6 +64,10 @@ class Output:
 
     def start(self):
         launch(self.out)
+
+    def wait(self):
+        self.oput(None, None)
+        self.done.wait()
 
 
 "reactor"
@@ -107,12 +113,32 @@ class Reactor:
 
 class Client(Reactor):
 
+
     def display(self, evt):
         for txt in evt.result:
             self.raw(txt)
 
     def raw(self, txt):
         raise NotImplementedError
+
+
+class BufferedClient(Client, Output):
+
+    def __init__(self):
+        Client.__init__(self)
+        Output.__init__(self)
+
+    def display(self, evt):
+        for txt in evt.result:
+            self.oput(evt.channel, txt)
+
+    def dosay(self, channel, txt):
+        self.raw(txt)
+
+
+    def start(self):
+        Reactor.start(self)
+        Output.start(self)
 
 
 class Event:

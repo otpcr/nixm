@@ -10,9 +10,9 @@ build-backend = 'setuptools.build_meta'
 
 [project]
 name = 'nixm'
-version = '45'
+version = '46'
 authors = [
-    {name = 'Bart Thate', email = 'record11719@gmail.com' },
+    {name = 'Bart Thate', email = 'bthate@dds.nl' },
 ]
 description = 'NIXM'
 readme = 'README.rst'
@@ -26,6 +26,13 @@ classifiers=[
 ]
 
 
+[project.scripts]
+"nixm"    = "nixm.console:wrapped"
+"nixmctl" = "nixm.cli:wrapped"
+"nixmd"   = "nixm.daemon:main"
+"nixms"   = "nixm.service:wrapped"
+
+
 [project.urls]
 'home'   = 'https://pypi.org/project/nixm'
 'bugs'   = 'https://github.com/otpcr/nixm/issues'
@@ -33,12 +40,6 @@ classifiers=[
 
 
 [tool.setuptools]
-script-files = [
-    'bin/nixm',
-    'bin/nixmctl',
-    'bin/nixmd',
-    'bin/nixms'
-]
 packages = [
     'nixm',
     'nixm.modules'
