@@ -22,7 +22,7 @@ from nixm.command import NAME, Config, Commands, command, laps, parse, scanner
 from nixm.modules import face
 from nixm.object  import Object
 from nixm.persist import Workdir, skel
-from nixm.runtime import Client, Errors, Event, later, launch
+from nixm.runtime import BufferedClient, Errors, Event, later, launch
 
 
 cfg = Config()
@@ -60,10 +60,10 @@ param.tdo = ["mekker", ""]
 param.ver = [""]
 
 
-class CLI(Client):
+class CLI(BufferedClient):
 
     def __init__(self):
-        Client.__init__(self)
+        BufferedClient.__init__(self)
         self.register("command", command)
 
     def raw(self, txt):
@@ -138,7 +138,7 @@ def main():
     for thr in thrs:
         thr.join()
     consume(events)
-    #clt.stop()
+    clt.wait()
     if "v" in cfg.opts:
         endtime = time.time()
         lap = laps(endtime-STARTTIME)

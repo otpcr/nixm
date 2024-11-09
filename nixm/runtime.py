@@ -48,40 +48,28 @@ class Output:
     cache = {}
 
     def __init__(self):
-        self.done   = threading.Event()
-        self.dostop = threading.Event()
         self.oqueue = queue.Queue()
 
     def dosay(self, channel, txt):
         raise NotImplementedError
 
     def oput(self, channel, txt):
-        if channel and channel not in Output.cache:
-            Output.cache[channel] = []
         self.oqueue.put_nowait((channel, txt))
 
     def output(self):
-        while not self.dostop.is_set():
+        while True:
             (channel, txt) = self.oqueue.get()
             if channel is None and txt is None:
                 break
-            if self.dostop.is_set():
-                break
             self.dosay(channel, txt)
-        self.done.set()
-
-    @staticmethod
-    def size(chan):
-        if chan in Output.cache:
-            return len(getattr(Output.cache, chan, []))
+            self.oqueue.task_done()
 
     def start(self):
         launch(self.output)
 
-    def stop(self):
-        self.oput(None, None)
-        self.done.wait()
-
+    def wait(self):
+        self.oqueue.join()
+ 
 
 "reactor"
 
