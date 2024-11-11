@@ -139,15 +139,12 @@ def main():
         thr.join()
     consume(events)
     clt.wait()
-    if "v" in cfg.opts:
-        endtime = time.time()
-        lap = laps(endtime-STARTTIME)
-        percall = (endtime-STARTTIME)/(nrs*nrcommands)
-        print(",".join(Commands.cmds))
-        print(f"{lap} {nrs} {nrcommands} {percall}")
-        if not Errors.errors:
-            print("no errors")
-        print(platform.python_version())
+    endtime = time.time()
+    lap = laps(endtime-STARTTIME)
+    percall = (endtime-STARTTIME)/(nrs*nrcommands)
+    print(f"{lap} {nrs} {nrcommands} {percall}")
+    if not Errors.errors:
+        print("no errors")
 
 
 if __name__ == "__main__":

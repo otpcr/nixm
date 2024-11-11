@@ -1,53 +1,163 @@
-| **Information and Evidence Unit**
-| **Office of the Prosecutor**
-| **Post Office Box 19519**
-| **2500 CM The Hague**
-| **The Netherlands** 
-|
+N I X M
+=======
 
 
-Hello Office of the Prosecutor, 
+**NAME**
 
-i write you in the context of communications and claims under art.15 of 
-the Rome Statute. i want to inform the prosecutor that the king of the 
-netherlands and his government are commiting 3 of the 5 crimes defined 
-in the Rome Statute. 
 
-The dutch government has introduced three new forced care laws, the Wfz 
-(wet forensische zorg) for criminals, the WvGGZ (Wet verplichte GGZ) for 
-the disturbed and addicted and the Wzd (Wet zorg en dwang) for the 
-handicapped.
+    ``nixm`` - NIXM
 
-Both the chamber suggesting these laws to the king and the king himself 
-have been informed about the fact the the substances administered under 
-these laws are proven to be poison.
- 
-There is proof the medication used in forced treatements in the 
-netherlands are poison, see copies of the ECHA <`European Chemical Agency`>
-website for:
 
-(1) haldol
-(2) clozapine
-(3) zyprexa
-(4) abilify
+**SYNOPSIS**
 
-With the mass scale torture with poison the king of the netherlands and 
-his chamber:
+    | ``nixmctl  <cmd> [key=val] [key==val]``
+    | ``nixmd`` 
+    | ``nixms``
 
-(1) kills
-(2) does grave bodily and mental harm
-(3) makes impotent
 
-on the following victim groups here in the Netherlands:
+**DESCRIPTION**
 
-(1) verslaafden (addicts)
-(2) bejaarden (elderly)
-(3) ggz patienten (psychiatric patients)
-(4) criminelen (criminials)
-(5) gehandicapten (handicapped)
 
-Since the members of the chamber and the king were aware that these medicine
-are poison at the time they voted for this law and the day the Wfz law took
-effect (1-1-2019), i ask the prosecutor to prosecute the king for making the
-commiting of the above mentioned crimes (killing, torture and impotent making)
-possible.
+    NIXM contains all the python3 code to program objects in a functional
+    way. It provides a base Object class that has only dunder methods, all
+    methods are factored out into functions with the objects as the first
+    argument. It is called Object Programming (OP), OOP without the
+    oriented.
+
+    NIXM allows for easy json save//load to/from disk of objects. It
+    provides an "clean namespace" Object class that only has dunder
+    methods, so the namespace is not cluttered with method names. This
+    makes storing and reading to/from json possible.
+
+    NIXM has all you need to program a unix cli program, such as disk
+    perisistence for configuration files, event handler to handle the
+    client/server connection, deferred exception handling to not crash
+    on an error, etc.
+
+    NIXM is Public Domain.
+
+    1. You need to set PYTHONPATH if you run this locally.
+    2. You might need to uninstall and rm ~/.cache/pip in case of error.
+
+
+**INSTALL**
+
+    installation is done with pipx
+
+    | ``$ pipx install nixm``
+    | ``$ pipx ensurepath``
+    |
+    | <new terminal>
+    |
+    | ``$ nixmctl srv > nixm.service``
+    | ``$ sudo mv nixm.service /etc/systemd/system/``
+    | ``$ sudo systemctl enable nixm --now``
+    |
+    | joins ``#nixm`` on localhost
+
+
+**USAGE**
+
+    without any argument the bot does nothing
+
+    | ``$ nixm``
+    | ``$``
+
+    see list of commands
+
+    | ``$ nixmctl cmd``
+    | ``cfg,cmd,dne,dpl,err,exp,imp,log,mod,mre,nme,``
+    | ``now,pwd,rem,req,res,rss,srv,syn,tdo,thr,upt``
+
+    start daemon
+
+    | ``$ nixmd``
+    | ``$``
+
+    start service
+
+    | ``$ nixms``
+    | ``<runs until ctrl-c>``
+
+    show request to the prosecutor
+
+    | $ ``nixm req``
+    | Information and Evidence Unit
+    | Office of the Prosecutor
+    | Post Office Box 19519
+    | 2500 CM The Hague
+    | The Netherlands
+
+
+**COMMANDS**
+
+    here is a list of available commands
+
+    | ``cfg`` - irc configuration
+    | ``cmd`` - commands
+    | ``dpl`` - sets display items
+    | ``err`` - show errors
+    | ``exp`` - export opml (stdout)
+    | ``imp`` - import opml
+    | ``log`` - log text
+    | ``mre`` - display cached output
+    | ``now`` - show genocide stats
+    | ``pwd`` - sasl nickserv name/pass
+    | ``rem`` - removes a rss feed
+    | ``res`` - restore deleted feeds
+    | ``req`` - reconsider
+    | ``rss`` - add a feed
+    | ``syn`` - sync rss feeds
+    | ``tdo`` - add todo item
+    | ``thr`` - show running threads
+    | ``upt`` - show uptime
+
+
+**CONFIGURATION**
+
+    irc
+
+    | ``$ nixmctl cfg server=<server>``
+    | ``$ nixmctl cfg channel=<channel>``
+    | ``$ nixmctl cfg nick=<nick>``
+
+    sasl
+
+    | ``$ nixmctl pwd <nsvnick> <nspass>``
+    | ``$ nixmctl cfg password=<frompwd>``
+
+    rss
+
+    | ``$ nixmctl rss <url>``
+    | ``$ nixmctl dpl <url> <item1,item2>``
+    | ``$ nixmctl rem <url>``
+    | ``$ nixmctl nme <url> <name>``
+
+    opml
+
+    | ``$ nixmctl exp``
+    | ``$ nixmctl imp <filename>``
+
+
+**SOURCE**
+
+    source is `here <https://github.com/otpcr/nixm>`_
+
+
+**FILES**
+
+    | ``~/.nixm``
+    | ``~/.local/bin/nixmctl``
+    | ``~/.local/bin/nixmd``
+    | ``~/.local/bin/nixms``
+    | ``~/.local/pipx/venvs/nixm/*``
+
+
+**AUTHOR**
+
+    | Bart Thate <``record11719@gmail.com``>
+
+
+**COPYRIGHT**
+
+    | ``NIXM`` is Public Domain.
