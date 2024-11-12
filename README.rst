@@ -13,7 +13,7 @@ N I X M
 | ``nixmctl  <cmd> [key=val] [key==val]``
 | ``nixmd`` 
 | ``nixms``
-
+|
 
 **DESCRIPTION**
 
@@ -54,7 +54,7 @@ installation is done with pipx
 | ``$ sudo systemctl enable nixm --now``
 |
 | joins ``#nixm`` on localhost
-
+|
 
 **USAGE**
 
@@ -62,22 +62,26 @@ without any argument the bot does nothing
 
 | ``$ nixm``
 | ``$``
+|
 
 see list of commands
 
 | ``$ nixmctl cmd``
 | ``cfg,cmd,dne,dpl,err,exp,imp,log,mod,mre,nme,``
 | ``now,pwd,rem,req,res,rss,srv,syn,tdo,thr,upt``
+|
 
 start daemon
 
 | ``$ nixmd``
 | ``$``
+|
 
 start service
 
 | ``$ nixms``
 | ``<runs until ctrl-c>``
+|
 
 show request to the prosecutor
 
@@ -87,7 +91,7 @@ show request to the prosecutor
 | Post Office Box 19519
 | 2500 CM The Hague
 | The Netherlands
-
+|
 
 **COMMANDS**
 
@@ -111,7 +115,7 @@ here is a list of available commands
 | ``tdo`` - add todo item
 | ``thr`` - show running threads
 | ``upt`` - show uptime
-
+|
 
 **CONFIGURATION**
 
@@ -120,11 +124,13 @@ irc
 | ``$ nixmctl cfg server=<server>``
 | ``$ nixmctl cfg channel=<channel>``
 | ``$ nixmctl cfg nick=<nick>``
+|
 
 sasl
 
 | ``$ nixmctl pwd <nsvnick> <nspass>``
 | ``$ nixmctl cfg password=<frompwd>``
+|
 
 rss
 
@@ -132,12 +138,13 @@ rss
 | ``$ nixmctl dpl <url> <item1,item2>``
 | ``$ nixmctl rem <url>``
 | ``$ nixmctl nme <url> <name>``
+|
 
 opml
 
 | ``$ nixmctl exp``
 | ``$ nixmctl imp <filename>``
-
+|
 
 **SOURCE**
 
@@ -151,12 +158,12 @@ source is `here <https://github.com/otpcr/nixm>`_
 | ``~/.local/bin/nixmd``
 | ``~/.local/bin/nixms``
 | ``~/.local/pipx/venvs/nixm/*``
-
+|
 
 **AUTHOR**
 
 | Bart Thate <``bthate@dds.nl``>
-
+|
 
 **COPYRIGHT**
 
