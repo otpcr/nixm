@@ -10,7 +10,7 @@ build-backend = 'setuptools.build_meta'
 
 [project]
 name = 'nixm'
-version = '46'
+version = '47'
 authors = [
     {name = 'Bart Thate', email = 'bthate@dds.nl' },
 ]
