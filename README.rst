@@ -58,9 +58,9 @@ installation is done with pipx
 
 **USAGE**
 
-without any argument the bot does nothing
+use ``nixmctl`` to control the program, default it does nothing
 
-| ``$ nixm``
+| ``$ nixmctl``
 | ``$``
 |
 
