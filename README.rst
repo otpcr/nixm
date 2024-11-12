@@ -36,8 +36,8 @@ on an error, etc.
 
 NIXM is Public Domain.
 
-1. You need to set PYTHONPATH if you run this locally.
-2. You might need to uninstall and rm ~/.cache/pip in case of error.
+1. You need to set PYTHONPATH="." if you run this locally.
+2. You might need to uninstall and rm -fR ~/.cache/pip in case of error.
 
 
 **INSTALL**
