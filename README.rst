@@ -154,6 +154,7 @@ source is `here <https://github.com/otpcr/nixm>`_
 **FILES**
 
 | ``~/.nixm``
+| ``~/.local/bin/nixm``
 | ``~/.local/bin/nixmctl``
 | ``~/.local/bin/nixmd``
 | ``~/.local/bin/nixms``
