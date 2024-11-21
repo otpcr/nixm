@@ -156,7 +156,7 @@ opml
 
 **SOURCE**
 
-source is `here <https://github.com/otpcr/nixm>`_
+source is at `https://github.com/otpcr/nixm  <https://github.com/otpcr/nixm>`_
 
 
 **FILES**

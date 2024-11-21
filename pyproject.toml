@@ -48,5 +48,5 @@ packages = [
 [tool.setuptools.data-files]
 "share/doc/nixm" = [
     'README.rst',
-    'MANUAL.rst'
+    'files/MANUAL.rst'
 ]
