@@ -10,12 +10,12 @@ build-backend = 'setuptools.build_meta'
 
 [project]
 name = 'nixm'
-version = '50'
+version = "50"
 authors = [
     {name = 'Bart Thate', email = 'bthate@dds.nl' },
 ]
+readme = "README.rst"
 description = 'NIXM'
-readme = 'README.rst'
 license = { text='Public Domain'}
 classifiers=[
     'Development Status :: 4 - Beta',
@@ -27,9 +27,9 @@ classifiers=[
 
 
 [project.scripts]
-"nixm"    = "nixm.control:wrapped"
-"nixmd"   = "nixm.daemon:main"
-"nixms"   = "nixm.daemon:service"
+'nixm'    = 'nixm.control:wrapped'
+'nixmd'   = 'nixm.daemon:main'
+'nixms'   = 'nixm.daemon:service'
 
 
 [project.urls]
@@ -42,4 +42,11 @@ classifiers=[
 packages = [
     'nixm',
     'nixm.modules'
+]
+
+
+[tool.setuptools.data-files]
+"share/doc/nixm" = [
+    'README.rst',
+    'MANUAL.rst'
 ]

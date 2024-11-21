@@ -1,7 +1,3 @@
-N I X M
-=======
-
-
 **NAME**
 
 
@@ -10,6 +6,7 @@ N I X M
 
 **SYNOPSIS**
 
+|
 | ``nixm <cmd> [key=val] [key==val]``
 | ``nixmd`` 
 | ``nixms``
@@ -44,6 +41,7 @@ NIXM is Public Domain.
 
 installation is done with pipx
 
+|
 | ``$ pipx install nixm``
 | ``$ pipx ensurepath``
 |
@@ -60,12 +58,14 @@ installation is done with pipx
 
 use ``nixm`` to control the program, default it does nothing
 
+|
 | ``$ nixm``
 | ``$``
 |
 
 see list of commands
 
+|
 | ``$ nixm cmd``
 | ``cfg,cmd,dne,dpl,err,exp,imp,log,mod,mre,nme,``
 | ``now,pwd,rem,req,res,rss,srv,syn,tdo,thr,upt``
@@ -73,18 +73,21 @@ see list of commands
 
 start daemon
 
+|
 | ``$ nixmd``
 | ``$``
 |
 
 start service
 
+|
 | ``$ nixms``
 | ``<runs until ctrl-c>``
 |
 
 show request to the prosecutor
 
+|
 | $ ``nixm req``
 | Information and Evidence Unit
 | Office of the Prosecutor
@@ -97,6 +100,7 @@ show request to the prosecutor
 
 here is a list of available commands
 
+|
 | ``cfg`` - irc configuration
 | ``cmd`` - commands
 | ``dpl`` - sets display items
@@ -121,6 +125,7 @@ here is a list of available commands
 
 irc
 
+|
 | ``$ nixm cfg server=<server>``
 | ``$ nixm cfg channel=<channel>``
 | ``$ nixm cfg nick=<nick>``
@@ -128,12 +133,14 @@ irc
 
 sasl
 
+|
 | ``$ nixm pwd <nsvnick> <nspass>``
 | ``$ nixm cfg password=<frompwd>``
 |
 
 rss
 
+|
 | ``$ nixm rss <url>``
 | ``$ nixm dpl <url> <item1,item2>``
 | ``$ nixm rem <url>``
@@ -142,6 +149,7 @@ rss
 
 opml
 
+|
 | ``$ nixm exp``
 | ``$ nixm imp <filename>``
 |
@@ -153,6 +161,7 @@ source is `here <https://github.com/otpcr/nixm>`_
 
 **FILES**
 
+|
 | ``~/.nixm``
 | ``~/.local/bin/nixm``
 | ``~/.local/bin/nixmd``
@@ -162,9 +171,12 @@ source is `here <https://github.com/otpcr/nixm>`_
 
 **AUTHOR**
 
+|
 | Bart Thate <``bthate@dds.nl``>
 |
 
 **COPYRIGHT**
 
+|
 | ``NIXM`` is Public Domain.
+|
