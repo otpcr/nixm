@@ -26,7 +26,7 @@ p         = os.path.join
 class Workdir:
 
     fqns = []
-    wdr = os.path.expanduser("~/.rssbot")
+    wdr = ""
 
 
 def long(name):

@@ -9,6 +9,7 @@
 from . import cmd, err, fnd, irc, log, mod, opm, rss, tdo, thr, upt
 from . import mdl, req, srv
 
+
 def __dir__():
     return (
         'cmd',
@@ -25,3 +26,6 @@ def __dir__():
         'thr',
         'upt'
     )
+
+
+__all__ = __dir__()

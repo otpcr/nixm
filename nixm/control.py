@@ -5,14 +5,19 @@
 "control"
 
 
+import os
 import sys
 
 
 from .object  import Config, Obj
+from .persist import Workdir
 from .runtime import Client, Commands, Event, errors, later, scan, wrap
 
 
 NAME = Obj.__module__.rsplit(".", maxsplit=2)[-2]
+Workdir.wdr = os.path.expanduser(f"~/.{NAME}")
+
+
 Cfg  = Config()
 
 
@@ -113,7 +118,8 @@ def wrapped():
 def main():
     parse(Cfg, " ".join(sys.argv[1:]))
     from .modules import face, srv
-    scan(face, srv)
+    Commands.scan(srv)
+    scan(face)
     evt = Event()
     evt.type = "command"
     evt.txt = Cfg.otxt

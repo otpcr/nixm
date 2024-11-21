@@ -10,6 +10,7 @@ import queue
 import threading
 import time
 import traceback
+import types
 import _thread
 
 
@@ -68,6 +69,8 @@ def modloop(*pkgs, disable=""):
 def scan(*pkgs, init=False, disable=""):
     result = []
     for mod in modloop(*pkgs, disable=disable):
+        if type(mod) != types.ModuleType:
+            continue
         Commands.scan(mod)
         thr = None
         if init and "init" in dir(mod):
@@ -306,7 +309,6 @@ def forever():
             time.sleep(0.1)
         except (KeyboardInterrupt, EOFError):
             _thread.interrupt_main()
-
 
 
 def spl(txt):

@@ -10,8 +10,11 @@ import sys
 
 
 from .control import NAME
-from .persist import pidfile, pidname
-from .runtime import forever, scan, wrap
+from .persist import Workdir, pidfile, pidname
+from .runtime import errors, forever, scan, wrap
+
+
+Workdir.wdr = os.path.expanduser(f"~/.{NAME}")
 
 
 def daemon(verbose=False):
@@ -46,8 +49,14 @@ def service():
     privileges()
     pidfile(pidname(NAME))
     from .modules import face
-    scan(face)
+    scan(face, init=True)
     forever()
+
+
+def wrapped():
+    wrap(service)
+    for line in errors():
+        print(line)
 
 
 def main():
@@ -56,4 +65,4 @@ def main():
 
 
 if __name__ == "__main__":
-    wrap(main)
+    wrapped()
