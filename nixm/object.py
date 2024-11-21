@@ -32,6 +32,10 @@ class Obj(Object):
         return self.__dict__.get(key, "")
 
 
+class Config(Obj):
+
+    pass
+
 
 def construct(obj, *args, **kwargs):
     if args:
@@ -214,6 +218,7 @@ def dumps(*args, **kw):
 
 def __dir__():
     return (
+        'Config',
         'Object',
         'Obj',
         'construct',

@@ -8,20 +8,12 @@
 import sys
 
 
-from .object  import Obj
+from .object  import Config, Obj
 from .runtime import Client, Commands, Event, errors, later, scan, wrap
 
 
 NAME = Obj.__module__.rsplit(".", maxsplit=2)[-2]
-
-
-class Config(Obj):
-
-    pass
-
-
 Cfg  = Config()
-
 
 
 class CLI(Client):
@@ -120,28 +112,14 @@ def wrapped():
 
 def main():
     parse(Cfg, " ".join(sys.argv[1:]))
-    from .modules import face
-    scan(face)
+    from .modules import face, srv
+    scan(face, srv)
     evt = Event()
     evt.type = "command"
     evt.txt = Cfg.otxt
     csl = CLI()
     command(csl, evt)
     evt.wait()
-
-
-TXT = """[Unit]
-Description=%s
-After=network-online.target
-
-[Service]
-Type=simple
-User=%s
-Group=%s
-ExecStart=/home/%s/.local/bin/%ss
-
-[Install]
-WantedBy=multi-user.target"""
 
 
 if __name__ == "__main__":

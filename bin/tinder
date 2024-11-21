@@ -18,7 +18,7 @@ sys.path.insert(0, os.getcwd())
 
 
 from nixm.control import NAME, Config, Commands, command, parse, scan
-from nixm.modules import face
+from nixm.modules import face, srv
 from nixm.object  import Object
 from nixm.persist import Workdir, laps, skel
 from nixm.runtime import BufferedClient, Errors, Event, later, launch
@@ -55,6 +55,7 @@ param.pwd = ["bla mekker"]
 param.rem = ["hnrss"]
 param.res = [""]
 param.rss = ["http://hnrss.org/newest", ""]
+param.srv = [""]
 param.tdo = ["mekker", ""]
 param.ver = [""]
 
@@ -120,7 +121,7 @@ def wrap(function):
 def main():
     Workdir.wdr = ".test"
     parse(cfg, " ".join(sys.argv[1:]))
-    scan(face)
+    scan(face, srv)
     nrcommands = len(Commands.cmds) or 1
     if "v" in cfg.opts:
         banner()

@@ -9,9 +9,9 @@ import os
 import sys
 
 
-from .modules import irc, rss
+from .control import NAME
 from .persist import pidfile, pidname
-from .runtime import forever, wrap
+from .runtime import forever, scan, wrap
 
 
 def daemon(verbose=False):
@@ -44,14 +44,14 @@ def privileges():
 
 def service():
     privileges()
-    pidfile(pidname("rssbot"))
-    irc.init()
-    rss.init()
+    pidfile(pidname(NAME))
+    from .modules import face
+    scan(face)
     forever()
 
 
 def main():
-    daemon()
+    daemon(True)
     service()
 
 
