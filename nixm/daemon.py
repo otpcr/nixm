@@ -9,12 +9,9 @@ import os
 import sys
 
 
-from .command import NAME, forever, privileges, scanner, wrap
-from .modules import face
+from .modules import irc, rss
 from .persist import pidfile, pidname
-
-
-scan = scanner
+from .runtime import forever, wrap
 
 
 def daemon(verbose=False):
@@ -37,12 +34,25 @@ def daemon(verbose=False):
     os.nice(10)
 
 
+def privileges():
+    import getpass
+    import pwd
+    pwnam2 = pwd.getpwnam(getpass.getuser())
+    os.setgid(pwnam2.pw_gid)
+    os.setuid(pwnam2.pw_uid)
+
+
+def service():
+    privileges()
+    pidfile(pidname("rssbot"))
+    irc.init()
+    rss.init()
+    forever()
+
+
 def main():
     daemon()
-    privileges()
-    pidfile(pidname(NAME))
-    scan(face, init=True)
-    forever()
+    service()
 
 
 if __name__ == "__main__":

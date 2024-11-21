@@ -9,9 +9,8 @@ import datetime
 import time
 
 
-from ..command import laps
 from ..object  import Object, construct, keys
-from ..persist import Cache
+from ..persist import Cache, laps
 from ..runtime import Event, Repeater
 
 

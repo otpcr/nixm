@@ -8,9 +8,8 @@
 import time
 
 
-from ..command import laps
 from ..object  import Object
-from ..persist import find, fntime, ident, write
+from ..persist import find, fntime, ident, laps, write
 
 
 "todo"

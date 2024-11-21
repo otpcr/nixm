@@ -8,7 +8,7 @@
 import time
 
 
-from ..command import laps
+from ..persist import laps
 
 
 "defines"

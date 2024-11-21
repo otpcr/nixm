@@ -17,11 +17,11 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from nixm.command import NAME, Config, Commands, command, laps, parse, scanner
+from nixm.control import NAME, Config, Commands, command, parse, scan
 from nixm.modules import face
 from nixm.object  import Object
-from nixm.persist import Workdir, skel
-from nixm.runtime import BufferedClient, Errors, Event, later, launch
+from nixm.persist import Workdir, laps, skel
+from nixm.runtime import BufferedClient, Errors, Event, later, launch, spl
 
 
 cfg = Config()
@@ -120,7 +120,7 @@ def wrap(function):
 def main():
     Workdir.wdr = ".test"
     parse(cfg, " ".join(sys.argv[1:]))
-    scanner(face)
+    scan(face)
     nrcommands = len(Commands.cmds) or 1
     if "v" in cfg.opts:
         banner()
