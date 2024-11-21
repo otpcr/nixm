@@ -10,7 +10,7 @@ N I X M
 
 **SYNOPSIS**
 
-| ``nixmctl  <cmd> [key=val] [key==val]``
+| ``nixm <cmd> [key=val] [key==val]``
 | ``nixmd`` 
 | ``nixms``
 |
@@ -49,7 +49,7 @@ installation is done with pipx
 |
 | <new terminal>
 |
-| ``$ nixmctl srv > nixm.service``
+| ``$ nixm srv > nixm.service``
 | ``$ sudo mv nixm.service /etc/systemd/system/``
 | ``$ sudo systemctl enable nixm --now``
 |
@@ -58,15 +58,15 @@ installation is done with pipx
 
 **USAGE**
 
-use ``nixmctl`` to control the program, default it does nothing
+use ``nixm`` to control the program, default it does nothing
 
-| ``$ nixmctl``
+| ``$ nixm``
 | ``$``
 |
 
 see list of commands
 
-| ``$ nixmctl cmd``
+| ``$ nixm cmd``
 | ``cfg,cmd,dne,dpl,err,exp,imp,log,mod,mre,nme,``
 | ``now,pwd,rem,req,res,rss,srv,syn,tdo,thr,upt``
 |
@@ -121,29 +121,29 @@ here is a list of available commands
 
 irc
 
-| ``$ nixmctl cfg server=<server>``
-| ``$ nixmctl cfg channel=<channel>``
-| ``$ nixmctl cfg nick=<nick>``
+| ``$ nixm cfg server=<server>``
+| ``$ nixm cfg channel=<channel>``
+| ``$ nixm cfg nick=<nick>``
 |
 
 sasl
 
-| ``$ nixmctl pwd <nsvnick> <nspass>``
-| ``$ nixmctl cfg password=<frompwd>``
+| ``$ nixm pwd <nsvnick> <nspass>``
+| ``$ nixm cfg password=<frompwd>``
 |
 
 rss
 
-| ``$ nixmctl rss <url>``
-| ``$ nixmctl dpl <url> <item1,item2>``
-| ``$ nixmctl rem <url>``
-| ``$ nixmctl nme <url> <name>``
+| ``$ nixm rss <url>``
+| ``$ nixm dpl <url> <item1,item2>``
+| ``$ nixm rem <url>``
+| ``$ nixm nme <url> <name>``
 |
 
 opml
 
-| ``$ nixmctl exp``
-| ``$ nixmctl imp <filename>``
+| ``$ nixm exp``
+| ``$ nixm imp <filename>``
 |
 
 **SOURCE**
@@ -155,7 +155,6 @@ source is `here <https://github.com/otpcr/nixm>`_
 
 | ``~/.nixm``
 | ``~/.local/bin/nixm``
-| ``~/.local/bin/nixmctl``
 | ``~/.local/bin/nixmd``
 | ``~/.local/bin/nixms``
 | ``~/.local/pipx/venvs/nixm/*``
