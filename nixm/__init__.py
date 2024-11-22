@@ -1,4 +1,12 @@
 # This file is placed in the Public Domain.
 
 
-"NIXM"
+""
+
+
+import os
+
+
+__doc__ = __file__.rsplit(os.sep, maxsplit=2)[-2].upper()
+
+
