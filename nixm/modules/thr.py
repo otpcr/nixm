@@ -13,13 +13,7 @@ from ..object  import Object, update
 from ..persist import laps
 
 
-"defines"
-
-
 STARTTIME = time.time()
-
-
-"commands"
 
 
 def thr(event):

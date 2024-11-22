@@ -2,13 +2,10 @@
 # pylint: disable=C,W0105
 
 
-"show errors"
+"errors"
 
 
 from ..runtime import Errors
-
-
-"commands"
 
 
 def err(event):

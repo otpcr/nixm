@@ -2,13 +2,10 @@
 # pylint: disable=C,W0105
 
 
-"show available modules."
+"available modules."
 
 
 import os
-
-
-"commands"
 
 
 def mod(event):

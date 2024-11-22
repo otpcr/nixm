@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C0209,W0105
+# pylint: disable=C0116,C0209,W0105
 
 
 "Genocide model of the Netherlands since 4 March 2019"
@@ -14,9 +14,6 @@ from ..persist import Cache, laps
 from ..runtime import Event, Repeater
 
 
-"defines"
-
-
 DAY = 24*60*60
 YEAR = 365*DAY
 SOURCE = "https://github.com/bthate/genocide"
@@ -25,7 +22,6 @@ STARTTIME = time.mktime(time.strptime(STARTDATE, "%Y-%m-%d %H:%M:%S"))
 
 
 def init():
-    "start repeaters"
     for key in keys(oorzaken):
         if "Psych" not in key:
             continue
@@ -275,11 +271,7 @@ construct(oorzaak, zip(oor, aantal))
 oorzaken = Object()
 
 
-"utilities"
-
-
 def getalias(txt):
-    "return value of alias."
     result = ""
     for key, value in aliases.items():
         if txt.lower() in key.lower():
@@ -288,14 +280,12 @@ def getalias(txt):
     return result
 
 def getday():
-    "timestamp of current day."
     day = datetime.datetime.now()
     day = day.replace(hour=0, minute=0, second=0, microsecond=0)
     return day.timestamp()
 
 
 def getnr(nme):
-    "fetch mortality number."
     for k in keys(oorzaken):
         if nme.lower() in k.lower():
             return int(getattr(oorzaken, k))
@@ -303,14 +293,12 @@ def getnr(nme):
 
 
 def seconds(nrs):
-    "convert nr/years to seconds."
     if not nrs:
         return nrs
     return 60*60*24*365 / float(nrs)
 
 
 def iswanted(k, line):
-    "see whether filtered or not."
     for word in line:
         if word in k:
             return True
@@ -318,7 +306,6 @@ def iswanted(k, line):
 
 
 def daily():
-    "daily job"
     while 1:
         time.sleep(24*60*60)
         evt = Event()
@@ -326,7 +313,6 @@ def daily():
 
 
 def hourly():
-    "hourly job"
     while 1:
         time.sleep(60*60)
         evt = Event()
@@ -334,7 +320,6 @@ def hourly():
 
 
 def cbnow(_evt):
-    "now callback"
     delta = time.time() - STARTTIME
     txt = laps(delta) + " "
     for nme in sorted(keys(oorzaken), key=lambda x: seconds(getnr(x))):
@@ -349,7 +334,6 @@ def cbnow(_evt):
 
 
 def cbstats(evt):
-    "stats callback."
     nme = evt.rest or "Psych"
     needed = seconds(getnr(nme))
     if needed:
@@ -376,7 +360,6 @@ def cbstats(evt):
 
 
 def now(event):
-    "now command."
     nme = event.rest or "Psych"
     needed = seconds(getnr(nme))
     if needed:
@@ -401,7 +384,6 @@ def now(event):
 
 
 def boot():
-    "construct model"
     _nr = -1
     for key in keys(oorzaak):
         _nr += 1
@@ -429,15 +411,6 @@ def boot():
         nms = " ".join(atl.split()[1:]).capitalize()
         nms = nms.strip()
         setattr(oorzaken, nms, aantal[_nr])
-
-
-"interace"
-
-def __dir__():
-    return (
-            'init',
-            'now'
-           )
 
 
 boot()

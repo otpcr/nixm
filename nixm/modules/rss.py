@@ -24,9 +24,6 @@ from ..persist import Cache, find, fntime, laps, last, ident, spl, write
 from ..runtime import Repeater, launch
 
 
-"defines"
-
-
 DEBUG = False
 
 
@@ -37,9 +34,6 @@ def init():
     fetcher = Fetcher()
     fetcher.start()
     return fetcher
-
-
-"classes"
 
 
 class Feed(Object):
@@ -193,9 +187,6 @@ class Parser:
         return result
 
 
-"utilities"
-
-
 def cdata(line):
     if 'CDATA' in line:
         lne = line.replace('![CDATA[', '')
@@ -265,7 +256,6 @@ def unescape(text):
 
 
 def useragent(txt):
-    "return useragent."
     return 'Mozilla/5.0 (X11; Linux x86_64) ' + txt
 
 

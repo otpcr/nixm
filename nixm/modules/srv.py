@@ -2,7 +2,7 @@
 # pylint: disable=C
 
 
-"create service file"
+"service file."
 
 
 from ..control import NAME

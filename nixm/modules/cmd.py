@@ -2,7 +2,7 @@
 # pylint: disable=C,W0105
 
 
-"list of commands"
+"commands"
 
 
 from ..object  import keys
