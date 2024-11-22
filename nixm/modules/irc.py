@@ -16,13 +16,15 @@ import time
 import _thread
 
 
-from ..control import NAME, command
-from ..object  import Object, edit, format, keys
+from ..object  import Object, edit, format, keys, parse
 from ..persist import Cache, ident, last, write
 from ..runtime import Event, Reactor, later, launch
 
 
 IGNORE = ["PING", "PONG", "PRIVMSG"]
+NAME = Object.__module__.rsplit(".", maxsplit=2)[-2]
+
+
 output = None
 saylock = _thread.allocate_lock()
 
@@ -505,6 +507,20 @@ def cb_cap(bot, evt):
         bot.direct('AUTHENTICATE PLAIN')
     else:
         bot.direct('CAP REQ :sasl')
+
+
+def cb_command(bot, evt):
+    parse(evt, evt.txt)
+    if "ident" in dir(bot):
+        evt.orig = bot.ident
+    func = Commands.cmds.get(evt.cmd, None)
+    if func:
+        try:
+            func(evt)
+            bot.display(evt)
+        except Exception as ex:
+            later(ex)
+    evt.ready()
 
 
 def cb_error(bot, evt):
