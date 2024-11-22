@@ -18,7 +18,8 @@ import _thread
 
 from ..object  import Object, edit, format, keys, parse
 from ..persist import Cache, ident, last, write
-from ..runtime import Event, Reactor, later, launch
+
+from ..runtime import Commands, Event, Reactor, later, launch
 
 
 IGNORE = ["PING", "PONG", "PRIVMSG"]
@@ -498,18 +499,7 @@ class IRC(Reactor, Output):
         self.events.ready.wait()
 
 
-def cb_auth(bot, evt):
-    bot.docommand(f'AUTHENTICATE {bot.cfg.password}')
-
-
-def cb_cap(bot, evt):
-    if bot.cfg.password and 'ACK' in evt.arguments:
-        bot.direct('AUTHENTICATE PLAIN')
-    else:
-        bot.direct('CAP REQ :sasl')
-
-
-def cb_command(bot, evt):
+def command(bot, evt):
     parse(evt, evt.txt)
     if "ident" in dir(bot):
         evt.orig = bot.ident
@@ -521,6 +511,17 @@ def cb_command(bot, evt):
         except Exception as ex:
             later(ex)
     evt.ready()
+
+
+def cb_auth(bot, evt):
+    bot.docommand(f'AUTHENTICATE {bot.cfg.password}')
+
+
+def cb_cap(bot, evt):
+    if bot.cfg.password and 'ACK' in evt.arguments:
+        bot.direct('AUTHENTICATE PLAIN')
+    else:
+        bot.direct('CAP REQ :sasl')
 
 
 def cb_error(bot, evt):
