@@ -18,7 +18,7 @@ sys.path.insert(0, os.getcwd())
 
 
 from nixm.control import NAME, Config, Commands, command, parse, scan
-from nixm.modules import face, srv
+from nixm.modules import face
 from nixm.object  import Object
 from nixm.persist import Workdir, laps, skel
 from nixm.runtime import BufferedClient, Errors, Event, later, launch
@@ -123,7 +123,6 @@ def main():
     Workdir.wdr = ".test"
     parse(cfg, " ".join(sys.argv[1:]))
     scan(face)
-    Commands.scan(srv)
     nrcommands = len(Commands.cmds) or 1
     if "v" in cfg.opts:
         banner()

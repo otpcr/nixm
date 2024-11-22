@@ -13,7 +13,7 @@ import _thread
 
 
 from ..object  import Object, update
-from ..persist import find, ident, write
+from ..persist import find, ident, spl, write
 
 
 from .rss import Rss
@@ -101,14 +101,6 @@ def attrs(obj, txt):
 
 def shortid():
     return str(uuid.uuid4())[:8]
-
-
-def spl(txt):
-    try:
-        result = txt.split(',')
-    except (TypeError, ValueError):
-        result = txt
-    return [x for x in result if x]
 
 
 def striphtml(text):

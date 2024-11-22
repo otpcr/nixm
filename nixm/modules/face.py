@@ -7,7 +7,7 @@
 
 
 from . import cmd, err, fnd, irc, log, mod, opm, rss, tdo, thr, upt
-from . import mdl, req, srv
+from . import mdl, req
 
 
 def __dir__():
