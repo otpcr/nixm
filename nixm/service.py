@@ -1,4 +1,8 @@
 # This file is in the Public Domain.
+# pylint: disable=C0116,E0402
+
+
+"service"
 
 
 from .daemon  import service

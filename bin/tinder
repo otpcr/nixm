@@ -17,11 +17,12 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from nixm.control import NAME, Config, Commands, command, parse, scan
+from nixm.__main__ import NAME, Config, command, parse, scan
 from nixm.modules import face
 from nixm.object  import Object
 from nixm.persist import Workdir, laps, skel
-from nixm.runtime import BufferedClient, Errors, Event, errors, later, launch
+from nixm.runtime import BufferedClient, Commands, Errors, Event
+from nixm.runtime import  errors, later, launch
 
 
 cfg = Config()

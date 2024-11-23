@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C0116,C0415,W0212
+# pylint: disable=C0116,C0415,W0212,E0402
 
 
 "daemon"
@@ -52,10 +52,16 @@ def service():
     forever()
 
 
+def wrapped():
+    wrap(main)
+    for line in errors():
+        print(line)
+
+
 def main():
     daemon(True)
     service()
 
 
 if __name__ == "__main__":
-    main()
+    wrapped()
