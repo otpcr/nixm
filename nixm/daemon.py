@@ -10,6 +10,7 @@ import sys
 
 
 from .control import NAME
+from .modules import face
 from .persist import Workdir, pidfile, pidname
 from .runtime import errors, forever, scan, wrap
 
@@ -48,7 +49,6 @@ def privileges():
 def service():
     privileges()
     pidfile(pidname(NAME))
-    from .modules import face
     scan(face, init=True)
     forever()
 
