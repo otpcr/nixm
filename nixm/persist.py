@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,R,W0105,W0719,E1101,E0402
+# pylint: disable=C0115,C0116,R0903,W0105,W0719,E1101
 
 
 "persistence"
@@ -116,7 +116,7 @@ def fns(mtc=""):
         pth = store(mtc)
         for rootdir, dirs, _files in os.walk(pth, topdown=False):
             if dirs:
-               for dname in sorted(dirs):
+                for dname in sorted(dirs):
                     if dname.count('-') == 2:
                         ddd = p(rootdir, dname)
                         for fll in os.scandir(ddd):
