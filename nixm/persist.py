@@ -112,14 +112,15 @@ def find(mtc, selector=None, index=None, deleted=False, matching=False):
 
 def fns(mtc=""):
     dname = ''
-    pth = store(mtc)
-    for rootdir, dirs, _files in os.walk(pth, topdown=False):
-        if dirs:
-            for dname in sorted(dirs):
-                if dname.count('-') == 2:
-                    ddd = p(rootdir, dname)
-                    for fll in os.scandir(ddd):
-                        yield strip(p(ddd, fll))
+    with disklock:
+        pth = store(mtc)
+        for rootdir, dirs, _files in os.walk(pth, topdown=False):
+            if dirs:
+               for dname in sorted(dirs):
+                    if dname.count('-') == 2:
+                        ddd = p(rootdir, dname)
+                        for fll in os.scandir(ddd):
+                            yield strip(p(ddd, fll))
 
 
 def fntime(daystr):

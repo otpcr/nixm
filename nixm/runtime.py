@@ -90,18 +90,22 @@ class Output:
         raise NotImplementedError
 
     def oput(self, channel, txt):
-        self.oqueue.put_nowait((channel, txt))
+        self.oqueue.put((channel, txt))
 
     def output(self):
         while True:
             (channel, txt) = self.oqueue.get()
             if channel is None and txt is None:
+                self.oqueue.task_done()
                 break
             self.dosay(channel, txt)
             self.oqueue.task_done()
 
     def start(self):
         launch(self.output)
+
+    def stop(self):
+        self.oqueue.put((None, None))
 
     def wait(self):
         self.oqueue.join()
@@ -133,7 +137,7 @@ class Reactor:
         return self.queue.get()
 
     def put(self, evt):
-        self.queue.put_nowait(evt)
+        self.queue.put(evt)
 
     def register(self, typ, cbs):
         self.cbs[typ] = cbs
@@ -146,7 +150,6 @@ class Reactor:
 
 
 class Client(Reactor):
-
 
     def display(self, evt):
         for txt in evt.result:
@@ -175,6 +178,10 @@ class BufferedClient(Client, Output):
     def start(self):
         Client.start(self)
         Output.start(self)
+
+    def stop(self):
+        Client.stop(self)
+        Output.stop(self)
 
 
 class Event:
