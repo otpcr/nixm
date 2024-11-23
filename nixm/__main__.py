@@ -9,14 +9,9 @@ import os
 import sys
 
 
-from .modules import face
 from .object  import Config, Obj, parse
-from .persist import Workdir
+from .persist import NAME, Workdir
 from .runtime import Client, Commands, Event, errors, later, scan, wrap
-
-
-NAME = Obj.__module__.rsplit(".", maxsplit=2)[-2]
-Workdir.wdr = os.path.expanduser(f"~/.{NAME}")
 
 
 Cfg  = Config()
@@ -61,6 +56,7 @@ def srv(event):
 def main():
     parse(Cfg, " ".join(sys.argv[1:]))
     Commands.scan(srv)
+    from .modules import face
     scan(face)
     evt = Event()
     evt.type = "command"

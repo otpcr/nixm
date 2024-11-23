@@ -9,9 +9,8 @@ import os
 import sys
 
 
-from .control import NAME
 from .modules import face
-from .persist import Workdir, pidfile, pidname
+from .persist import NAME, Workdir, pidfile, pidname
 from .runtime import errors, forever, scan, wrap
 
 
@@ -53,16 +52,10 @@ def service():
     forever()
 
 
-def wrapped():
-    wrap(service)
-    for line in errors():
-        print(line)
-
-
 def main():
     daemon(True)
     service()
 
 
 if __name__ == "__main__":
-    wrapped()
+    main()

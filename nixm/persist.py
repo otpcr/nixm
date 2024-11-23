@@ -17,6 +17,9 @@ import _thread
 from .object import Object, dump, load, search, update
 
 
+NAME = Object.__module__.rsplit(".", maxsplit=2)[-2]
+
+
 cachelock = _thread.allocate_lock()
 disklock  = _thread.allocate_lock()
 lock      = _thread.allocate_lock()
@@ -26,7 +29,7 @@ p         = os.path.join
 class Workdir:
 
     fqns = []
-    wdr = ""
+    wdr = os.path.expanduser(f"~/.{NAME}")
 
 
 def long(name):
