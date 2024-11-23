@@ -28,8 +28,8 @@ classifiers=[
 
 [project.scripts]
 'nixm'    = 'nixm.__main__:wrapped'
-'nixmd'   = 'nixm.daemon:wrapped'
-'nixms'   = 'nixm.service:wrapped'
+'nixmd'   = 'nixm.daemon:main'
+'nixms'   = 'nixm.daemon:wrapped'
 
 
 [project.urls]

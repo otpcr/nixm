@@ -45,13 +45,6 @@ def privileges():
     os.setuid(pwnam2.pw_uid)
 
 
-def service():
-    privileges()
-    pidfile(pidname(NAME))
-    scan(face, init=True)
-    forever()
-
-
 def wrapped():
     wrap(main)
     for line in errors():
@@ -60,7 +53,10 @@ def wrapped():
 
 def main():
     daemon(True)
-    service()
+    privileges()
+    pidfile(pidname(NAME))
+    scan(face, init=True)
+    forever()
 
 
 if __name__ == "__main__":

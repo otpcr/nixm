@@ -5,8 +5,27 @@
 "service"
 
 
-from .daemon  import service
-from .runtime import errors, wrap
+import os
+
+
+from .modules import face
+from .persist import NAME, Workdir, pidfile, pidname
+from .runtime import errors, forever, scan, wrap
+
+
+def privileges():
+    import getpass
+    import pwd
+    pwnam2 = pwd.getpwnam(getpass.getuser())
+    os.setgid(pwnam2.pw_gid)
+    os.setuid(pwnam2.pw_uid)
+
+
+def service():
+    privileges()
+    pidfile(pidname(NAME))
+    scan(face, init=True)
+    forever()
 
 
 def wrapped():
