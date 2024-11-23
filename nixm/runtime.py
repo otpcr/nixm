@@ -124,9 +124,8 @@ class Reactor:
             try:
                 evt._thr = launch(func, self, evt)
             except Exception as ex:
+                evt._ex = ex
                 later(ex)
-            if "ready" in dir(evt):
-                evt.ready()
 
     def loop(self):
         while not self.stopped.is_set():
@@ -134,8 +133,10 @@ class Reactor:
                 evt = self.poll()
                 self.callback(evt)
             except (KeyboardInterrupt, EOFError):
+                if "ready" in dir(evt):
+                    evt.ready()
                 _thread.interrupt_main()
-
+                
     def poll(self):
         return self.queue.get()
 

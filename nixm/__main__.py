@@ -48,7 +48,7 @@ def wrapped():
 
 def srv(event):
     import getpass
-    name  = getpass.getuser()
+    name = getpass.getuser()
     event.reply(TXT % (NAME.upper(), name, name, name, NAME))
 
 

@@ -27,9 +27,9 @@ classifiers=[
 
 
 [project.scripts]
-'nixm'    = 'nixm.__main__:wrapped'
-'nixmd'   = 'nixm.daemon:main'
-'nixms'   = 'nixm.daemon:wrapped'
+'nixm'  = 'nixm.__main__:wrapped'
+'nixmd' = 'nixm.daemon:main'
+'nixms' = 'nixm.service:wrapped'
 
 
 [project.urls]
