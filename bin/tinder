@@ -129,9 +129,11 @@ def main():
     thrs = []
     for _nr in range(nrs):
         thrs.append(launch(payload, clt))
+    for thr in thrs:
+        thr.join()
     consume(events)
-    clt.stop()
     clt.wait()
+    clt.stop()
     endtime = time.time()
     lap = laps(endtime-STARTTIME)
     percall = (endtime-STARTTIME)/(nrs*nrcommands)
@@ -139,7 +141,8 @@ def main():
     if not Errors.errors:
         print("no errors")
 
-
 if __name__ == "__main__":
     wrap(main)
-    errors()
+    for line in errors():
+        print(line)
+    sys.stdout.flush()

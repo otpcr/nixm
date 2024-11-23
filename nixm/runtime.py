@@ -121,9 +121,12 @@ class Reactor:
     def callback(self, evt):
         func = self.cbs.get(evt.type, None)
         if func:
-            evt._thr = launch(func, self, evt)
-        elif "ready" in dir(evt):
-            evt.ready()
+            try:
+                evt._thr = launch(func, self, evt)
+            except Exception as ex:
+                later(ex)
+            if "ready" in dir(evt):
+                evt.ready()
 
     def loop(self):
         while not self.stopped.is_set():
