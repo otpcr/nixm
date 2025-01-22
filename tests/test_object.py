@@ -8,10 +8,10 @@
 import unittest
 
 
-from nixm.object import Object, items, keys, update, values
+from nixm.objects import Object, items, keys, update, values
 
 
-import nixm.object
+import nixm.objects
 
 
 VALIDJSON = '{"test": "bla"}'
@@ -70,7 +70,7 @@ attrs2 = (
 
 
 OBJECT  = Object()
-PACKAGE = nixm.object
+PACKAGE = nixm.objects
 
 
 class TestObject(unittest.TestCase):
@@ -179,7 +179,7 @@ class TestObject(unittest.TestCase):
         self.assertTrue(okd)
 
     def test_module(self):
-        self.assertEqual(Object().__module__, "nixm.object")
+        self.assertEqual(Object().__module__, "nixm.objects")
 
     def test_register(self):
         obj = Object()
