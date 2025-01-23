@@ -9,9 +9,7 @@ import time
 
 
 from nixm.persist import elapsed
-
-
-STARTTIME = time.time()
+from nixm.runtime import STARTTIME
 
 
 def upt(event):

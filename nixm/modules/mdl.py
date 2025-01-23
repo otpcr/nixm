@@ -15,11 +15,17 @@ from nixm.persist import elapsed
 from nixm.runtime import Event, Repeater
 
 
+"defines"
+
+
 DAY = 24*60*60
 YEAR = 365*DAY
 SOURCE = "https://github.com/bthate/genocide"
 STARTDATE = "2019-03-04 00:00:00"
 STARTTIME = time.mktime(time.strptime(STARTDATE, "%Y-%m-%d %H:%M:%S"))
+
+
+"init"
 
 
 def init():
@@ -34,6 +40,9 @@ def init():
             sec = seconds(val)
             repeater = Repeater(sec, cbstats, evt, thrname=aliases.get(key))
             repeater.start()
+
+
+"model"
 
 
 oor = """"Totaal onderliggende doodsoorzaken (aantal)";
@@ -272,6 +281,9 @@ construct(oorzaak, zip(oor, aantal))
 oorzaken = Object()
 
 
+"utilities"
+
+
 def getalias(txt):
     result = ""
     for key, value in aliases.items():
@@ -320,6 +332,9 @@ def hourly():
         cbnow(evt)
 
 
+"callbacks"
+
+
 def cbnow(_evt):
     delta = time.time() - STARTTIME
     txt = elapsed(delta) + " "
@@ -353,6 +368,9 @@ def cbstats(evt):
             elapsed(needed)
         )
         Fleet.announce(txt)
+
+
+"commands"
 
 
 def dis(event):
@@ -389,6 +407,9 @@ def now(event):
         event.reply(txt)
 
 
+"runtime"
+
+
 def boot():
     _nr = -1
     for key in keys(oorzaak):
@@ -417,14 +438,6 @@ def boot():
         nms = " ".join(atl.split()[1:]).capitalize()
         nms = nms.strip()
         setattr(oorzaken, nms, aantal[_nr])
-
-
-def __dir__():
-    return (
-            'init',
-            'dis',
-            'now'
-           )
 
 
 boot()

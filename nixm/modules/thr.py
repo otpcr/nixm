@@ -11,9 +11,7 @@ import time
 
 from nixm.objects import Object, update
 from nixm.persist import elapsed
-
-
-STARTTIME = time.time()
+from nixm.runtime import STARTTIME
 
 
 def thr(event):

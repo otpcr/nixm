@@ -16,8 +16,8 @@ class Object:
     def __contains__(self, key):
         return key in dir(self)
 
-    def __iter__(self):
-        return iter(self.__dict__)
+    #def __iter__(self):
+    #    return iter(self.__dict__)
 
     def __len__(self):
         return len(self.__dict__)
@@ -117,7 +117,10 @@ class ObjectEncoder(json.JSONEncoder):
         try:
             return json.JSONEncoder.default(self, o)
         except TypeError:
-            return vars(o)
+            try:
+                return vars(o)
+            except TypeError:
+                return repr(o)
 
     def encode(self, o) -> str:
         return json.JSONEncoder.encode(self, o)

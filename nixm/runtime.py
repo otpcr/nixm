@@ -15,6 +15,12 @@ import _thread
 from nixm.objects import Default
 
 
+"defines"
+
+
+STARTTIME = time.time()
+
+
 "errors"
 
 
@@ -58,7 +64,14 @@ class Thread(threading.Thread):
 
     def run(self):
         func, args = self.queue.get()
-        func(*args)
+        try:
+            func(*args)
+        except Exception as ex:
+            later(ex)
+            try:
+                args[0].ready()
+            except (IndexError, AttributeError):
+                pass
 
 
 def launch(func, *args, **kwargs):
@@ -89,16 +102,18 @@ def name(obj):
 class Timer:
 
     def __init__(self, sleep, func, *args, thrname=None, **kwargs):
-        self.args  = args
-        self.func  = func
+        self.args   = args
+        self.func   = func
         self.kwargs = kwargs
-        self.sleep = sleep
-        self.name  = thrname or kwargs.get("name", name(func))
-        self.state = {}
-        self.timer = None
+        self.sleep  = sleep
+        self.name   = thrname or kwargs.get("name", name(func))
+        self.state  = {}
+        self.timer  = None
+        print(self.args[0])
 
     def run(self):
         self.state["latest"] = time.time()
+        print(self.func, self.args)
         launch(self.func, *self.args)
 
     def start(self):
@@ -214,6 +229,7 @@ class Event(Default):
 
 def __dir__():
     return (
+        'STARTTIME',
         'Errors',
         'EVent',
         'Reactor',

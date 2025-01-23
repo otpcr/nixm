@@ -12,11 +12,17 @@ from nixm.objects import Object
 from nixm.persist import elapsed, find, fntime, write
 
 
+"todo"
+
+
 class Todo(Object):
 
     def __init__(self):
         Object.__init__(self)
         self.txt = ''
+
+
+"commands"
 
 
 def dne(event):

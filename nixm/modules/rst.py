@@ -18,6 +18,9 @@ from nixm.persist import Workdir, types
 from nixm.runtime import later, launch
 
 
+"init"
+
+
 def init():
     try:
         rest = REST((Config.hostname, int(Config.port)), RESTHandler)
@@ -29,18 +32,16 @@ def init():
     return rest
 
 
-def html(txt):
-    return """<!doctype html>
-<html>
-   %s
-</html>
-""" % txt
+"config"
 
 
 class Config(Default):
 
     hostname = "localhost"
     port     = 10102
+
+
+"rest"
 
 
 class REST(HTTPServer, Object):
@@ -115,3 +116,14 @@ class RESTHandler(BaseHTTPRequestHandler):
 
     def log(self, code):
         pass
+
+
+"utilities"
+
+
+def html(txt):
+    return """<!doctype html>
+<html>
+   %s
+</html>
+""" % txt

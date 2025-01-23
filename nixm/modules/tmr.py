@@ -15,21 +15,7 @@ from nixm.persist import find, elapsed, write
 from nixm.runtime import Event, Timer, launch
 
 
-def init():
-    "start timers."
-    bot = Fleet.first()
-    if not bot:
-        return
-    for _fn, obj in find("timer"):
-        if "time" not in obj:
-            continue
-        diff = float(obj.time) - ttime.time()
-        if diff > 0:
-            evt = Event()
-            update(evt, obj)
-            evt.orig = object.__repr__(bot)
-            timer = Timer(diff, evt.show)
-            launch(timer.start)
+"defines"
 
 
 MONTHS = [
@@ -57,9 +43,35 @@ FORMATS = [
 ]
 
 
+"init"
+
+
+def init():
+    "start timers."
+    bot = Fleet.first()
+    if not bot:
+        return
+    for _fn, obj in find("timer"):
+        if "time" not in obj:
+            continue
+        diff = float(obj.time) - ttime.time()
+        if diff > 0:
+            evt = Event()
+            update(evt, obj)
+            evt.orig = object.__repr__(bot)
+            timer = Timer(diff, evt.show)
+            launch(timer.start)
+
+
+"exceptions"
+
+
 class NoDate(Exception):
 
     "NoDate"
+
+
+"utilities"
 
 
 def extract_date(daystr):
@@ -180,6 +192,9 @@ def today():
     return str(datetime.datetime.today()).split()[0]
 
 
+"commands"
+
+
 def tmr(event):
     "add a timer."
     result = ""
@@ -191,6 +206,7 @@ def tmr(event):
                 event.reply(f'{nmr} {obj.txt} {elapsed(lap)}')
                 nmr += 1
         return result
+    bot = Fleet.get(event.orig)
     seconds = 0
     line = ""
     for word in event.args:
@@ -220,7 +236,7 @@ def tmr(event):
     event.reply("ok " +  elapsed(diff))
     event.result = []
     event.result.append(event.rest)
-    timer = Timer(diff, event.show, thrname=event.cmd)
+    timer = Timer(diff, bot.display, event, thrname=event.cmd)
     update(timer, event)
     write(timer)
     launch(timer.start)

@@ -6,7 +6,7 @@
 "interface"
 
 
-from nixm.modules import cmd, err, flt, fnd, irc, log, mbx, mdl, mod, opm, req
+from nixm.modules import cmd, err, flt, fnd, irc, log, mbx, mdl, mod, req
 from nixm.modules import rss, rst, slg, tdo, thr, tmr, udp, upt, wsd
 
 
@@ -21,15 +21,14 @@ def __dir__():
         'mbx',
         'mdl',
         'mod',
-        'opm',
         'req',
         'rss',
-        'rst',
+        #'rst',
         'slg',
         'tdo',
         'thr',
         'tmr',
-        'udp',
-        #'upt',
-        'wsd'
+        #'udp',
+        'upt',
+        #'wsd'
      )
