@@ -454,7 +454,7 @@ def exp(event):
     nrs = 0
     for _fn, ooo in find("rss"):
         nrs += 1
-        obj = rss.Rss()
+        obj = Rss()
         update(obj, ooo)
         name = f"url{nrs}"
         txt = f'<outline name="{name}" display_list="{obj.display_list}" xmlUrl="{obj.rss}"/>'

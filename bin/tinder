@@ -17,12 +17,12 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from nixm.clients import Client, Config
+from nixm.client  import Client, Config, Event
 from nixm.command import Commands, parse, scan
 from nixm.modules import face
 from nixm.objects import Object, keys
 from nixm.persist import Workdir, elapsed, skel
-from nixm.runtime import Event, launch, errors, later
+from nixm.runtime import launch, errors, later
 
 
 "defines"

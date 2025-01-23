@@ -29,13 +29,6 @@ p   = os.path.join
 Workdir.wdr = os.path.expanduser(f"~/.{Config.name}")
 
 
-if os.path.exists(p(Workdir.wdr, "mods")):
-    sys.path.insert(0, Workdir.wdr)
-    import mods
-else:
-    mods = None    
-
-
 "console"
 
 
@@ -133,7 +126,7 @@ def background():
     daemon(True)
     privileges()
     pidfile(pidname(Config.name))
-    scan(face, mods, init=True)
+    scan(face, init=True)
     forever()
 
 
@@ -142,7 +135,7 @@ def console():
     parse(cfg, " ".join(sys.argv[1:]))
     if "v" in cfg.opts:
         banner()
-    for mod, thr in scan(face, mods, init="i" in cfg.opts, disable=cfg.sets.dis):
+    for mod, thr in scan(face, init="i" in cfg.opts, disable=cfg.sets.dis):
         if "v" in cfg.opts and "output" in dir(mod):
             mod.output = print
         if thr and "w" in cfg.opts:
@@ -158,7 +151,7 @@ def control():
     Commands.add(srv)
     parse(cfg, " ".join(sys.argv[1:]))
     csl = CLI()
-    scan(face, mods)
+    scan(face)
     evt = Event()
     evt.orig = repr(csl)
     evt.type = "command"

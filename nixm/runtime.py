@@ -211,9 +211,8 @@ class Fleet:
     @staticmethod
     def first():
         bots =  list(Fleet.bots.values())
-        if not bots:
-            bots.append(Client())
-        return bots[0]
+        if bots:
+            return bots[0]
 
     @staticmethod
     def get(name):
