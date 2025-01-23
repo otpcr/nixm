@@ -16,11 +16,10 @@ import time
 import _thread
 
 
-from ..client  import Event
 from ..command import command
 from ..objects import Default, Object, edit, fmt, keys
 from ..persist import ident, last, write
-from ..runtime import Fleet, Reactor, later, launch
+from ..runtime import Event, Fleet, Reactor, later, launch
 
 
 "defines"

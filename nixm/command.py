@@ -5,6 +5,7 @@
 "user commands"
 
 
+import importlib
 import inspect
 import types
 
@@ -13,19 +14,50 @@ from .objects import Default
 from .runtime import Output, launch
 
 
+"table"
+
+
+class Table:
+
+    mods = {}
+    names = {}
+        
+    @staticmethod
+    def add(mod):
+        Table.mods[mod.__name__] = mod
+        Table.names[mod.__name__] = mod.__module__
+
+    @staticmethod
+    def get(name):
+        return Table.mods.get(name, None)
+
+
+    @staticmethod
+    def load(name):
+        mname = f"nixm.modules.{name}"
+        mod = importlib.import_module(mname, 'nixm.modules')
+        Table.mods[name] = mod    
+
+
 "commands"
 
 
 class Commands:
 
     cmds = {}
+    names = {}
 
     @staticmethod
     def add(func):
         Commands.cmds[func.__name__] = func
 
     @staticmethod
+    def get(cmd):
+        return Commands.cmds.get(cmd, None)
+                    
+    @staticmethod
     def scan(mod):
+        Commands.names[mod.__name__] = mod.__module__
         for key, cmdz in inspect.getmembers(mod, inspect.isfunction):
             if key.startswith("cb"):
                 continue
@@ -33,16 +65,22 @@ class Commands:
                 Commands.add(cmdz)
 
 
+"callbacks"
+
+
 def command(evt):
     parse(evt)
     func = Commands.cmds.get(evt.cmd, None)
+    if not func:
+        Table.load(evt.cmd)
+        func = Commands.cmds.get(evt.cmd, None)
     if func:
         func(evt)
         Output.put(evt)
     evt.ready()
 
 
-"utilities"
+"Scanner"
 
 
 def modloop(*pkgs, disable=""):
@@ -52,7 +90,25 @@ def modloop(*pkgs, disable=""):
                 continue
             if modname.startswith("__"):
                 continue
-            yield getattr(pkg, modname)
+            yield TABLE.get(modname)
+
+
+
+def scan(*pkgs, init=False, disable=""):
+    result = []
+    for mod in modloop(*pkgs, disable=disable):
+        if not isinstance(mod, types.ModuleType):
+            continue
+        Commands.scan(mod)
+        thr = None
+        if init and "init" in dir(mod):
+            thr = launch(mod.init)
+        result.append((mod, thr))
+    return result
+
+
+
+"utilities"
 
 
 def parse(obj, txt=None):
@@ -109,25 +165,18 @@ def parse(obj, txt=None):
     return obj
 
 
-def scan(*pkgs, init=False, disable=""):
-    result = []
-    for mod in modloop(*pkgs, disable=disable):
-        if not isinstance(mod, types.ModuleType):
-            continue
-        Commands.scan(mod)
-        thr = None
-        if init and "init" in dir(mod):
-            thr = launch(mod.init)
-        result.append((mod, thr))
-    return result
-
-
 def spl(txt):
     try:
         result = txt.split(',')
     except (TypeError, ValueError):
         result = txt
     return [x for x in result if x]
+
+
+"data"
+
+
+table = Table()
 
 
 "interface"

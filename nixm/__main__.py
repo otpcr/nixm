@@ -15,11 +15,10 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from .client  import Client, Config, Event
 from .command import Commands, command, parse, scan
 from .modules import face
 from .persist import Workdir, pidname
-from .runtime import Fleet, errors, later
+from .runtime import Client, Config, Event, Fleet, errors, later
 
 
 cfg = Config()
@@ -38,6 +37,10 @@ def output(txt):
 
 
 class CLI(Client):
+
+    def __init__(self):
+        Client.__init__(self)
+        self.register("command", command)
 
     def raw(self, txt):
         output(txt.encode('utf-8', 'replace').decode("utf-8"))
@@ -156,6 +159,7 @@ def control():
     parse(cfg, " ".join(sys.argv[1:]))
     csl = CLI()
     scan(face)
+    print(Commands.cmds)
     evt = Event()
     evt.orig = repr(csl)
     evt.type = "command"

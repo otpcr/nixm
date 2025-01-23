@@ -6,29 +6,37 @@
 "interface"
 
 
-from nixm.modules import cmd, err, flt, fnd, irc, log, mbx, mdl, mod, req
-from nixm.modules import rss, rst, slg, tdo, thr, tmr, udp, upt, wsd
+import importlib
+
+
+MODS = (
+    'cmd',
+    'err',
+    'flt',
+    'fnd',
+    'irc',
+    'log',
+    'mbx',
+    'mdl',
+    'mod',
+    'req',
+    'rss',
+    'rst',
+    'slg',
+    'tdo',
+    'thr',
+    'tmr',
+    'udp',
+    'upt',
+    'wsd'
+)
+
+
+def boot():
+    for name in MODS:
+        mname = f"nixm.modules.{name}"
+        mod = importlib.import_module(mname, 'nixm.modules.face')
 
 
 def __dir__():
-    return (
-        'cmd',
-        'err',
-        'flt',
-        'fnd',
-        'irc',
-        'log',
-        'mbx',
-        'mdl',
-        'mod',
-        'req',
-        'rss',
-        #'rst',
-        'slg',
-        'tdo',
-        'thr',
-        'tmr',
-        #'udp',
-        'upt',
-        #'wsd'
-     )
+    return MODS
