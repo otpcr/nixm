@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C0301
+# pylint: disable=C0116,C0301,E0402
 
 
 "slogan"

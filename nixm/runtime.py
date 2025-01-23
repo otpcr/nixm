@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C0115,C0116,R0903,W0105,W0212,W0718
+# pylint: disable=C0115,C0116,R0903,W0105,W0212,W0718,E0402
 
 
 "threading"
@@ -149,7 +149,7 @@ class Reactor:
         func = self.cbs.get(evt.type, None)
         if func:
             try:
-                evt._thr = launch(func, self, evt)
+                evt._thr = launch(func, evt)
             except Exception as ex:
                 later(ex)
                 evt.ready()
@@ -210,12 +210,14 @@ class Fleet:
     @staticmethod
     def first():
         bots =  list(Fleet.bots.values())
+        res = None
         if bots:
-            return bots[0]
+            res = bots[0]
+        return res
 
     @staticmethod
-    def get(name):
-        return Fleet.bots.get(name, None)
+    def get(orig):
+        return Fleet.bots.get(orig, None)
 
     @staticmethod
     def say(orig, channel, txt):

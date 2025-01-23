@@ -1,4 +1,5 @@
 # This file is placed in the Public Domain.
+# pylint: disable=W0105,E0402
 
 
 "timer"
@@ -52,7 +53,7 @@ def init():
     if not bot:
         return
     for _fn, obj in find("timer"):
-        if "time" not in obj:
+        if "time" not in dir(obj):
             continue
         diff = float(obj.time) - ttime.time()
         if diff > 0:

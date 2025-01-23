@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=R,C0115,C0116,W0105,W0718
+# pylint: disable=R,C0115,C0116,W0105,W0613,W0718,E0402
 
 
 "internet relay chat"
@@ -33,6 +33,11 @@ NAME   = Object.__module__.rsplit(".", maxsplit=2)[-2]
 saylock = _thread.allocate_lock()
 
 
+def output(txt):
+    # output here
+    pass
+
+
 "init"
 
 
@@ -40,7 +45,7 @@ def debug(txt):
     for ign in IGNORE:
         if ign in txt:
             return
-    # output here
+    output(txt)
 
 
 def init():
@@ -521,17 +526,20 @@ class IRC(Reactor, Output):
 
 
 def cb_auth(bot, evt):
+    bot = Fleet.get(evt.orig)
     bot.docommand(f'AUTHENTICATE {bot.cfg.password}')
 
 
-def cb_cap(bot, evt):
+def cb_cap(evt):
+    bot = Fleet.get(evt.orig)
     if bot.cfg.password and 'ACK' in evt.arguments:
         bot.direct('AUTHENTICATE PLAIN')
     else:
         bot.direct('CAP REQ :sasl')
 
 
-def cb_error(bot, evt):
+def cb_error(evt):
+    bot = Fleet.get(evt.orig)
     if not bot.state.nrerror:
         bot.state.nrerror = 0
     bot.state.nrerror += 1
@@ -539,12 +547,14 @@ def cb_error(bot, evt):
     debug(evt.txt)
 
 
-def cb_h903(bot, evt):
+def cb_h903(evt):
+    bot = Fleet.get(evt.orig)
     bot.direct('CAP END')
     bot.events.authed.set()
 
 
-def cb_h904(bot, evt):
+def cb_h904(evt):
+    bot = Fleet.get(evt.orig)
     bot.direct('CAP END')
     bot.events.authed.set()
 
@@ -552,24 +562,28 @@ def cb_h904(bot, evt):
 def cb_kill(bot, evt):
     pass
 
-def cb_log(bot, evt):
+def cb_log(evt):
     pass
 
-def cb_ready(bot, evt):
+def cb_ready(evt):
+    bot = Fleet.get(evt.orig)
     bot.events.ready.set()
 
 
-def cb_001(bot, evt):
+def cb_001(evt):
+    bot = Fleet.get(evt.orig)
     bot.logon()
 
 
-def cb_notice(bot, evt):
+def cb_notice(evt):
+    bot = Fleet.get(evt.orig)
     if evt.txt.startswith('VERSION'):
         txt = f'\001VERSION {NAME.upper()} 140 - {bot.cfg.username}\001'
         bot.docommand('NOTICE', evt.channel, txt)
 
 
-def cb_privmsg(bot, evt):
+def cb_privmsg(evt):
+    bot = Fleet.get(evt.orig)
     if not bot.cfg.commands:
         return
     if evt.txt:
@@ -582,10 +596,11 @@ def cb_privmsg(bot, evt):
         if evt.txt:
             evt.txt = evt.txt[0].lower() + evt.txt[1:]
         if evt.txt:
-            command(bot, evt)
+            command(evt)
 
 
-def cb_quit(bot, evt):
+def cb_quit(evt):
+    bot = Fleet.get(evt.orig)
     debug(f"quit from {bot.cfg.server}")
     if evt.orig and evt.orig in bot.zelf:
         bot.stop()
