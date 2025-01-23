@@ -10,7 +10,7 @@ import types
 
 
 from .objects import Default
-from .runtime import launch
+from .runtime import Fleet, launch
 
 
 "commands"
@@ -38,7 +38,7 @@ def command(evt):
     func = Commands.cmds.get(evt.cmd, None)
     if func:
         func(evt)
-        evt.display()
+        Fleet.display(evt)
     evt.ready()
 
 

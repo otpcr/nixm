@@ -19,7 +19,7 @@ from .client  import Client, Config, Event
 from .command import Commands, command, parse, scan
 from .modules import face
 from .persist import Workdir, pidname
-from .runtime import errors, later
+from .runtime import Fleet, errors, later
 
 
 cfg = Config()
@@ -160,7 +160,7 @@ def control():
     evt.orig = repr(csl)
     evt.type = "command"
     evt.txt = cfg.otxt
-    command(csl, evt)
+    command(evt)
     evt.wait()
 
 
@@ -229,6 +229,7 @@ def wraps():
 
 
 def main():
+    Fleet.start()
     if check("c"):
         wrap(console)
     elif check("d"):
@@ -237,6 +238,7 @@ def main():
         wrap(service)
     else:
         control()
+
 
 
 if __name__ == "__main__":

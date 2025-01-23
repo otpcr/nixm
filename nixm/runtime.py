@@ -197,6 +197,8 @@ class Reactor:
 class Fleet:
 
     bots = {}
+    queue = queue.Queue()
+    stopped = threading.Event()
 
     @staticmethod
     def add(bot):
@@ -206,6 +208,18 @@ class Fleet:
     def announce(txt):
         for bot in Fleet.bots.values():
             bot.announce(txt)
+
+    @staticmethod
+    def display(evt):
+        Fleet.queue.put(evt)
+
+    @staticmethod
+    def loop():
+        while not Fleet.stopped.is_set():
+            evt = Fleet.queue.get()
+            bot = Fleet.get(evt.orig)
+            for txt in evt.result:
+                bot.say(evt.channel, txt)
 
     @staticmethod
     def first():
@@ -223,6 +237,10 @@ class Fleet:
     def say(orig, channel, txt):
         bot = Fleet.get(orig)
         bot.say(channel, txt)
+
+    @staticmethod
+    def start():
+        launch(Fleet.loop)
 
 
 "interface"

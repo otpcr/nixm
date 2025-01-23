@@ -22,7 +22,7 @@ from nixm.command import Commands, parse, scan
 from nixm.modules import face
 from nixm.objects import Object, keys
 from nixm.persist import Workdir, elapsed, skel
-from nixm.runtime import launch, errors, later
+from nixm.runtime import Fleet, launch, errors, later
 
 
 "defines"
@@ -140,6 +140,7 @@ def wrap(function):
 def main():
     global nrs
     global nrcommand
+    Fleet.start()
     parse(cfg, " ".join(sys.argv[1:]))
     face.rss.DEBUG = True
     scan(face, mods)
