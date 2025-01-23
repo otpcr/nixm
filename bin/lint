@@ -9,23 +9,24 @@ import os
 import sys
 
 
-"defines"
-
-
+IGNORE = ["---", "Your code"]
 NAME = "nixm"
 
 
-"utilities"
+def ignore(txt):
+    for ign in IGNORE:
+        if ign in txt:
+            return True
+    return False
 
 
 def popen(txt):
     "run text in popen."
     for line in os.popen(txt).readlines():
+        if not line.strip() or ignore(line):
+             continue
         print(line.rstrip())
         sys.stdout.flush()
-
-
-"runtime"
 
 
 if os.path.exists("bin/clean"):
