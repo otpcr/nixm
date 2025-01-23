@@ -29,14 +29,18 @@ p   = os.path.join
 Workdir.wdr = os.path.expanduser(f"~/.{Config.name}")
 
 
+def output(txt):
+    # output here
+    print(txt)
+
+
 "console"
 
 
 class CLI(Client):
 
     def raw(self, txt):
-        print(txt.encode('utf-8', 'replace').decode("utf-8"))
-        sys.stdout.flush()
+        output(txt.encode('utf-8', 'replace').decode("utf-8"))
 
 
 class Console(CLI):
@@ -60,7 +64,7 @@ class Console(CLI):
 
 def banner():
     tme = time.ctime(time.time()).replace("  ", " ")
-    print(f"{Config.name.upper()} since {tme}")
+    output(f"{Config.name.upper()} since {tme}")
 
 
 def check(txt):
@@ -206,14 +210,14 @@ def wrap(func):
     try:
         func()
     except (KeyboardInterrupt, EOFError):
-        print("")
+        output("")
     except Exception as exc:
         later(exc)
     finally:
         if old:
             termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, old)
     for line in errors():
-        print(line)
+        output(line)
 
 
 def wrapped():

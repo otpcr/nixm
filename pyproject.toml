@@ -10,7 +10,7 @@ build-backend = 'setuptools.build_meta'
 
 [project]
 name = 'nixm'
-version = "50"
+version = "60"
 authors = [
     {name = 'Bart Thate', email = 'bthate@dds.nl' },
 ]
@@ -28,8 +28,6 @@ classifiers=[
 
 [project.scripts]
 'nixm'  = 'nixm.__main__:wrapped'
-'nixmd' = 'nixm.daemon:main'
-'nixms' = 'nixm.service:wrapped'
 
 
 [project.urls]
@@ -42,11 +40,4 @@ classifiers=[
 packages = [
     'nixm',
     'nixm.modules'
-]
-
-
-[tool.setuptools.data-files]
-"share/doc/nixm" = [
-    'README.rst',
-    'files/MANUAL.rst'
 ]

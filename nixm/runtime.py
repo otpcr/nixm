@@ -106,7 +106,6 @@ class Timer:
         self.name   = thrname or kwargs.get("name", name(func))
         self.state  = {}
         self.timer  = None
-        print(self.args[0])
 
     def run(self):
         self.state["latest"] = time.time()
