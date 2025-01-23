@@ -12,9 +12,8 @@ import threading
 import time
 
 
-from ..client  import Fleet
 from ..objects import Object
-from ..runtime import launch
+from ..runtime import Fleet, launch
 
 
 def init():

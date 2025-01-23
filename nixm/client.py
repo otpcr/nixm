@@ -12,7 +12,7 @@ import time
 
 from .command import command
 from .objects import Default
-from .runtime import Fleet, Reactor, launch
+from .runtime import Output, Reactor, launch
 
 
 "config"
@@ -31,13 +31,19 @@ class Client(Reactor):
     def __init__(self):
         Reactor.__init__(self)
         self.register("command", command)
-        Fleet.add(self)
 
     def raw(self, txt):
         raise NotImplementedError("raw")
 
     def say(self, channel, txt):
         self.raw(txt)
+
+
+class Buffered(Client):
+
+    def __init__(self):
+        Client.__init__(self)
+        Output.start()        
 
 
 "event"
@@ -72,47 +78,6 @@ class Event(Default):
         if self._thr:
             self._thr.join()
 
-"output"
-
-
-class Output:
-
-    cache = {}
-
-    def __init__(self):
-        self.oqueue = queue.Queue()
-        self.dostop = threading.Event()
-
-    def display(self, evt):
-        for txt in evt.result:
-            self.oput(evt.channel, txt)
-
-    def dosay(self, channel, txt):
-        raise NotImplementedError("dosay")
-
-    def oput(self, channel, txt):
-        self.oqueue.put((channel, txt))
-
-    def output(self):
-        while not self.dostop.is_set():
-            (channel, txt) = self.oqueue.get()
-            if channel is None and txt is None:
-                self.oqueue.task_done()
-                break
-            self.dosay(channel, txt)
-            self.oqueue.task_done()
-
-    def start(self):
-        launch(self.output)
-
-    def stop(self):
-        self.oqueue.join()
-        self.dostop.set()
-        self.oqueue.put((None, None))
-
-    def wait(self):
-        self.dostop.wait()
-
 
 "interface"
 
@@ -121,6 +86,5 @@ def __dir__():
     return (
         'Client',
         'Config',
-        'Event',
-        'Output'
+        'Event'
     )

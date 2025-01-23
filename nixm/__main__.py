@@ -229,7 +229,6 @@ def wraps():
 
 
 def main():
-    Fleet.start()
     if check("c"):
         wrap(console)
     elif check("d"):

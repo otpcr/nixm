@@ -140,7 +140,6 @@ def wrap(function):
 def main():
     global nrs
     global nrcommand
-    Fleet.start()
     parse(cfg, " ".join(sys.argv[1:]))
     face.rss.DEBUG = True
     scan(face, mods)
