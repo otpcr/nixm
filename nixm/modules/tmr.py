@@ -9,10 +9,10 @@ import re
 import time as ttime
 
 
-from nixm.clients import Fleet
+from nixm.client  import Event
 from nixm.objects import update
 from nixm.persist import find, elapsed, write
-from nixm.runtime import Event, Timer, launch
+from nixm.runtime import Fleet, Timer, launch
 
 
 "defines"

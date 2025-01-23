@@ -20,11 +20,11 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote_plus, urlencode
 
 
-from nixm.clients import Fleet
-from nixm.command import spl
-from nixm.objects import Object, fmt, update
-from nixm.persist import elapsed, find, fntime, ident, last, store, write
-from nixm.runtime import Repeater, launch
+from ..client  import Fleet
+from ..command import spl
+from ..objects import Object, fmt, update
+from ..persist import elapsed, find, fntime, ident, last, store, write
+from ..runtime import Repeater, launch
 
 
 "defines"

@@ -5,7 +5,7 @@
 "show list of commands"
 
 
-from nixm.command import Commands
+from ..command import Commands
 
 
 def cmd(event):

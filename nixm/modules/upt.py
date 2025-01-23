@@ -8,8 +8,8 @@
 import time
 
 
-from nixm.persist import elapsed
-from nixm.runtime import STARTTIME
+from ..persist import elapsed
+from ..runtime import STARTTIME
 
 
 def upt(event):

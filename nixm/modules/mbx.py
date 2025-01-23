@@ -10,8 +10,8 @@ import os
 import time
 
 
-from nixm.objects import Object, fmt, update
-from nixm.persist import elapsed, find, fntime, write
+from ..objects import Object, fmt, update
+from ..persist import elapsed, find, fntime, write
 
 
 "email"

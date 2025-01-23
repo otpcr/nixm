@@ -10,14 +10,9 @@ all elderly and all handicapped (Wzd), all criminals (Wfz) and all psychiatric p
 here in the Netherlands."""
 
 
-"commands"
-
-
 def lne(event):
-    "diplay first line of slogan."
     event.reply(TXT.split("\n", maxsplit=1)[0])
 
 
 def slg(event):
-    "slogan"
     event.reply(TXT)

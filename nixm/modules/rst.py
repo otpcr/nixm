@@ -13,9 +13,9 @@ import time
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 
-from nixm.objects import Default, Object
-from nixm.persist import Workdir, types
-from nixm.runtime import later, launch
+from ..objects import Default, Object
+from ..persist import Workdir, types
+from ..runtime import later, launch
 
 
 "init"

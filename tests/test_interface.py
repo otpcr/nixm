@@ -12,8 +12,9 @@ import unittest
 
 
 import nixm
-import nixm.clients
+import nixm.client
 import nixm.command
+import nixm.modules
 import nixm.objects
 import nixm.persist
 import nixm.runtime
@@ -23,8 +24,9 @@ from nixm.objects import *
 
 
 PACKAGE = [
-    'clients',
+    'client',
     'command',
+    'modules',
     'objects',
     'persist',
     'runtime'
@@ -33,7 +35,6 @@ PACKAGE = [
 
 METHODS = [
     '__class__',
-    '__contains__',
     '__delattr__',
     '__dict__',
     '__dir__',
@@ -47,7 +48,6 @@ METHODS = [
     '__hash__',
     '__init__',
     '__init_subclass__',
-    '__iter__',
     '__le__',
     '__len__',
     '__lt__',

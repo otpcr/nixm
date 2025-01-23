@@ -16,11 +16,11 @@ import time
 import _thread
 
 
-from nixm.clients import Fleet
-from nixm.command import command
-from nixm.objects import Default, Object, edit, fmt, keys
-from nixm.persist import ident, last, write
-from nixm.runtime import Event, Reactor, later, launch
+from ..client  import Event
+from ..command import command
+from ..objects import Default, Object, edit, fmt, keys
+from ..persist import ident, last, write
+from ..runtime import Fleet, Reactor, later, launch
 
 
 "defines"

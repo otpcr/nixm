@@ -12,9 +12,6 @@ import traceback
 import _thread
 
 
-from nixm.objects import Default
-
-
 "defines"
 
 
@@ -113,7 +110,6 @@ class Timer:
 
     def run(self):
         self.state["latest"] = time.time()
-        print(self.func, self.args)
         launch(self.func, *self.args)
 
     def start(self):
@@ -148,6 +144,7 @@ class Reactor:
         self.cbs = {}
         self.queue = queue.Queue()
         self.stopped = threading.Event()
+        Fleet.add(self)
 
     def callback(self, evt):
         func = self.cbs.get(evt.type, None)
@@ -195,33 +192,37 @@ class Reactor:
         self.stopped.wait()
 
 
-"event"
+"fleet"
 
 
-class Event(Default):
+class Fleet:
 
-    def __init__(self):
-        Default.__init__(self)
-        self._ready = threading.Event()
-        self._thr   = None
-        self.ctime  = time.time()
-        self.result = []
-        self.type   = "event"
-        self.txt    = ""
+    bots = {}
 
-    def done(self):
-        self.reply("ok")
+    @staticmethod
+    def add(bot):
+        Fleet.bots[repr(bot)] = bot
 
-    def ready(self):
-        self._ready.set()
+    @staticmethod
+    def announce(txt):
+        for bot in Fleet.bots.values():
+            bot.announce(txt)
 
-    def reply(self, txt):
-        self.result.append(txt)
+    @staticmethod
+    def first():
+        bots =  list(Fleet.bots.values())
+        if not bots:
+            bots.append(Client())
+        return bots[0]
 
-    def wait(self):
-        self._ready.wait()
-        if self._thr:
-            self._thr.join()
+    @staticmethod
+    def get(name):
+        return Fleet.bots.get(name, None)
+
+    @staticmethod
+    def say(orig, channel, txt):
+        bot = Fleet.get(orig)
+        bot.say(channel, txt)
 
 
 "interface"

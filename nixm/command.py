@@ -9,8 +9,8 @@ import inspect
 import types
 
 
-from nixm.objects import Default
-from nixm.runtime import launch
+from .objects import Default
+from .runtime import launch
 
 
 "commands"
@@ -38,7 +38,7 @@ def command(bot, evt):
     func = Commands.cmds.get(evt.cmd, None)
     if func:
         func(evt)
-    bot.display(evt)
+        evt.display()
     evt.ready()
 
 

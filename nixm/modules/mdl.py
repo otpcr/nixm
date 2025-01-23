@@ -9,10 +9,10 @@ import datetime
 import time
 
 
-from nixm.clients import Fleet
-from nixm.objects import Object, construct, keys
-from nixm.persist import elapsed
-from nixm.runtime import Event, Repeater
+from ..client  import Event
+from ..objects import Object, construct, keys
+from ..persist import elapsed
+from ..runtime import Fleet, Repeater
 
 
 "defines"

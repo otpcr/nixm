@@ -7,11 +7,12 @@
 
 import queue
 import threading
+import time
 
 
-from nixm.command import command
-from nixm.objects import Default
-from nixm.runtime import Reactor, launch
+from .command import command
+from .objects import Default
+from .runtime import Fleet, Reactor, launch
 
 
 "config"
@@ -32,41 +33,44 @@ class Client(Reactor):
         self.register("command", command)
         Fleet.add(self)
 
-    def display(self, evt):
-        for txt in evt.result:
-            self.raw(txt)
-
     def raw(self, txt):
         raise NotImplementedError("raw")
 
+    def say(self, channel, txt):
+        self.raw(txt)
 
-"fleet"
+
+"event"
 
 
-class Fleet:
+class Event(Default):
 
-    bots = {}
+    def __init__(self):
+        Default.__init__(self)
+        self._ready = threading.Event()
+        self._thr   = None
+        self.ctime  = time.time()
+        self.result = []
+        self.type   = "event"
+        self.txt    = ""
 
-    @staticmethod
-    def add(bot):
-        Fleet.bots[repr(bot)] = bot
+    def display(self):
+        for txt in self.result:
+            Fleet.say(self.orig, self.channel, txt)
 
-    @staticmethod
-    def announce(txt):
-        for bot in Fleet.bots.values():
-            bot.announce(txt)
+    def done(self):
+        self.reply("ok")
 
-    @staticmethod
-    def first():
-        bots =  list(Fleet.bots.values())
-        if not bots:
-            bots.append(Client())
-        return bots[0]
+    def ready(self):
+        self._ready.set()
 
-    @staticmethod
-    def get(name):
-        return Fleet.bots.get(name, None)
+    def reply(self, txt):
+        self.result.append(txt)
 
+    def wait(self):
+        self._ready.wait()
+        if self._thr:
+            self._thr.join()
 
 "output"
 
@@ -117,6 +121,6 @@ def __dir__():
     return (
         'Client',
         'Config',
-        'Fleet',
+        'Event',
         'Output'
     )

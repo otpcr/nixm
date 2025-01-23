@@ -8,8 +8,8 @@
 import time
 
 
-from nixm.objects import Object
-from nixm.persist import elapsed, find, fntime, write
+from ..objects import Object
+from ..persist import elapsed, find, fntime, write
 
 
 class Log(Object):

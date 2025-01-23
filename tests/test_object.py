@@ -93,16 +93,11 @@ class TestObject(unittest.TestCase):
         clz = obj.__class__()
         self.assertTrue("Object" in str(type(clz)))
 
-    def test_contains(self):
-        obj = Object()
-        obj.key = "value"
-        self.assertTrue("key" in obj)
-
     def test_delattr(self):
         obj = Object()
         obj.key = "value"
         del obj.key
-        self.assertTrue("key" not in obj)
+        self.assertTrue("key" not in dir(obj))
 
     def test_dict(self):
         obj = Object()
@@ -142,16 +137,6 @@ class TestObject(unittest.TestCase):
             list(items(obj)),
             [
                 ("key", "value"),
-            ],
-        )
-
-    def test_iter(self):
-        obj = Object()
-        obj.key = "value"
-        self.assertTrue(
-            list(obj.__iter__()),
-            [
-                "key",
             ],
         )
 

@@ -14,7 +14,7 @@ import threading
 
 
 
-from nixm.objects import Object, dumps, fqn, items, loads, update
+from .objects import Object, dumps, fqn, items, loads, update
 
 
 "locks"

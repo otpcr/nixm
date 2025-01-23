@@ -12,9 +12,9 @@ import threading
 import time
 
 
-from nixm.objects import Object
-from nixm.clients import Fleet
-from nixm.runtime import launch
+from ..client  import Fleet
+from ..objects import Object
+from ..runtime import launch
 
 
 def init():

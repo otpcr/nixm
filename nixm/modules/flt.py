@@ -4,8 +4,8 @@
 "fleet"
 
 
-from nixm.clients import Fleet
-from nixm.runtime import name
+from ..client  import Fleet
+from ..runtime import name
 
 
 def flt(event):
