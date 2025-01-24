@@ -9,6 +9,27 @@
 import importlib
 
 
+class Table:
+
+    mods = {}
+
+    @staticmethod
+    def add(mod):
+        Table.mods[mod.__name__] = mod
+
+    @staticmethod
+    def get(name):
+        return Table.mods.get(name, None)
+
+    @staticmethod
+    def load(name):
+        Table.mods[name] = mod = importlib.import_module(name, 'nixm.modules')
+        return mod
+
+
+"callbacks"
+
+
 MODS = (
     'cmd',
     'err',
@@ -32,10 +53,9 @@ MODS = (
 )
 
 
-def boot():
-    for name in MODS:
-        mname = f"nixm.modules.{name}"
-        mod = importlib.import_module(mname, 'nixm.modules.face')
+for name in MODS:
+    mname = f"nixm.modules.{name}"
+    Table.load(mname)
 
 
 def __dir__():

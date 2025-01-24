@@ -14,31 +14,6 @@ from .objects import Default
 from .runtime import Output, launch
 
 
-"table"
-
-
-class Table:
-
-    mods = {}
-    names = {}
-        
-    @staticmethod
-    def add(mod):
-        Table.mods[mod.__name__] = mod
-        Table.names[mod.__name__] = mod.__module__
-
-    @staticmethod
-    def get(name):
-        return Table.mods.get(name, None)
-
-
-    @staticmethod
-    def load(name):
-        mname = f"nixm.modules.{name}"
-        mod = importlib.import_module(mname, 'nixm.modules')
-        Table.mods[name] = mod    
-
-
 "commands"
 
 
@@ -54,7 +29,11 @@ class Commands:
     @staticmethod
     def get(cmd):
         return Commands.cmds.get(cmd, None)
-                    
+
+    @staticmethod
+    def getname(cmd):
+        return Commands.names.get(cmd, None)
+
     @staticmethod
     def scan(mod):
         Commands.names[mod.__name__] = mod.__module__
@@ -65,15 +44,38 @@ class Commands:
                 Commands.add(cmdz)
 
 
+"table"
+
+
+class Table:
+
+    mods = {}
+
+    @staticmethod
+    def add(mod):
+        Table.mods[mod.__name__] = mod
+
+    @staticmethod
+    def get(name):
+        return Table.mods.get(name, None)
+
+    @staticmethod
+    def load(name):
+        Table.mods[name] = mod = importlib.import_module(name, 'nixm.modules')
+        return mod
+
+
 "callbacks"
 
 
 def command(evt):
     parse(evt)
-    func = Commands.cmds.get(evt.cmd, None)
+    func = Commands.get(evt.cmd)
     if not func:
-        Table.load(evt.cmd)
-        func = Commands.cmds.get(evt.cmd, None)
+        mname = Commands.getname(evt.cmd)        
+        if mname:
+            Table.load(mname)
+        func = Commands.get(evt.cmd)
     if func:
         func(evt)
         Output.put(evt)
@@ -90,8 +92,10 @@ def modloop(*pkgs, disable=""):
                 continue
             if modname.startswith("__"):
                 continue
-            yield TABLE.get(modname)
-
+            mod = getattr(pkg, modname, None)
+            if mod is None:
+                continue
+            yield mod
 
 
 def scan(*pkgs, init=False, disable=""):
@@ -105,7 +109,6 @@ def scan(*pkgs, init=False, disable=""):
             thr = launch(mod.init)
         result.append((mod, thr))
     return result
-
 
 
 "utilities"
@@ -171,12 +174,6 @@ def spl(txt):
     except (TypeError, ValueError):
         result = txt
     return [x for x in result if x]
-
-
-"data"
-
-
-table = Table()
 
 
 "interface"

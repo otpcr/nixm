@@ -75,7 +75,7 @@ class Reactor:
         self.stopped.wait()
 
 
-"client"
+"clients"
 
 
 class Client(Reactor):
@@ -85,9 +85,6 @@ class Client(Reactor):
 
     def say(self, channel, txt):
         self.raw(txt)
-
-
-"buffered"
 
 
 class Buffered(Client):
