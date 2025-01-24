@@ -17,6 +17,7 @@ sys.path.insert(0, os.getcwd())
 
 from .command import Commands, command, parse, scan
 from .modules import face
+from .objects import dumps
 from .persist import Workdir, pidname
 from .runtime import Client, Config, Event, Fleet, errors, later
 
@@ -156,10 +157,10 @@ def control():
     if len(sys.argv) == 1:
         return
     Commands.add(srv)
+    Commands.add(tbl)
     parse(cfg, " ".join(sys.argv[1:]))
     csl = CLI()
-    scan(face)
-    print(Commands.cmds)
+    #scan(face)
     evt = Event()
     evt.orig = repr(csl)
     evt.type = "command"
@@ -183,6 +184,12 @@ def srv(event):
     name = getpass.getuser()
     event.reply(TXT % (Config.name.upper(), name, name, name, Config.name))
 
+
+def tbl(event):
+    from nixm.command import Table
+    Table.scan(face)
+    event.reply(dumps(Commands.names, indent=4))
+    
 
 "data"
 

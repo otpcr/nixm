@@ -14,17 +14,58 @@ from .objects import Default
 from .runtime import Output, launch
 
 
+"defines"
+
+
+NAMES = {
+    "cmd": "nixm.modules.cmd",
+    "err": "nixm.modules.err",
+    "flt": "nixm.modules.flt",
+    "fnd": "nixm.modules.fnd",
+    "cfg": "nixm.modules.irc",
+    "mre": "nixm.modules.irc",
+    "pwd": "nixm.modules.irc",
+    "log": "nixm.modules.log",
+    "cor": "nixm.modules.mbx",
+    "eml": "nixm.modules.mbx",
+    "mbx": "nixm.modules.mbx",
+    "dis": "nixm.modules.mdl",
+    "now": "nixm.modules.mdl",
+    "mod": "nixm.modules.mod",
+    "req": "nixm.modules.req",
+    "dpl": "nixm.modules.rss",
+    "exp": "nixm.modules.rss",
+    "imp": "nixm.modules.rss",
+    "nme": "nixm.modules.rss",
+    "rem": "nixm.modules.rss",
+    "res": "nixm.modules.rss",
+    "rss": "nixm.modules.rss",
+    "syn": "nixm.modules.rss",
+    "lne": "nixm.modules.slg",
+    "slg": "nixm.modules.slg",
+    "dne": "nixm.modules.tdo",
+    "tdo": "nixm.modules.tdo",
+    "thr": "nixm.modules.thr",
+    "tmr": "nixm.modules.tmr",
+    "udp": "nixm.modules.udp",
+    "upt": "nixm.modules.upt",
+    "wsd": "nixm.modules.wsd"
+}
+
+
 "commands"
 
 
 class Commands:
 
     cmds = {}
-    names = {}
+    names = NAMES
 
     @staticmethod
-    def add(func):
+    def add(func, mod=None):
         Commands.cmds[func.__name__] = func
+        if mod:
+            Commands.names[func.__name__] = mod.__name__
 
     @staticmethod
     def get(cmd):
@@ -36,12 +77,11 @@ class Commands:
 
     @staticmethod
     def scan(mod):
-        Commands.names[mod.__name__] = mod.__module__
         for key, cmdz in inspect.getmembers(mod, inspect.isfunction):
             if key.startswith("cb"):
                 continue
             if 'event' in cmdz.__code__.co_varnames:
-                Commands.add(cmdz)
+                Commands.add(cmdz, mod)
 
 
 "table"
@@ -62,7 +102,16 @@ class Table:
     @staticmethod
     def load(name):
         Table.mods[name] = mod = importlib.import_module(name, 'nixm.modules')
+        Commands.scan(mod)
         return mod
+
+    @staticmethod
+    def scan(pkg, pname=None):
+        if pname is None:
+            pname = "nixm.modules" 
+        for name in dir(pkg):
+            mod = Table.load(f"nixm.modules.{name}")
+            yield mod
 
 
 "callbacks"
@@ -87,15 +136,7 @@ def command(evt):
 
 def modloop(*pkgs, disable=""):
     for pkg in pkgs:
-        for modname in dir(pkg):
-            if modname in spl(disable):
-                continue
-            if modname.startswith("__"):
-                continue
-            mod = getattr(pkg, modname, None)
-            if mod is None:
-                continue
-            yield mod
+        yield from Table.scan(pkg)
 
 
 def scan(*pkgs, init=False, disable=""):
