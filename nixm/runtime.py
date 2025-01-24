@@ -289,7 +289,7 @@ class Output:
 def __dir__():
     return (
         'STARTTIME',
-        'Default,
+        'Default',
         'Errors',
         'EVent',
         'Fleet',

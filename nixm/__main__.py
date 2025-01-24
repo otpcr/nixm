@@ -15,11 +15,13 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
+
+from .client  import Client, Config, Event
 from .command import Commands, command, parse, scan
 from .modules import face
 from .objects import dumps
 from .persist import Workdir, pidname
-from .runtime import Client, Config, Event, Fleet, errors, later
+from .runtime import Fleet, errors, later
 
 
 cfg = Config()

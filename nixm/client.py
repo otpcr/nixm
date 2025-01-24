@@ -4,18 +4,16 @@
 "clients"
 
 
+import threading
+import time
+
+
 from .runtime import Default, Reactor
-
-
-"config"
 
 
 class Config(Default):
 
     name = Default.__module__.rsplit(".", maxsplit=2)[-2]
-
-
-"client"
 
 
 class Client(Reactor):
@@ -32,9 +30,6 @@ class Buffered(Client):
     def __init__(self):
         Client.__init__(self)
         Output.start()
-
-
-"event"
 
 
 class Event(Default):
