@@ -9,10 +9,9 @@ import datetime
 import time
 
 
-from ..client  import Event
 from ..objects import Object, construct, keys
 from ..persist import elapsed
-from ..runtime import Fleet, Repeater
+from ..runtime import Event, Fleet, Repeater
 
 
 "defines"

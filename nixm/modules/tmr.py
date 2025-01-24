@@ -10,10 +10,9 @@ import re
 import time as ttime
 
 
-from ..client  import Event
 from ..objects import update
 from ..persist import find, elapsed, write
-from ..runtime import Fleet, Timer, launch
+from ..runtime import Event, Fleet, Timer, launch
 
 
 "defines"

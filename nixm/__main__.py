@@ -12,16 +12,14 @@ import time
 import _thread
 
 
-sys.path.insert(0, os.getcwd())
-
-
-
-from .client  import Client, Config, Event
-from .command import Commands, command, parse, scan
+from .command import Commands, Config, Table, command, parse, scan
 from .modules import face
 from .objects import dumps
 from .persist import Workdir, pidname
-from .runtime import Fleet, errors, later
+from .runtime import Client, Event, Fleet, errors, later
+
+
+"defines"
 
 
 cfg = Config()
@@ -29,6 +27,12 @@ p   = os.path.join
 
 
 Workdir.wdr = os.path.expanduser(f"~/.{Config.name}")
+
+
+def debug(txt):
+    # output here
+    if "v" in cfg.opts:
+        output(txt)
 
 
 def output(txt):
@@ -112,6 +116,16 @@ def forever():
             _thread.interrupt_main()
 
 
+def init(*pkgs, disable=""):
+    result = []
+    for mod in Table.mods:
+        if init and "init" in dir(mod):
+            thr = launch(mod.init)
+        result.append((mod, thr))
+    return result
+
+
+
 def pidfile(filename):
     if os.path.exists(filename):
         os.unlink(filename)
@@ -136,7 +150,7 @@ def background():
     daemon(True)
     privileges()
     pidfile(pidname(Config.name))
-    scan(face, init=True)
+    init(face, init=True)
     forever()
 
 
@@ -145,7 +159,7 @@ def console():
     parse(cfg, " ".join(sys.argv[1:]))
     if "v" in cfg.opts:
         banner()
-    for mod, thr in scan(face, init="i" in cfg.opts, disable=cfg.sets.dis):
+    for mod, thr in init(face, disable=cfg.sets.dis):
         if "v" in cfg.opts and "output" in dir(mod):
             mod.output = print
         if thr and "w" in cfg.opts:
@@ -162,7 +176,6 @@ def control():
     Commands.add(tbl)
     parse(cfg, " ".join(sys.argv[1:]))
     csl = CLI()
-    #scan(face)
     evt = Event()
     evt.orig = repr(csl)
     evt.type = "command"
@@ -174,7 +187,7 @@ def control():
 def service():
     privileges()
     pidfile(pidname(Config.name))
-    scan(face, init=True)
+    init(face)
     forever()
 
 
