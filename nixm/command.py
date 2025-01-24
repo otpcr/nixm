@@ -15,7 +15,7 @@ from .runtime import Default, Output, later, launch
 
 
 try:
-    from .static import NAMES
+    from .lookup import NAMES
 except Exception as ex:
     later(ex)
     NAMES = {}
