@@ -18,6 +18,21 @@ import _thread
 STARTTIME = time.time()
 
 
+"default"
+
+
+class Default:
+
+    def __contains__(self, key):
+        return key in self
+
+    def __getattr__(self, key):
+        return self.__dict__.get(key, "")
+
+    def __iter__(self):
+        return iter(self.__dict__)
+
+
 "reactor"
 
 
@@ -73,25 +88,6 @@ class Reactor:
     def wait(self):
         self.queue.join()
         self.stopped.wait()
-
-
-"clients"
-
-
-class Client(Reactor):
-
-    def raw(self, txt):
-        raise NotImplementedError("raw")
-
-    def say(self, channel, txt):
-        self.raw(txt)
-
-
-class Buffered(Client):
-
-    def __init__(self):
-        Client.__init__(self)
-        Output.start()        
 
 
 "thread"
@@ -286,61 +282,6 @@ class Output:
         Output.queue.put(None)
 
 
-"default"
-
-
-class Default:
-
-    def __contains__(self, key):
-        return key in self
-
-    def __getattr__(self, key):
-        return self.__dict__.get(key, "")
-
-    def __iter__(self):
-        return iter(self.__dict__)
-
-
-"config"
-
-
-class Config(Default):
-
-    name = Default.__module__.rsplit(".", maxsplit=2)[-2]
-
-
-"event"
-
-
-class Event(Default):
-
-    def __init__(self):
-        Default.__init__(self)
-        self._ready = threading.Event()
-        self._thr   = None
-        self.ctime  = time.time()
-        self.result = []
-        self.type   = "event"
-        self.txt    = ""
-
-    def display(self):
-        for txt in self.result:
-            Fleet.say(self.orig, self.channel, txt)
-
-    def done(self):
-        self.reply("ok")
-
-    def ready(self):
-        self._ready.set()
-
-    def reply(self, txt):
-        self.result.append(txt)
-
-    def wait(self):
-        self._ready.wait()
-        if self._thr:
-            self._thr.join()
-
 
 "interface"
 
@@ -348,8 +289,10 @@ class Event(Default):
 def __dir__():
     return (
         'STARTTIME',
+        'Default,
         'Errors',
         'EVent',
+        'Fleet',
         'Reactor',
         'Repeater',
         'Thread',
