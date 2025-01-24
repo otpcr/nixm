@@ -12,7 +12,7 @@ import time
 import _thread
 
 
-from .command import Commands, Config, Table, command, parse, scan
+from .command import Commands, Config, NAMES, Table, command, parse, scan
 from .modules import face
 from .objects import dumps
 from .persist import Workdir, pidname
@@ -172,6 +172,7 @@ def console():
 def control():
     if len(sys.argv) == 1:
         return
+    Commands.add(cmd)
     Commands.add(srv)
     Commands.add(tbl)
     parse(cfg, " ".join(sys.argv[1:]))
@@ -194,6 +195,10 @@ def service():
 "commands"
 
 
+def cmd(event):
+    event.reply(",".join(sorted(NAMES.keys())))
+
+
 def srv(event):
     import getpass
     name = getpass.getuser()
@@ -203,7 +208,13 @@ def srv(event):
 def tbl(event):
     from nixm.command import Table
     Table.scan(face)
-    event.reply(dumps(Commands.names, indent=4))
+    event.reply("# This file is placed in the Public Domain.")
+    event.reply("")
+    event.reply("")
+    event.reply('"static tables"')
+    event.reply("")
+    event.reply("")
+    event.reply(f"NAMES = {dumps(Commands.names, indent=4)}")
     
 
 "data"

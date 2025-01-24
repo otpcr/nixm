@@ -17,12 +17,11 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from nixm.client  import Client, Config, Event
-from nixm.command import Commands, parse, scan
+from nixm.command import Commands, Config, Table, command, parse, scan
 from nixm.modules import face
 from nixm.objects import Object, keys
 from nixm.persist import Workdir, elapsed, skel
-from nixm.runtime import Fleet, launch, errors, later
+from nixm.runtime import Client, Event, Fleet, launch, errors, later
 
 
 "defines"
@@ -79,6 +78,10 @@ param.ver = [""]
 
 
 class CLI(Client):
+
+    def __init__(self):
+        Client.__init__(self)
+        self.register("command", command)
 
     def raw(self, txt):
         if "v" in cfg.opts:
@@ -140,9 +143,10 @@ def wrap(function):
 def main():
     global nrs
     global nrcommand
+    Table.load("nixm.modules.rss")
+    Table.mods["nixm.modules.rss"].DEBUG = True
     parse(cfg, " ".join(sys.argv[1:]))
-    face.rss.DEBUG = True
-    scan(face, mods)
+    #scan(face, mods)
     nrcommand = len(Commands.cmds) or 1
     if "v" in cfg.opts:
         banner()

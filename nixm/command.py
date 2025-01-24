@@ -7,11 +7,18 @@
 
 import importlib
 import inspect
+import os
 import types
 
 
-from .names   import NAMES
-from .runtime import Default, Output, launch
+from .runtime import Default, Output, later, launch
+
+
+try:
+    from .static import NAMES
+except Exception as ex:
+    later(ex)
+    NAMES = {}
 
 
 "defines"
@@ -94,7 +101,8 @@ class Table:
             pname = "nixm.modules" 
         for name in dir(pkg):
             mod = Table.load(f"nixm.modules.{name}")
-            yield mod
+        if not Table.mods:
+            scan(pkg)
 
 
 "callbacks"
@@ -120,8 +128,12 @@ def command(evt):
 
 def modloop(*pkgs, disable=""):
     for pkg in pkgs:
-        yield from Table.scan(pkg)
-
+        print(pkg)
+        if pkg is None:
+            continue
+        for name in  [x[:-3] for x in os.listdir(os.path.dirname(pkg.__file__))
+                      if not x.startswith("__")]:
+            yield Table.load(f"nixm.modules.{name}")
 
 def scan(*pkgs, init=False, disable=""):
     result = []
@@ -208,6 +220,7 @@ def __dir__():
     return (
         'Commands',
         'command',
+        'cmd',
         'parse',
         'scan'
     )
