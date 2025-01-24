@@ -5,8 +5,8 @@
 "show list of commands"
 
 
-from ..command import Commands
+from ..command import NAMES
 
 
 def cmd(event):
-    event.reply(",".join(sorted(Commands.cmds.keys())))
+    event.reply(",".join(sorted(NAMES.keys())))

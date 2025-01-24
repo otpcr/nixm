@@ -10,8 +10,7 @@ import inspect
 import types
 
 
-from .objects import Default
-from .runtime import Output, launch
+from .runtime import Default, Output, launch
 
 
 "defines"

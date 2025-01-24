@@ -129,20 +129,6 @@ def dumps(*args, **kw):
     return json.dumps(*args, **kw)
 
 
-"default"
-
-
-class Default(Object):
-
-    def __contains__(self, key):
-        return key in self
-
-    def __getattr__(self, key):
-        return self.__dict__.get(key, "")
-
-    def __iter__(self):
-        return iter(self.__dict__)
-
 "methods"
 
 

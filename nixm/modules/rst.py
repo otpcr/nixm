@@ -13,9 +13,9 @@ import time
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 
-from ..objects import Default, Object
+from ..objects import Object
 from ..persist import Workdir, types
-from ..runtime import later, launch
+from ..runtime import Default, later, launch
 
 
 "init"
@@ -103,6 +103,13 @@ class RESTHandler(BaseHTTPRequestHandler):
             self.send(html(txt.strip()))
             return
         fnm = Workdir.wdr + os.sep + "store" + os.sep + self.path
+        if os.path.isdir(fnm):
+            txt = ""
+            for fnn in os.listdir(fnm):
+                filename = self.path  + os.sep + fnn
+                txt += f'<a href="http://{Config.hostname}:{Config.port}/{filename}">{filename}</a><br>\n'
+            self.send(html(txt.strip()))
+            return
         try:
             with open(fnm, "r", encoding="utf-8") as file:
                 txt = file.read()

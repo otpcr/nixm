@@ -17,9 +17,9 @@ import _thread
 
 
 from ..command import command
-from ..objects import Default, Object, edit, fmt, keys
+from ..objects import Object, edit, fmt, keys
 from ..persist import ident, last, write
-from ..runtime import Event, Fleet, Reactor, later, launch
+from ..runtime import Default, Event, Fleet, Reactor, later, launch
 
 
 "defines"
