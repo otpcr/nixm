@@ -1,6 +1,9 @@
 # This file is placed in the Public Domain.
 
 
+"static tables"
+
+
 NAMES = {
     "cmd": "nixm.modules.cmd",
     "err": "nixm.modules.err",
