@@ -12,24 +12,24 @@ import unittest
 
 
 import nixm
-import nixm.client
 import nixm.command
 import nixm.modules
 import nixm.objects
 import nixm.persist
 import nixm.runtime
+import nixm.static
 
 
 from nixm.objects import *
 
 
 PACKAGE = [
-    'client',
     'command',
     'modules',
     'objects',
     'persist',
-    'runtime'
+    'runtime',
+    'static'
 ]
 
 
