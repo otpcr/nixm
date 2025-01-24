@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C0115,C0116,R0903,W0105,W0212,W0718,E0402
+# pylint: disable=C0115,C0116,R0903,W0105,W0212,W0613,W0718,E0402
 
 
 "runtime"
@@ -34,7 +34,7 @@ class Default:
 
     def __len__(self):
         return len(self.__dict__)
-    
+
     def __str__(self):
         return str(self.__dict__)
 
@@ -267,7 +267,7 @@ class Output:
             evt = Output.queue.get()
             if evt is None:
                 break
-            Fleet.display(evt)
+            Output.display(evt)
 
     @staticmethod
     def put(evt):
@@ -322,7 +322,7 @@ class Event(Default):
 
     def display(self):
         for txt in self.result:
-            Fleet.say(self.orig, self.channel, txt)
+            Output.say(self.orig, self.channel, txt)
 
     def done(self):
         self.reply("ok")

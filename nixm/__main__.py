@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,R0903,W0105,W0212,W0611,W0718,E0402
+# pylint: disable=C,R0903,W0105,W0212,W0611,W0613,W0718,E0402
 
 
 "main"
@@ -16,7 +16,7 @@ from .command import Commands, Config, NAMES, Table, command, parse, scan
 from .modules import face
 from .objects import dumps
 from .persist import Workdir, pidname
-from .runtime import Client, Event, Fleet, errors, later
+from .runtime import Client, Event, Fleet, errors, later, launch
 
 
 "defines"
@@ -150,7 +150,7 @@ def background():
     daemon(True)
     privileges()
     pidfile(pidname(Config.name))
-    init(face, init=True)
+    init(face)
     forever()
 
 
@@ -206,7 +206,6 @@ def srv(event):
 
 
 def tbl(event):
-    from nixm.command import Table
     Table.scan(face)
     event.reply("# This file is placed in the Public Domain.")
     event.reply("")

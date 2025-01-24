@@ -21,6 +21,9 @@ class Object:
         return str(self.__dict__)
 
 
+"basics"
+
+
 def construct(obj, *args, **kwargs):
     if args:
         val = args[0]
