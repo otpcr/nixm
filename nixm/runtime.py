@@ -96,6 +96,58 @@ class Reactor:
         self.stopped.wait()
 
 
+"clients"
+
+
+class Client(Reactor):
+
+    def raw(self, txt):
+        raise NotImplementedError("raw")
+
+    def say(self, channel, txt):
+        self.raw(txt)
+
+
+class Buffered(Client):
+
+    def __init__(self):
+        Client.__init__(self)
+        Output.start()
+
+
+"event"
+
+
+class Event(Default):
+
+    def __init__(self):
+        Default.__init__(self)
+        self._ready = threading.Event()
+        self._thr   = None
+        self.ctime  = time.time()
+        self.result = []
+        self.type   = "event"
+        self.txt    = ""
+
+    def display(self):
+        for txt in self.result:
+            Output.say(self.orig, self.channel, txt)
+
+    def done(self):
+        self.reply("ok")
+
+    def ready(self):
+        self._ready.set()
+
+    def reply(self, txt):
+        self.result.append(txt)
+
+    def wait(self):
+        self._ready.wait()
+        if self._thr:
+            self._thr.join()
+
+
 "thread"
 
 
@@ -184,34 +236,6 @@ class Repeater(Timer):
         super().run()
 
 
-"errors"
-
-
-class Errors:
-
-    errors = []
-
-    @staticmethod
-    def format(exc):
-        return traceback.format_exception(
-            type(exc),
-            exc,
-            exc.__traceback__
-        )
-
-
-def errors():
-    for err in Errors.errors:
-        yield from err
-
-
-def later(exc):
-    excp = exc.with_traceback(exc.__traceback__)
-    fmt = Errors.format(excp)
-    if fmt not in Errors.errors:
-        Errors.errors.append(fmt)
-
-
 "fleet"
 
 
@@ -287,56 +311,32 @@ class Output:
         Output.queue.put(None)
 
 
-"clients"
+"errors"
 
 
-class Client(Reactor):
+class Errors:
 
-    def raw(self, txt):
-        raise NotImplementedError("raw")
+    errors = []
 
-    def say(self, channel, txt):
-        self.raw(txt)
-
-
-class Buffered(Client):
-
-    def __init__(self):
-        Client.__init__(self)
-        Output.start()
+    @staticmethod
+    def format(exc):
+        return traceback.format_exception(
+            type(exc),
+            exc,
+            exc.__traceback__
+        )
 
 
-"event"
+def errors():
+    for err in Errors.errors:
+        yield from err
 
 
-class Event(Default):
-
-    def __init__(self):
-        Default.__init__(self)
-        self._ready = threading.Event()
-        self._thr   = None
-        self.ctime  = time.time()
-        self.result = []
-        self.type   = "event"
-        self.txt    = ""
-
-    def display(self):
-        for txt in self.result:
-            Output.say(self.orig, self.channel, txt)
-
-    def done(self):
-        self.reply("ok")
-
-    def ready(self):
-        self._ready.set()
-
-    def reply(self, txt):
-        self.result.append(txt)
-
-    def wait(self):
-        self._ready.wait()
-        if self._thr:
-            self._thr.join()
+def later(exc):
+    excp = exc.with_traceback(exc.__traceback__)
+    fmt = Errors.format(excp)
+    if fmt not in Errors.errors:
+        Errors.errors.append(fmt)
 
 
 "interface"
