@@ -21,9 +21,6 @@ except Exception as ex:
     NAMES = {}
 
 
-"commands"
-
-
 class Commands:
 
     cmds = {}
@@ -50,9 +47,6 @@ class Commands:
                 continue
             if 'event' in cmdz.__code__.co_varnames:
                 Commands.add(cmdz, mod)
-
-
-"table"
 
 
 class Table:
@@ -101,9 +95,6 @@ class Table:
         return res
 
 
-"callbacks"
-
-
 def command(evt):
     parse(evt)
     func = Commands.get(evt.cmd)
@@ -118,9 +109,6 @@ def command(evt):
         return
     func(evt)
     Fleet.display(evt)
-
-
-"utilities"
 
 
 def parse(obj, txt=None):
@@ -183,9 +171,6 @@ def spl(txt):
     except (TypeError, ValueError):
         result = txt
     return [x for x in result if x]
-
-
-"interface"
 
 
 def __dir__():

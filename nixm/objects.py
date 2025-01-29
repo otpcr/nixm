@@ -8,9 +8,6 @@
 import json
 
 
-"object"
-
-
 class Object:
 
 
@@ -19,9 +16,6 @@ class Object:
 
     def __str__(self):
         return str(self.__dict__)
-
-
-"methods"
 
 
 def construct(obj, *args, **kwargs):
@@ -178,9 +172,6 @@ def fmt(obj, args=None, skip=None, plain=False):
         else:
             txt += f'{key}={value} '
     return txt.strip()
-
-
-"interface"
 
 
 def __dir__():

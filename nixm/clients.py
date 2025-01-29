@@ -12,17 +12,11 @@ import threading
 from .runtime import Default, Fleet, Reactor, launch
 
 
-"config"
-
-
 class Config(Default):
 
     init = "irc,rss"
     name = Default.__module__.rsplit(".", maxsplit=2)[-2]
     opts = Default()
-
-
-"clients"
 
 
 class Client(Reactor):
@@ -36,9 +30,6 @@ class Client(Reactor):
 
     def say(self, channel, txt):
         self.raw(txt)
-
-
-"output"
 
 
 class Output:
@@ -75,9 +66,6 @@ class Output:
         self.oqueue.join()
 
 
-"buffered"
-
-
 class Buffered(Client, Output):
 
     def __init__(self):
@@ -98,9 +86,6 @@ class Buffered(Client, Output):
     def wait(self):
         Client.wait(self)
         Output.wait(self)
-
-
-"interface"
 
 
 def __dir__():

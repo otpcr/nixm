@@ -17,24 +17,15 @@ import threading
 from .objects import Object, dumps, fqn, items, loads, update
 
 
-"locks"
-
-
 p        = os.path.join
 rwlock   = threading.RLock()
 findlock = threading.RLock()
 lock     = threading.RLock()
 
 
-"exceptions"
-
-
 class DecodeError(Exception):
 
     pass
-
-
-"workdir"
 
 
 class Workdir:
@@ -70,7 +61,24 @@ def types():
     return os.listdir(store())
 
 
-"disk"
+class Cache:
+
+    objs = {}
+
+    @staticmethod
+    def add(path, obj):
+        Cache.objs[path] = obj
+
+    @staticmethod
+    def get(path):
+        return Cache.objs.get(path, None)
+
+    @staticmethod
+    def typed(matcher):
+        for key in Cache.objs:
+            if matcher not in key:
+                continue
+            yield Cache.objs.get(key)
 
 
 def cdir(pth):
@@ -98,29 +106,6 @@ def write(obj, pth=None):
         with open(pth, 'w', encoding='utf-8') as ofile:
             ofile.write(txt)
     return pth
-
-
-"cache"
-
-
-class Cache:
-
-    objs = {}
-
-    @staticmethod
-    def add(path, obj):
-        Cache.objs[path] = obj
-
-    @staticmethod
-    def get(path):
-        return Cache.objs.get(path, None)
-
-    @staticmethod
-    def typed(matcher):
-        for key in Cache.objs:
-            if matcher not in key:
-                continue
-            yield Cache.objs.get(key)
 
 
 "find"
@@ -254,9 +239,6 @@ def fntime(daystr):
 
 def strip(pth, nmr=3):
     return os.sep.join(pth.split(os.sep)[-nmr:])
-
-
-"interface"
 
 
 def __dir__():

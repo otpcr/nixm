@@ -58,7 +58,7 @@ class Reactor:
             func = self.cbs.get(evt.type, None)
             if func:
                 try:
-                    evt._thr = launch(func, evt, name=evt.cmd or evt.txt)
+                    evt._thr = launch(func, evt, name=evt.cmd or name(func))
                 except Exception as ex:
                     later(ex)
                     evt.ready()
@@ -303,7 +303,6 @@ def later(exc):
 def __dir__():
     return (
         'STARTTIME',
-        'Cache',
         'Errors',
         'Event',
         'Fleet',
