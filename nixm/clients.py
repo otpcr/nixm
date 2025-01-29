@@ -12,25 +12,6 @@ import threading
 from .runtime import Default, Fleet, Reactor, launch
 
 
-"locks"
-
-
-lock = threading.RLock()
-
-
-"output"
-
-
-def debug(txt):
-    if "v" in Config.opts:
-        output(txt)
-
-
-def output(txt):
-    # output here
-    print(txt)
-
-
 "config"
 
 
@@ -117,7 +98,6 @@ class Buffered(Client, Output):
     def wait(self):
         Client.wait(self)
         Output.wait(self)
-
 
 
 "interface"

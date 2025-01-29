@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # This file is placed in the Public Domain.
 # pylint: disable=C,R0903,W0105,W0212,W0611,W0613,W0718,E0402
 
@@ -13,10 +12,7 @@ import time
 import _thread
 
 
-sys.path.insert(0, os.getcwd())
-
-
-from .clients import Client, Config, output
+from .clients import Client, Config
 from .command import NAMES, Commands, Table, command, parse, spl
 from .modules import face
 from .objects import dumps
@@ -38,8 +34,10 @@ pname = f"{Config.name}.modules"
 Workdir.wdr = os.path.expanduser(f"~/.{Config.name}")
 
 
+"output"
+
+
 def debug(txt):
-    # output here
     if "v" in cfg.opts:
         output(txt)
 
@@ -65,7 +63,8 @@ class CLI(Client):
 class Console(CLI):
 
     def announce(self, txt):
-        print(txt)
+        #output(txt)
+        pass
 
     def callback(self, evt):
         CLI.callback(self, evt)
@@ -217,7 +216,7 @@ def tbl(event):
     event.reply('"lookup tables"')
     event.reply("")
     event.reply("")
-    event.reply(f"NAMES = {dumps(Commands.names, indent=4)}")
+    event.reply(f"NAMES = {dumps(Commands.names, indent=4, sort_keys=True)}")
     
 
 "data"
@@ -277,7 +276,6 @@ def main():
         wrap(service)
     else:
         control()
-
 
 
 if __name__ == "__main__":

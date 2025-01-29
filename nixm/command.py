@@ -21,18 +21,6 @@ except Exception as ex:
     NAMES = {}
 
 
-def locked(func, *args, **kwargs):
-
-    def locker(*args, **kwargs):
-        with lock:
-            return func(*args, **kwargs)
-
-    return locker
-
-
-lock = threading.RLock()
-
-
 "commands"
 
 
@@ -101,7 +89,6 @@ class Table:
 
     @staticmethod
     def scan(pkg, mods=""):
-        print(pkg, mods)
         res = []
         pname = ".".join(os.path.dirname(pkg.__file__).split(os.sep)[-2:])
         for nme in dir(pkg):

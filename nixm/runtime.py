@@ -297,8 +297,6 @@ def later(exc):
         Errors.errors.append(fmt)
 
 
-
-
 "interface"
 
 
@@ -311,7 +309,6 @@ def __dir__():
         'Fleet',
         'Reactor',
         'Repeater',
-        'Table',
         'Thread',
         'Timer',
         'errors',
