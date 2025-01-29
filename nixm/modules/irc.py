@@ -16,7 +16,6 @@ import time
 import _thread
 
 
-from ..clients import output
 from ..command import command
 from ..objects import Object, edit, fmt, keys
 from ..persist import ident, last, write
@@ -38,6 +37,10 @@ def debug(txt):
         if ign in txt:
             return
     output(txt)
+
+
+def output(txt):
+    pass
 
 
 "init"

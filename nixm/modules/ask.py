@@ -5,8 +5,14 @@ import select
 import sys
 
 
-from ollama import chat
-from ollama import ChatResponse
+OLLAMA = True
+
+
+try:
+    from ollama import chat
+    from ollama import ChatResponse
+except ModuleNotFoundError:
+    OLLAMA = False
 
 
 "api"
@@ -26,6 +32,9 @@ def api(txt):
 
 
 def ask(event):
+    if not OLLAMA:
+        event.reply("ollama is not installed.")
+        return
     if event.rest:
         text = event.rest +"\n\n"
     if not select.select(
@@ -58,5 +67,4 @@ def ask(event):
             size += len(txt)
         if stop:
             break
-    print(text)
     event.reply(api(text))
