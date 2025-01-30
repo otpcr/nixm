@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-
+# pylint: disable=C0114,C0116
 
 import select
 import sys
@@ -15,20 +15,21 @@ except ModuleNotFoundError:
     OLLAMA = False
 
 
-"api"
-
-
 def api(txt):
     response: ChatResponse = chat(model='deepseek-v2:16b', messages=[
+      {
+        'role': 'system',
+        'content': """
+                     You are NIXT, a modern python3 runtime. Your are a expert coder and expected to give short, precise answers.
+                     Reply with yes or no where possible. Your are not to help, but to give expert python3 advise.
+                   """
+      },
       {
         'role': 'user',
         'content': txt,
       },
     ])
     return response.message.content.strip()
-
-
-"commands"
 
 
 def ask(event):
@@ -43,12 +44,15 @@ def ask(event):
                          [],
                          0.0
                         )[0]:
-        event.reply("ask <text>")
+        if not event.rest:
+            event.reply("ask <text>")
+        else:
+            event.reply(api(text))
         return
     size = 0
     while 1:
         try:
-            (inp, _out, err) = select.select(
+            (input, _output, error) = select.select(
                                              [sys.stdin,],
                                              [],
                                              [sys.stderr,]
@@ -58,7 +62,7 @@ def ask(event):
         if err:
             break
         stop = False
-        for sock in inp:
+        for sock in input:
             txt = sock.readline()
             if not txt:
                 stop = True

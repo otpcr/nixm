@@ -163,7 +163,7 @@ def console():
         banner()
         nixm.clients.output = print
     if "i" in cfg.opts:
-        for mod, thr in Table.inits(Config.init, pname):
+        for _mod, thr in Table.inits(Config.init, pname):
             if "w" in cfg.opts:
                 thr.join()
     csl = Console()

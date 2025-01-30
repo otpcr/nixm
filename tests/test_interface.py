@@ -14,7 +14,7 @@ import unittest
 import nixm
 import nixm.__main__
 import nixm.command
-import nixm.lookup
+import nixm.lookups
 import nixm.modules
 import nixm.objects
 import nixm.persist
@@ -26,7 +26,7 @@ from nixm.objects import *
 
 PACKAGE = [
     'command',
-    'lookup',
+    'lookups',
     '__main__',
     'modules',
     'objects',

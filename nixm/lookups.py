@@ -5,7 +5,6 @@
 
 
 NAMES = {
-    "ask": "nixm.modules.ask",
     "cfg": "nixm.modules.irc",
     "cor": "nixm.modules.mbx",
     "dis": "nixm.modules.mdl",
@@ -17,6 +16,7 @@ NAMES = {
     "flt": "nixm.modules.flt",
     "fnd": "nixm.modules.fnd",
     "imp": "nixm.modules.rss",
+    "llm": "nixm.modules.llm",
     "lne": "nixm.modules.slg",
     "log": "nixm.modules.log",
     "mbx": "nixm.modules.mbx",

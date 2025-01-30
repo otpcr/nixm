@@ -8,7 +8,6 @@
 import importlib
 import inspect
 import os
-import threading
 
 
 from .runtime import Default, Fleet, later, launch

@@ -17,12 +17,12 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from nixm.clients import Buffered, Client, Config
+from nixm.clients import Buffered, Config
 from nixm.command import Commands, Table, command, parse
 from nixm.modules import face
 from nixm.objects import Object, keys
 from nixm.persist import Workdir, elapsed, skel
-from nixm.runtime import Event, Reactor, launch, errors, later
+from nixm.runtime import Event, launch, errors, later
 
 
 "defines"
@@ -93,9 +93,9 @@ def banner():
 
 def consume(evts):
     done = []
-    for evt in evts:
-        evt.wait()
-        done.append(evt)
+    for event in evts:
+        event.wait()
+        done.append(event)
     for todo in done:
         events.remove(todo)
     return done
@@ -105,11 +105,11 @@ def payload(clt):
     nmr = 0
     for cmdd in keys(param):
         for ex in getattr(param, cmdd, [""]):
-            evt = Event()
-            evt.txt = cmdd + " " + ex
-            evt.type = "command"
-            events.append(evt)
-            clt.put(evt)
+            event = Event()
+            event.txt = cmdd + " " + ex
+            event.type = "command"
+            events.append(event)
+            clt.put(event)
             nmr += 1
     return nmr
 
